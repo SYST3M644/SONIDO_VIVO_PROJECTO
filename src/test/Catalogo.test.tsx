@@ -45,3 +45,24 @@ test("Todos los productos del catalogo tienen fotografia", () => {
     expect(imagen.getAttribute("src")).toContain(".jpg");
   });
 });
+
+test("Los precios se muestran con separador de miles", () => {
+  render(
+    <MemoryRouter>
+      <Productos />
+    </MemoryRouter>
+  );
+
+  expect(screen.getByText("$1.149.990")).toBeDefined();
+  expect(screen.getByText("$129.990")).toBeDefined();
+});
+
+test("Cada producto tiene su boton para ver el detalle", () => {
+  render(
+    <MemoryRouter>
+      <Productos />
+    </MemoryRouter>
+  );
+
+  expect(screen.getAllByText("Ver Producto").length).toBe(12);
+});
