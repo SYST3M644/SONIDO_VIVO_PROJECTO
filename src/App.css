@@ -27,8 +27,14 @@
     color: #ffffff;
 }
 
+.carrusel-tienda {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .imagen-carrusel {
-    height: 360px;
+    height: 380px;
     object-fit: contain;
     background-color: #ffffff;
     border-radius: 10px;

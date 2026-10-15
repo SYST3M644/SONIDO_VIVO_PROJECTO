@@ -7,7 +7,7 @@ function Inicio() {
                 <p>Instrumentos musicales y equipos de sonido en Viña del Mar</p>
             </div>
 
-            <div id="carruselSonidoVivo" className="carousel slide mt-4" data-bs-ride="carousel" data-bs-theme="dark">
+            <div id="carruselSonidoVivo" className="carousel slide mt-4 carrusel-tienda" data-bs-ride="carousel" data-bs-theme="dark">
                 <div className="carousel-inner">
                     <div className="carousel-item active">
                         <img src="/img/guitarra-acustica.jpg" className="d-block w-100 imagen-carrusel" alt="Guitarra acustica Yamaha F310" />
