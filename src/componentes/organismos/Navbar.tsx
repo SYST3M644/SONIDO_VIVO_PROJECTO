@@ -4,7 +4,9 @@ function Navbar() {
     return(
         <nav className="navbar navbar-expand bg-dark">
             <div className="container">
-                <span className="navbar-brand text-white">Mi Tienda</span>
+                <Link className="navbar-brand text-white fw-semibold" to="/">
+                    Sonido Vivo
+                </Link>
 
                 <div className="navbar-nav">
                     <Link className="nav-link text-white" to="/">
