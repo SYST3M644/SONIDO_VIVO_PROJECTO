@@ -57,6 +57,13 @@ const listaProductos = [
         descripcion: "Alesis Nitro Mesh Kit",
         precio: 589990,
         imagen: "/img/bateria-electronica.svg"
+    },
+    {
+        id: 9,
+        titulo: "Piano Digital",
+        descripcion: "Yamaha P-45 de 88 Teclas",
+        precio: 649990,
+        imagen: "/img/piano-digital.svg"
     }
 ];
 
