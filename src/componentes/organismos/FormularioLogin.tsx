@@ -1,9 +1,15 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CampoFormulario from "../moleculas/CampoFormulario";
+import { useSesion } from "../../contexto/SesionContext";
+import { iniciarSesion } from "../../servicios/autenticacion";
 
 function FormularioLogin() {
     const [correo, setCorreo] = useState("");
     const [contrasena, setContrasena] = useState("");
+
+    const { guardarUsuario } = useSesion();
+    const navegar = useNavigate();
 
     const validarLogin = (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -24,7 +30,15 @@ function FormularioLogin() {
             return; 
         }
 
-        alert("Login Exito!");
+        const usuario = iniciarSesion(correo, contrasena);
+
+        if (usuario === null) {
+            alert("Correo o contraseña incorrectos");
+            return;
+        }
+
+        guardarUsuario(usuario);
+        navegar("/");
     };
 
     return(
