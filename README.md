@@ -1,75 +1,70 @@
-# React + TypeScript + Vite
+# Sonido Vivo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Tienda de instrumentos musicales, equipos de sonido y accesorios para músicos,
+ubicada en Viña del Mar, Región de Valparaíso.
 
-Currently, two official plugins are available:
+Proyecto del **Caso Semestral del curso DSY1104 – Desarrollo FullStack II (Forma B)**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## El negocio
 
-## React Compiler
+Sonido Vivo lleva 11 años de funcionamiento y es atendida por el dueño y dos
+vendedores. El catálogo incluye guitarras, bajos, baterías, teclados,
+amplificadores, micrófonos, pedales de efectos y accesorios. También se ofrece
+reparación de instrumentos de cuerda.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+La tienda vende principalmente de forma presencial, pero en los últimos tres años
+comenzó a recibir pedidos por WhatsApp e Instagram de clientes de otras ciudades.
+Eso genera una carga que el equipo no alcanza a manejar: 3 de cada 10 mensajes
+quedan sin respuesta el mismo día, el stock se lleva en un Excel que queda
+desactualizado por horas y no existe un registro centralizado de los pedidos.
 
-## Expanding the ESLint configuration
+## Tecnologías usadas
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React 19 con TypeScript
+- Vite como herramienta de construcción
+- React Router DOM para la navegación
+- Bootstrap 5 para los estilos y el diseño responsive
+- Vitest y Testing Library para las pruebas
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Cómo ejecutar el proyecto
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+La aplicación queda disponible en `http://localhost:5173`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Otros comandos:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build     # compila para producción
+npm run lint      # revisa el código con ESLint
+npm test          # ejecuta las pruebas
+```
+
+## Estructura
 
 ```
+src/
+  componentes/
+    atomos/        Boton, InputText, Regresar, Referencias
+    moleculas/     CampoFormulario, CardProductos
+    organismos/    Navbar, FormularioLogin, FormularioContacto
+  paginas/         Inicio, Producto, DetalleProducto, Contacto, Nosotros, Login
+  test/            pruebas con Vitest
+public/img/        ilustraciones de los instrumentos del catálogo
+```
+
+## Estado del proyecto
+
+Hasta ahora está construido el frontend de la aplicación. Según los requisitos
+técnicos obligatorios del caso, falta desarrollar:
+
+- Backend con microservicios Spring Boot y API REST en JSON
+- Base de datos MySQL normalizada en tercera forma normal
+- Autenticación segura con roles (Administrador, Vendedor y Cliente)
+- Panel de administración para gestionar usuarios
+- Carrito de compras y flujo de pedidos con seguimiento de estado
+- Mapa interactivo con la ubicación de la tienda y los puntos de retiro
+- Despliegue en AWS usando Docker
