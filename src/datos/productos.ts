@@ -1,4 +1,4 @@
-import type { Producto } from "../tipos/producto";
+import type { Categoria, Producto } from "../tipos/producto";
 
 /*
  * Catálogo de Sonido Vivo.
@@ -178,3 +178,13 @@ export const productos: Producto[] = [
     imagen: "/img/afinador.svg",
   },
 ];
+
+/** Busca un producto del catálogo por su identificador. */
+export function buscarProducto(id: number): Producto | undefined {
+  return productos.find((producto) => producto.id === id);
+}
+
+/** Devuelve las categorías que hoy tienen al menos un producto cargado. */
+export function categoriasDisponibles(): Categoria[] {
+  return [...new Set(productos.map((producto) => producto.categoria))];
+}
