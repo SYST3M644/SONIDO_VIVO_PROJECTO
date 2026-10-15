@@ -97,7 +97,7 @@ function DetalleProducto(){
     return(
         
         <div className="container mt-4">
-            <h1>Detalle del Producto</h1>
+            <h1 className="titulo-seccion">Detalle del Producto</h1>
 
             <img 
                 src={producto?.imagen} 

@@ -1,7 +1,7 @@
 function Nosotros(){
     return(
         <div className="container mt-4">
-            <h1>Nosotros</h1>
+            <h1 className="titulo-seccion">Nosotros</h1>
 
             <p>
                 Sonido Vivo es una tienda especializada en instrumentos musicales,

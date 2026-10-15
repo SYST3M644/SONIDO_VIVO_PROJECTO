@@ -3,7 +3,7 @@ import CardProductos from "../componentes/moleculas/CardProductos"
 function Productos(){
     return(
         <div className="container mt-4">
-            <h1>Productos</h1>
+            <h1 className="titulo-seccion">Productos</h1>
        
             <div className="d-flex flex-wrap justify-content-center gap-3">
 

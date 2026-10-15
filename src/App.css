@@ -95,3 +95,31 @@
     margin-top: 12px;
     margin-bottom: 0;
 }
+
+.portada {
+    background-color: var(--sv-carbon);
+    color: var(--sv-crema);
+    border-radius: 12px;
+    padding: 40px 24px;
+}
+
+.portada h1 {
+    color: var(--sv-crema);
+    margin-bottom: 8px;
+}
+
+.portada .destacado {
+    color: var(--sv-laton);
+}
+
+.portada p {
+    color: #cfc8bd;
+    margin-bottom: 0;
+}
+
+.titulo-seccion {
+    display: inline-block;
+    padding-bottom: 8px;
+    border-bottom: 3px solid var(--sv-caoba);
+    margin-bottom: 24px;
+}
