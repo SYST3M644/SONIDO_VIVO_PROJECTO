@@ -150,6 +150,22 @@ function Productos(){
                     precio= {24990}
                     imagen= "/img/zampona.jpg"
                     />
+
+                    <CardProductos 
+                    id={19}
+                    titulo="Arpa Celta"
+                    descripcion= "34 cuerdas con llaves de semitono"
+                    precio= {1290990}
+                    imagen= "/img/arpa.jpg"
+                    />
+
+                    <CardProductos 
+                    id={20}
+                    titulo="Set de Platillos"
+                    descripcion= "Zildjian Planet Z de 4 piezas"
+                    precio= {279990}
+                    imagen= "/img/platillos.jpg"
+                    />
             </div>
         </div>
     );
