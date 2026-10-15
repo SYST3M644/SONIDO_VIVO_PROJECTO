@@ -57,4 +57,28 @@ export const productos: Producto[] = [
     stock: 4,
     imagen: "/img/bajo-electrico.svg",
   },
+  {
+    id: 5,
+    nombre: "Batería Acústica 5 Cuerpos",
+    marca: "Pearl",
+    modelo: "Roadshow RS505C",
+    categoria: "baterias",
+    descripcion:
+      "Set completo de cinco cuerpos con bombo de 22 pulgadas, platillos, pedal y banqueta. Se entrega armada y afinada en la tienda.",
+    precio: 749990,
+    stock: 2,
+    imagen: "/img/bateria-acustica.svg",
+  },
+  {
+    id: 6,
+    nombre: "Batería Electrónica de Malla",
+    marca: "Alesis",
+    modelo: "Nitro Mesh Kit",
+    categoria: "baterias",
+    descripcion:
+      "Ocho pads de malla con módulo de 40 sets de sonidos. Permite ensayar con audífonos, sin molestar a los vecinos.",
+    precio: 589990,
+    stock: 3,
+    imagen: "/img/bateria-electronica.svg",
+  },
 ];
