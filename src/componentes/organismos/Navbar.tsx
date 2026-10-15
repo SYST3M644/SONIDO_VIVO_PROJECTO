@@ -11,9 +11,9 @@ function Navbar() {
     };
 
     return(
-        <nav className="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+        <nav className="navbar navbar-expand-lg barra-navegacion" data-bs-theme="dark">
             <div className="container">
-                <Link className="navbar-brand text-white fw-semibold" to="/">
+                <Link className="navbar-brand fw-semibold" to="/">
                     Sonido Vivo
                 </Link>
 
@@ -31,29 +31,29 @@ function Navbar() {
 
                 <div className="collapse navbar-collapse" id="menuPrincipal">
                     <div className="navbar-nav ms-auto align-items-lg-center">
-                        <Link className="nav-link text-white" to="/">
+                        <Link className="nav-link" to="/">
                             Inicio
                         </Link>
 
-                        <Link className="nav-link text-white" to="/productos">
+                        <Link className="nav-link" to="/productos">
                             Productos
                         </Link>
 
-                        <Link className="nav-link text-white" to="/contacto">
+                        <Link className="nav-link" to="/contacto">
                             Contacto
                         </Link>
 
-                        <Link className="nav-link text-white" to="/nosotros">
+                        <Link className="nav-link" to="/nosotros">
                             Nosotros
                         </Link>
 
                         {usuario === null ? (
-                            <Link className="nav-link text-white" to="/login">
+                            <Link className="nav-link" to="/login">
                                 Login
                             </Link>
                         ) : (
                             <>
-                                <span className="nav-link text-white">
+                                <span className="nav-link">
                                     {usuario.nombre} ({usuario.rol})
                                 </span>
 

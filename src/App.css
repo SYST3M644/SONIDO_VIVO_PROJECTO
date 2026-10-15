@@ -39,3 +39,31 @@
         height: 220px;
     }
 }
+
+.barra-navegacion {
+    background-color: var(--sv-carbon);
+    border-bottom: 3px solid var(--sv-caoba);
+    box-shadow: 0 2px 10px rgba(28, 26, 31, 0.15);
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.barra-navegacion .navbar-brand {
+    color: #ffffff;
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+}
+
+.barra-navegacion .navbar-brand:hover {
+    color: var(--sv-laton);
+}
+
+.barra-navegacion .nav-link {
+    color: #ffffff;
+    padding-left: 14px;
+    padding-right: 14px;
+}
+
+.barra-navegacion .nav-link:hover {
+    color: var(--sv-laton);
+}
