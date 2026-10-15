@@ -129,4 +129,28 @@ export const productos: Producto[] = [
     stock: 0,
     imagen: "/img/amplificador-bajo.svg",
   },
+  {
+    id: 11,
+    nombre: "Micrófono Dinámico Vocal",
+    marca: "Shure",
+    modelo: "SM58-LC",
+    categoria: "microfonos",
+    descripcion:
+      "Micrófono dinámico cardioide, estándar de la industria para voz en vivo. Incluye estuche y pinza. El cable se vende por separado.",
+    precio: 139990,
+    stock: 14,
+    imagen: "/img/microfono.svg",
+  },
+  {
+    id: 12,
+    nombre: "Pedal de Distorsión",
+    marca: "Boss",
+    modelo: "DS-1",
+    categoria: "pedales",
+    descripcion:
+      "Pedal de distorsión clásico con controles de tono, nivel y distorsión. Chasis metálico que aguanta el uso en gira.",
+    precio: 89990,
+    stock: 9,
+    imagen: "/img/pedal-efectos.svg",
+  },
 ];
