@@ -54,6 +54,22 @@ function Productos(){
                     precio= {379990}
                     imagen= "/img/bajo-electrico.svg"
                     />
+
+                    <CardProductos 
+                    id={7}
+                    titulo="Bateria Acustica"
+                    descripcion= "Pearl Roadshow 5 Cuerpos"
+                    precio= {749990}
+                    imagen= "/img/bateria-acustica.svg"
+                    />
+
+                    <CardProductos 
+                    id={8}
+                    titulo="Bateria Electronica"
+                    descripcion= "Alesis Nitro Mesh Kit"
+                    precio= {589990}
+                    imagen= "/img/bateria-electronica.svg"
+                    />
             </div>
         </div>
     );

@@ -43,6 +43,20 @@ const listaProductos = [
         descripcion: "Squier Affinity Precision Bass",
         precio: 379990,
         imagen: "/img/bajo-electrico.svg"
+    },
+    {
+        id: 7,
+        titulo: "Bateria Acustica",
+        descripcion: "Pearl Roadshow 5 Cuerpos",
+        precio: 749990,
+        imagen: "/img/bateria-acustica.svg"
+    },
+    {
+        id: 8,
+        titulo: "Bateria Electronica",
+        descripcion: "Alesis Nitro Mesh Kit",
+        precio: 589990,
+        imagen: "/img/bateria-electronica.svg"
     }
 ];
 
