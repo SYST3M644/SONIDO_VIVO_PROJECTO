@@ -15,9 +15,9 @@ test("El catalogo muestra los instrumentos de Sonido Vivo", () => {
     </MemoryRouter>
   );
 
-  expect(screen.getByText("Guitarra Electrica")).toBeDefined();
-  expect(screen.getByText("Bateria Acustica")).toBeDefined();
-  expect(screen.getByText("Afinador de Pinza")).toBeDefined();
+  expect(screen.getByText("Bajo Electrico")).toBeDefined();
+  expect(screen.getByText("Saxofon Alto")).toBeDefined();
+  expect(screen.getByText("Zampona Andina")).toBeDefined();
 });
 
 test("El catalogo ya no muestra los productos de hardware", () => {
@@ -29,4 +29,19 @@ test("El catalogo ya no muestra los productos de hardware", () => {
 
   expect(screen.queryByText("Notebook")).toBeNull();
   expect(screen.queryByText("Mause")).toBeNull();
+});
+
+test("Todos los productos del catalogo tienen fotografia", () => {
+  const { container } = render(
+    <MemoryRouter>
+      <Productos />
+    </MemoryRouter>
+  );
+
+  const imagenes = container.querySelectorAll("img");
+
+  expect(imagenes.length).toBe(10);
+  imagenes.forEach((imagen) => {
+    expect(imagen.getAttribute("src")).toContain(".jpg");
+  });
 });
