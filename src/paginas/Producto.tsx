@@ -1,46 +1,25 @@
-import CardProductos from "../componentes/moleculas/CardProductos"
+import CardProductos from "../componentes/moleculas/CardProductos";
+import { productos } from "../datos/productos";
 
-function Productos(){
-    return(
-        <div className="container mt-4">
-            <h1>Productos</h1>
-       
-            <div className="d-flex gap-3">
+function Productos() {
+  return (
+    <div className="container my-4">
+      <h1 className="mb-1">Catálogo</h1>
 
-                    <CardProductos 
-                    id={1}
-                    titulo="Teclado"
-                    descripcion= "Redragon Kurama"
-                    precio= {59990}
-                    imagen= "/img/teclado.jpg"
-                    />
+      <p className="text-body-secondary mb-4">
+        Instrumentos, equipos de sonido y accesorios disponibles en nuestra
+        tienda de Viña del Mar.
+      </p>
 
-                    <CardProductos 
-                    id={2}
-                    titulo="Notebook"
-                    descripcion= "Notebook HP Pavilon"
-                    precio= {699000}
-                    imagen= "/img/notebook.jpg"
-                    />
-
-                    <CardProductos 
-                    id={3}
-                    titulo="Mause"
-                    descripcion= "Logitech G502 HERO"
-                    precio= {189990}
-                    imagen= "/img/mouse.jpg"
-                    />
-
-                    <CardProductos 
-                    id={4}
-                    titulo="Audifono"
-                    descripcion= "Audifono Sony WH-CH520"
-                    precio= {39990}
-                    imagen= "/img/audifono.jpg"
-                    />
-            </div>
-        </div>
-    );
+      <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
+        {productos.map((producto) => (
+          <div className="col" key={producto.id}>
+            <CardProductos producto={producto} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
-export default Productos
+export default Productos;

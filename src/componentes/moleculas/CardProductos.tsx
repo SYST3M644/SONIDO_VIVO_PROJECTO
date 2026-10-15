@@ -1,44 +1,42 @@
+import type { Producto } from "../../tipos/producto";
+import { etiquetasCategoria } from "../../tipos/producto";
+import { formatearPrecio } from "../../utilidades/formato";
 import Boton from "../atomos/Boton";
 
-
 interface CardProps {
-    id: number;
-    titulo: string;
-    descripcion: string;
-    precio: number;
-    imagen: string;
+  producto: Producto;
 }
 
-function CardProducto({id, titulo, descripcion, precio, imagen}: CardProps) {
-    return(
-        <div className="card" style={{ width: '20rem'}}>
+function CardProducto({ producto }: CardProps) {
+  return (
+    <div className="card h-100 sv-card">
+      <img
+        src={producto.imagen}
+        className="card-img-top sv-card__imagen"
+        alt={producto.nombre}
+      />
 
-            <img 
-            src={imagen} className="card-img-top" 
-            alt={titulo} 
-            style={{height: '200px',objectFit: 'contain'}}
-            />
+      <div className="card-body d-flex flex-column text-start">
+        <span className="sv-etiqueta align-self-start mb-2">
+          {etiquetasCategoria[producto.categoria]}
+        </span>
 
-            <h2>{titulo}</h2>
+        <h3 className="h5 card-title mb-1">{producto.nombre}</h3>
 
-            <div className="card-body d-flex flex-column">
+        <p className="text-body-secondary small mb-2">
+          {producto.marca} {producto.modelo}
+        </p>
 
-                <p className="card-text">
-                    {descripcion}
-                </p>
+        <p className="fs-5 fw-semibold mb-3">
+          {formatearPrecio(producto.precio)}
+        </p>
 
-                <p className="card-text">
-                    ${precio}
-                </p>
-
-                <div className="mt-auto">
-                    <Boton id={id}/>
-                </div>
-
-            </div>
-
+        <div className="mt-auto">
+          <Boton id={producto.id} />
         </div>
-
-    );
+      </div>
+    </div>
+  );
 }
-export default CardProducto
+
+export default CardProducto;
