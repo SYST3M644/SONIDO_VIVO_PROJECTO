@@ -6,7 +6,6 @@ function Inicio() {
             <p>
                 Bienvenido a nuestra tienda.
             </p>
-            CardProps
         </div>
     );
 }
