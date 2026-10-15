@@ -166,6 +166,22 @@ function Productos(){
                     precio= {279990}
                     imagen= "/img/platillos.jpg"
                     />
+
+                    <CardProductos 
+                    id={21}
+                    titulo="Microfono para Vientos"
+                    descripcion= "Shure Beta 98 con pinza"
+                    precio= {349990}
+                    imagen= "/img/microfono-vientos.jpg"
+                    />
+
+                    <CardProductos 
+                    id={22}
+                    titulo="Atril de Partituras"
+                    descripcion= "Hercules BS050B plegable"
+                    precio= {29990}
+                    imagen= "/img/atril-partituras.jpg"
+                    />
             </div>
         </div>
     );

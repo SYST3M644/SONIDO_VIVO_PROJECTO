@@ -141,6 +141,20 @@ const listaProductos = [
         descripcion: "Zildjian Planet Z de 4 piezas",
         precio: 279990,
         imagen: "/img/platillos.jpg"
+    },
+    {
+        id: 21,
+        titulo: "Microfono para Vientos",
+        descripcion: "Shure Beta 98 con pinza",
+        precio: 349990,
+        imagen: "/img/microfono-vientos.jpg"
+    },
+    {
+        id: 22,
+        titulo: "Atril de Partituras",
+        descripcion: "Hercules BS050B plegable",
+        precio: 29990,
+        imagen: "/img/atril-partituras.jpg"
     }
 ];
 
