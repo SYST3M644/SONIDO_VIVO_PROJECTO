@@ -4,153 +4,69 @@ import Regresar from "../componentes/atomos/Regresar";
 const listaProductos = [
     {
         id: 1,
-        titulo: "Guitarra Electrica",
-        descripcion: "Squier Affinity Stratocaster",
-        precio: 329990,
-        imagen: "/img/guitarra-electrica.svg"
-    },
-    {
-        id: 2,
-        titulo: "Guitarra Acustica",
-        descripcion: "Yamaha F310",
-        precio: 179990,
-        imagen: "/img/guitarra-acustica.svg"
-    },
-    {
-        id: 3,
-        titulo: "Teclado",
-        descripcion: "Casio CT-S300",
-        precio: 229990,
-        imagen: "/img/teclado.svg"
-    },
-    {
-        id: 4,
-        titulo: "Microfono",
-        descripcion: "Shure SM58",
-        precio: 139990,
-        imagen: "/img/microfono.svg"
-    },
-    {
-        id: 5,
-        titulo: "Guitarra Clasica",
-        descripcion: "Yamaha C40",
-        precio: 149990,
-        imagen: "/img/guitarra-clasica.svg"
-    },
-    {
-        id: 6,
         titulo: "Bajo Electrico",
         descripcion: "Ibanez GSR200",
         precio: 379990,
         imagen: "/img/bajo-electrico.jpg"
     },
     {
-        id: 7,
-        titulo: "Bateria Acustica",
-        descripcion: "Pearl Roadshow 5 Cuerpos",
-        precio: 749990,
-        imagen: "/img/bateria-acustica.svg"
-    },
-    {
-        id: 8,
-        titulo: "Bateria Electronica",
-        descripcion: "Alesis Nitro Mesh Kit",
-        precio: 589990,
-        imagen: "/img/bateria-electronica.svg"
-    },
-    {
-        id: 9,
+        id: 2,
         titulo: "Piano Digital",
         descripcion: "Korg LP-180 de 88 Teclas",
         precio: 649990,
         imagen: "/img/piano-digital.jpg"
     },
     {
-        id: 10,
-        titulo: "Amplificador de Guitarra",
-        descripcion: "Marshall MG15G de 15W",
-        precio: 219990,
-        imagen: "/img/amplificador-guitarra.svg"
-    },
-    {
-        id: 11,
-        titulo: "Amplificador de Bajo",
-        descripcion: "Fender Rumble 25",
-        precio: 299990,
-        imagen: "/img/amplificador-bajo.svg"
-    },
-    {
-        id: 12,
-        titulo: "Pedal de Distorsion",
-        descripcion: "Boss DS-1",
-        precio: 89990,
-        imagen: "/img/pedal-efectos.svg"
-    },
-    {
-        id: 13,
-        titulo: "Set de Cuerdas",
-        descripcion: "Ernie Ball Regular Slinky 010",
-        precio: 12990,
-        imagen: "/img/cuerdas.svg"
-    },
-    {
-        id: 14,
-        titulo: "Afinador de Pinza",
-        descripcion: "Korg PitchClip 2",
-        precio: 24990,
-        imagen: "/img/afinador.svg"
-    },
-    {
-        id: 15,
+        id: 3,
         titulo: "Saxofon Alto",
         descripcion: "Yamaha YAS-280 laqueado",
         precio: 1149990,
         imagen: "/img/saxofon-alto.jpg"
     },
     {
-        id: 16,
+        id: 4,
         titulo: "Ukelele Soprano",
         descripcion: "Kala KA-15S de caoba",
         precio: 69990,
         imagen: "/img/ukelele-soprano.jpg"
     },
     {
-        id: 17,
+        id: 5,
         titulo: "Melodica 32 Teclas",
         descripcion: "Hohner Student 32 con estuche",
         precio: 54990,
         imagen: "/img/melodica.jpg"
     },
     {
-        id: 18,
+        id: 6,
         titulo: "Zampona Andina",
         descripcion: "Artesanal de bambu, 13 tubos",
         precio: 24990,
         imagen: "/img/zampona.jpg"
     },
     {
-        id: 19,
+        id: 7,
         titulo: "Arpa Celta",
         descripcion: "34 cuerdas con llaves de semitono",
         precio: 1290990,
         imagen: "/img/arpa.jpg"
     },
     {
-        id: 20,
+        id: 8,
         titulo: "Set de Platillos",
         descripcion: "Zildjian Planet Z de 4 piezas",
         precio: 279990,
         imagen: "/img/platillos.jpg"
     },
     {
-        id: 21,
+        id: 9,
         titulo: "Microfono para Vientos",
         descripcion: "Shure Beta 98 con pinza",
         precio: 349990,
         imagen: "/img/microfono-vientos.jpg"
     },
     {
-        id: 22,
+        id: 10,
         titulo: "Atril de Partituras",
         descripcion: "Hercules BS050B plegable",
         precio: 29990,

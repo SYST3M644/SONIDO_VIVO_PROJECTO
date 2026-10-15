@@ -9,46 +9,6 @@ function Productos(){
 
                     <CardProductos 
                     id={1}
-                    titulo="Guitarra Electrica"
-                    descripcion= "Squier Affinity Stratocaster"
-                    precio= {329990}
-                    imagen= "/img/guitarra-electrica.svg"
-                    />
-
-                    <CardProductos 
-                    id={2}
-                    titulo="Guitarra Acustica"
-                    descripcion= "Yamaha F310"
-                    precio= {179990}
-                    imagen= "/img/guitarra-acustica.svg"
-                    />
-
-                    <CardProductos 
-                    id={3}
-                    titulo="Teclado"
-                    descripcion= "Casio CT-S300"
-                    precio= {229990}
-                    imagen= "/img/teclado.svg"
-                    />
-
-                    <CardProductos 
-                    id={4}
-                    titulo="Microfono"
-                    descripcion= "Shure SM58"
-                    precio= {139990}
-                    imagen= "/img/microfono.svg"
-                    />
-
-                    <CardProductos 
-                    id={5}
-                    titulo="Guitarra Clasica"
-                    descripcion= "Yamaha C40"
-                    precio= {149990}
-                    imagen= "/img/guitarra-clasica.svg"
-                    />
-
-                    <CardProductos 
-                    id={6}
                     titulo="Bajo Electrico"
                     descripcion= "Ibanez GSR200"
                     precio= {379990}
@@ -56,23 +16,7 @@ function Productos(){
                     />
 
                     <CardProductos 
-                    id={7}
-                    titulo="Bateria Acustica"
-                    descripcion= "Pearl Roadshow 5 Cuerpos"
-                    precio= {749990}
-                    imagen= "/img/bateria-acustica.svg"
-                    />
-
-                    <CardProductos 
-                    id={8}
-                    titulo="Bateria Electronica"
-                    descripcion= "Alesis Nitro Mesh Kit"
-                    precio= {589990}
-                    imagen= "/img/bateria-electronica.svg"
-                    />
-
-                    <CardProductos 
-                    id={9}
+                    id={2}
                     titulo="Piano Digital"
                     descripcion= "Korg LP-180 de 88 Teclas"
                     precio= {649990}
@@ -80,47 +24,7 @@ function Productos(){
                     />
 
                     <CardProductos 
-                    id={10}
-                    titulo="Amplificador de Guitarra"
-                    descripcion= "Marshall MG15G de 15W"
-                    precio= {219990}
-                    imagen= "/img/amplificador-guitarra.svg"
-                    />
-
-                    <CardProductos 
-                    id={11}
-                    titulo="Amplificador de Bajo"
-                    descripcion= "Fender Rumble 25"
-                    precio= {299990}
-                    imagen= "/img/amplificador-bajo.svg"
-                    />
-
-                    <CardProductos 
-                    id={12}
-                    titulo="Pedal de Distorsion"
-                    descripcion= "Boss DS-1"
-                    precio= {89990}
-                    imagen= "/img/pedal-efectos.svg"
-                    />
-
-                    <CardProductos 
-                    id={13}
-                    titulo="Set de Cuerdas"
-                    descripcion= "Ernie Ball Regular Slinky 010"
-                    precio= {12990}
-                    imagen= "/img/cuerdas.svg"
-                    />
-
-                    <CardProductos 
-                    id={14}
-                    titulo="Afinador de Pinza"
-                    descripcion= "Korg PitchClip 2"
-                    precio= {24990}
-                    imagen= "/img/afinador.svg"
-                    />
-
-                    <CardProductos 
-                    id={15}
+                    id={3}
                     titulo="Saxofon Alto"
                     descripcion= "Yamaha YAS-280 laqueado"
                     precio= {1149990}
@@ -128,7 +32,7 @@ function Productos(){
                     />
 
                     <CardProductos 
-                    id={16}
+                    id={4}
                     titulo="Ukelele Soprano"
                     descripcion= "Kala KA-15S de caoba"
                     precio= {69990}
@@ -136,7 +40,7 @@ function Productos(){
                     />
 
                     <CardProductos 
-                    id={17}
+                    id={5}
                     titulo="Melodica 32 Teclas"
                     descripcion= "Hohner Student 32 con estuche"
                     precio= {54990}
@@ -144,7 +48,7 @@ function Productos(){
                     />
 
                     <CardProductos 
-                    id={18}
+                    id={6}
                     titulo="Zampona Andina"
                     descripcion= "Artesanal de bambu, 13 tubos"
                     precio= {24990}
@@ -152,7 +56,7 @@ function Productos(){
                     />
 
                     <CardProductos 
-                    id={19}
+                    id={7}
                     titulo="Arpa Celta"
                     descripcion= "34 cuerdas con llaves de semitono"
                     precio= {1290990}
@@ -160,7 +64,7 @@ function Productos(){
                     />
 
                     <CardProductos 
-                    id={20}
+                    id={8}
                     titulo="Set de Platillos"
                     descripcion= "Zildjian Planet Z de 4 piezas"
                     precio= {279990}
@@ -168,7 +72,7 @@ function Productos(){
                     />
 
                     <CardProductos 
-                    id={21}
+                    id={9}
                     titulo="Microfono para Vientos"
                     descripcion= "Shure Beta 98 con pinza"
                     precio= {349990}
@@ -176,7 +80,7 @@ function Productos(){
                     />
 
                     <CardProductos 
-                    id={22}
+                    id={10}
                     titulo="Atril de Partituras"
                     descripcion= "Hercules BS050B plegable"
                     precio= {29990}
