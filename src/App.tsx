@@ -8,6 +8,7 @@ import Nosotros from './paginas/Nosotros'
 import DetalleProducto from './paginas/DetalleProducto'
 import Login from './paginas/Login'
 import Pie from './componentes/organismos/Pie'
+import RutaProtegida from './componentes/RutaProtegida'
 
 
 function App() {
@@ -26,12 +27,20 @@ function App() {
 
           <Route 
             path='/productos' 
-            element={<Productos />}
+            element={
+              <RutaProtegida>
+                <Productos />
+              </RutaProtegida>
+            }
           />
 
           <Route 
             path='/productos/:id' 
-            element={<DetalleProducto />}
+            element={
+              <RutaProtegida>
+                <DetalleProducto />
+              </RutaProtegida>
+            }
           />
 
           <Route 

@@ -38,7 +38,7 @@ function FormularioLogin() {
         }
 
         guardarUsuario(usuario);
-        navegar("/");
+        navegar("/productos");
     };
 
     return(
