@@ -134,6 +134,22 @@ function Productos(){
                     precio= {69990}
                     imagen= "/img/ukelele-soprano.jpg"
                     />
+
+                    <CardProductos 
+                    id={17}
+                    titulo="Melodica 32 Teclas"
+                    descripcion= "Hohner Student 32 con estuche"
+                    precio= {54990}
+                    imagen= "/img/melodica.jpg"
+                    />
+
+                    <CardProductos 
+                    id={18}
+                    titulo="Zampona Andina"
+                    descripcion= "Artesanal de bambu, 13 tubos"
+                    precio= {24990}
+                    imagen= "/img/zampona.jpg"
+                    />
             </div>
         </div>
     );
