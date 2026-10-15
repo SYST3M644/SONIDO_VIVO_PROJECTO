@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CampoFormulario from "../moleculas/CampoFormulario";
 import { useSesion } from "../../contexto/SesionContext";
-import { iniciarSesion } from "../../servicios/autenticacion";
+import { iniciarSesion } from "../../servicios/Autenticacion";
 
 function FormularioLogin() {
     const [correo, setCorreo] = useState("");

@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import type { ReactNode } from "react";
-import type { Usuario } from "../servicios/autenticacion";
+import type { Usuario } from "../servicios/Autenticacion";
 
 type Sesion = {
     usuario: Usuario | null;
