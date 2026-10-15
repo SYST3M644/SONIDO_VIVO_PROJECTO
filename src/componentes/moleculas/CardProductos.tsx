@@ -11,7 +11,7 @@ interface CardProps {
 
 function CardProducto({id, titulo, descripcion, precio, imagen}: CardProps) {
     return(
-        <div className="card" style={{ width: '20rem'}}>
+        <div className="card" style={{ width: '20rem', maxWidth: '100%'}}>
 
             <img 
             src={imagen} className="card-img-top" 
