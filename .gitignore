@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Carpeta temporal para dejar fotos antes de revisarlas
+fotos-nuevas
