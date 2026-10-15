@@ -48,7 +48,7 @@ function FormularioLogin() {
 
             <CampoFormulario etiqueta="Contraseña" tipo="password" nombre="contraseña"valor={contrasena} alCambiar={setContrasena}/>
 
-            <button type="submit" className="btn btn-dark">Ingresar</button>
+            <button type="submit" className="btn boton-tienda">Ingresar</button>
 
         </form>
 

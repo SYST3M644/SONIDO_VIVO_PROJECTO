@@ -14,3 +14,15 @@
     padding: 10px;
     border-radius: 10px 10px 0 0;
 }
+
+.boton-tienda {
+    background-color: var(--sv-caoba);
+    border: 1px solid var(--sv-caoba);
+    color: #ffffff;
+}
+
+.boton-tienda:hover {
+    background-color: var(--sv-caoba-oscuro);
+    border-color: var(--sv-caoba-oscuro);
+    color: #ffffff;
+}

@@ -40,7 +40,7 @@ function FormularioContacto() {
 
             <CampoFormulario etiqueta="Mensaje" tipo="text" nombre="mensaje"valor={mensaje} alCambiar={setMensaje}/>
 
-            <button type="submit" className="btn btn-dark">Enviar Mensaje</button>
+            <button type="submit" className="btn boton-tienda">Enviar Mensaje</button>
 
         </form>
 
