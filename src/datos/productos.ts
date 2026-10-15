@@ -153,4 +153,28 @@ export const productos: Producto[] = [
     stock: 9,
     imagen: "/img/pedal-efectos.svg",
   },
+  {
+    id: 13,
+    nombre: "Set de Cuerdas para Eléctrica",
+    marca: "Ernie Ball",
+    modelo: "Regular Slinky 2221",
+    categoria: "accesorios",
+    descripcion:
+      "Juego de seis cuerdas 010-046 de acero niquelado. Es el calibre que más piden los clientes de la tienda.",
+    precio: 12990,
+    stock: 40,
+    imagen: "/img/cuerdas.svg",
+  },
+  {
+    id: 14,
+    nombre: "Afinador de Pinza Cromático",
+    marca: "Korg",
+    modelo: "PitchClip 2",
+    categoria: "accesorios",
+    descripcion:
+      "Afinador cromático de pinza con pantalla LED visible a contraluz. Sirve para guitarra, bajo, ukelele y violín.",
+    precio: 24990,
+    stock: 22,
+    imagen: "/img/afinador.svg",
+  },
 ];
