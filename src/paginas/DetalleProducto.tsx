@@ -123,7 +123,7 @@ function DetalleProducto(){
 
             <p>{producto?.descripcion}</p>
 
-            <p>{producto?.precio}</p>
+            <p>${producto?.precio.toLocaleString("es-CL")}</p>
 
             <Regresar />
 
