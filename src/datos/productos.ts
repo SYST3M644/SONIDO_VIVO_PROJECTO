@@ -81,4 +81,28 @@ export const productos: Producto[] = [
     stock: 3,
     imagen: "/img/bateria-electronica.svg",
   },
+  {
+    id: 7,
+    nombre: "Teclado Portátil 61 Teclas",
+    marca: "Casio",
+    modelo: "CT-S300",
+    categoria: "teclados",
+    descripcion:
+      "Teclado de 61 teclas con respuesta a la pulsación, 400 tonos y 77 ritmos. Funciona con pilas o transformador, cómodo para llevar a ensayos.",
+    precio: 229990,
+    stock: 7,
+    imagen: "/img/teclado.svg",
+  },
+  {
+    id: 8,
+    nombre: "Piano Digital 88 Teclas",
+    marca: "Yamaha",
+    modelo: "P-45",
+    categoria: "teclados",
+    descripcion:
+      "Piano digital de 88 teclas contrapesadas con acción GHS. Incluye pedal de sostenido y atril de partituras. El soporte se vende por separado.",
+    precio: 649990,
+    stock: 3,
+    imagen: "/img/piano-digital.svg",
+  },
 ];
