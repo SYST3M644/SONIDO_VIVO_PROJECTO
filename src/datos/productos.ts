@@ -45,4 +45,16 @@ export const productos: Producto[] = [
     stock: 8,
     imagen: "/img/guitarra-clasica.svg",
   },
+  {
+    id: 4,
+    nombre: "Bajo Eléctrico Precision",
+    marca: "Squier",
+    modelo: "Affinity Precision Bass PJ",
+    categoria: "bajos",
+    descripcion:
+      "Bajo de cuatro cuerdas con cápsulas split-coil y jazz, mástil de arce y diapasón de laurel indio. Buena opción para bandas de rock y cumbia.",
+    precio: 379990,
+    stock: 4,
+    imagen: "/img/bajo-electrico.svg",
+  },
 ];
