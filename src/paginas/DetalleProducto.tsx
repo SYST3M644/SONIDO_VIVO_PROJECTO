@@ -4,31 +4,31 @@ import Regresar from "../componentes/atomos/Regresar";
 const listaProductos = [
     {
         id: 1,
-        titulo: "Teclado",
-        descripcion: "Redragon Kurama",
-        precio: 59990, 
-        imagen: "/img/teclado.jpg"
+        titulo: "Guitarra Electrica",
+        descripcion: "Squier Affinity Stratocaster",
+        precio: 329990, 
+        imagen: "/img/guitarra-electrica.svg"
     },
     {
         id: 2,
-        titulo: "Notebook",
-        descripcion: "Notebook HP Pavilion",
-        imagen: "/img/notebook.jpg",
-        precio: 699000
+        titulo: "Guitarra Acustica",
+        descripcion: "Yamaha F310",
+        imagen: "/img/guitarra-acustica.svg",
+        precio: 179990
     },
     {
         id: 3,
-        titulo: "Mouse",
-        descripcion: "Logitech G502 HERO",
-        precio: 189990,
-        imagen: "/img/mouse.jpg"
+        titulo: "Teclado",
+        descripcion: "Casio CT-S300",
+        precio: 229990,
+        imagen: "/img/teclado.svg"
     },
     {
         id: 4,
-        titulo: "Audifono",
-        descripcion: "Audifono Sony WH-CH520",
-        precio: 39990,
-        imagen: "/img/audifono.jpg"
+        titulo: "Microfono",
+        descripcion: "Shure SM58",
+        precio: 139990,
+        imagen: "/img/microfono.svg"
     }
 ];
 
