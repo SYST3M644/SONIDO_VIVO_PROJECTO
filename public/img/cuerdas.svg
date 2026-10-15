@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" role="img" aria-label="Set de cuerdas">
+  <rect width="400" height="300" fill="#faf7f2"/>
+  <!-- Sobre del set -->
+  <rect x="96" y="62" width="208" height="176" rx="8" fill="#b4541e"/>
+  <rect x="96" y="62" width="208" height="46" rx="8" fill="#1c1a1f"/>
+  <rect x="116" y="76" width="120" height="18" rx="4" fill="#e0a23b"/>
+  <!-- Ventana del sobre -->
+  <rect x="116" y="124" width="168" height="96" rx="6" fill="#faf7f2" opacity="0.92"/>
+  <!-- Cuerdas enrolladas -->
+  <g fill="none" stroke="#9b96a3" stroke-width="2.5">
+    <circle cx="160" cy="156" r="20"/>
+    <circle cx="240" cy="156" r="20"/>
+    <circle cx="200" cy="194" r="20"/>
+  </g>
+  <g fill="none" stroke="#e0a23b" stroke-width="2.5">
+    <circle cx="160" cy="156" r="12"/>
+    <circle cx="240" cy="156" r="12"/>
+    <circle cx="200" cy="194" r="12"/>
+  </g>
+  <!-- Entorchados de color en los extremos -->
+  <g fill="#b4541e">
+    <circle cx="160" cy="136" r="4"/>
+    <circle cx="240" cy="136" r="4"/>
+    <circle cx="200" cy="174" r="4"/>
+  </g>
+</svg>
