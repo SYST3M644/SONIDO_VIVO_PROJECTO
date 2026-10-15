@@ -88,7 +88,7 @@ function DetalleProducto(){
             <img 
                 src={producto?.imagen} 
                 alt={producto?.titulo}
-                style={{width: '300px'}} 
+                style={{width: '300px', maxWidth: '100%'}} 
             />
 
             <h2>{producto?.titulo}</h2>
