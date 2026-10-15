@@ -102,6 +102,22 @@ function Productos(){
                     precio= {89990}
                     imagen= "/img/pedal-efectos.svg"
                     />
+
+                    <CardProductos 
+                    id={13}
+                    titulo="Set de Cuerdas"
+                    descripcion= "Ernie Ball Regular Slinky 010"
+                    precio= {12990}
+                    imagen= "/img/cuerdas.svg"
+                    />
+
+                    <CardProductos 
+                    id={14}
+                    titulo="Afinador de Pinza"
+                    descripcion= "Korg PitchClip 2"
+                    precio= {24990}
+                    imagen= "/img/afinador.svg"
+                    />
             </div>
         </div>
     );
