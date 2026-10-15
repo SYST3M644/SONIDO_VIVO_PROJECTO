@@ -139,3 +139,19 @@
     font-size: 1.25rem;
     font-weight: 600;
 }
+
+body {
+    cursor: url("/cursor-saxofon.svg") 9 3, auto;
+}
+
+a,
+button,
+.btn {
+    cursor: url("/cursor-saxofon.svg") 9 3, pointer;
+}
+
+input,
+select,
+textarea {
+    cursor: text;
+}
