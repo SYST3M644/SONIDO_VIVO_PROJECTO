@@ -5,7 +5,7 @@ function Productos(){
         <div className="container mt-4">
             <h1>Productos</h1>
        
-            <div className="d-flex gap-3">
+            <div className="d-flex flex-wrap justify-content-center gap-3">
 
                     <CardProductos 
                     id={1}
