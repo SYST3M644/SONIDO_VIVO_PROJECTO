@@ -8,6 +8,11 @@ function Contacto(){
                     <div className="card shadow-sm p-4">
                         <h2 className="mt-4">Formulario de Contacto</h2>
 
+                        <p>
+                            Tienda Sonido Vivo, Viña del Mar, Región de Valparaíso.
+                            Escríbenos y te respondemos el mismo día.
+                        </p>
+
                         <FormularioContacto />
                     </div>
                 </div>
