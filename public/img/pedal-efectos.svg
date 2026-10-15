@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" role="img" aria-label="Pedal de efectos">
+  <rect width="400" height="300" fill="#faf7f2"/>
+  <!-- Chasis -->
+  <rect x="112" y="68" width="176" height="176" rx="12" fill="#b4541e"/>
+  <rect x="112" y="68" width="176" height="60" rx="12" fill="#8f4118"/>
+  <!-- Perillas -->
+  <g>
+    <circle cx="152" cy="98" r="18" fill="#1c1a1f"/>
+    <circle cx="200" cy="98" r="18" fill="#1c1a1f"/>
+    <circle cx="248" cy="98" r="18" fill="#1c1a1f"/>
+  </g>
+  <g stroke="#e0a23b" stroke-width="3" stroke-linecap="round">
+    <line x1="152" y1="98" x2="152" y2="84"/>
+    <line x1="200" y1="98" x2="210" y2="88"/>
+    <line x1="248" y1="98" x2="240" y2="86"/>
+  </g>
+  <!-- LED indicador -->
+  <circle cx="200" cy="140" r="7" fill="#e0a23b"/>
+  <!-- Placa de nombre -->
+  <rect x="140" y="156" width="120" height="20" rx="4" fill="#faf7f2" opacity="0.85"/>
+  <!-- Pisador -->
+  <rect x="140" y="188" width="120" height="42" rx="8" fill="#1c1a1f"/>
+  <rect x="152" y="200" width="96" height="8" rx="4" fill="#4a4751"/>
+  <!-- Conectores laterales -->
+  <g fill="#9b96a3">
+    <rect x="100" y="126" width="14" height="28" rx="4"/>
+    <rect x="286" y="126" width="14" height="28" rx="4"/>
+  </g>
+</svg>
