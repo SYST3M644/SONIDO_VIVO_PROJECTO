@@ -67,3 +67,31 @@
 .barra-navegacion .nav-link:hover {
     color: var(--sv-laton);
 }
+
+.contenido {
+    flex-grow: 1;
+}
+
+.pie-pagina {
+    background-color: var(--sv-carbon);
+    color: var(--sv-crema);
+    border-top: 3px solid var(--sv-caoba);
+    padding: 24px 16px;
+    margin-top: 48px;
+}
+
+.pie-pagina p {
+    margin-bottom: 4px;
+}
+
+.pie-pagina .nombre-tienda {
+    color: var(--sv-laton);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.pie-pagina .derechos {
+    font-size: 0.85rem;
+    margin-top: 12px;
+    margin-bottom: 0;
+}

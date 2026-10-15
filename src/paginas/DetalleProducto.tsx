@@ -96,7 +96,7 @@ function DetalleProducto(){
     )
     return(
         
-        <div>
+        <div className="container mt-4">
             <h1>Detalle del Producto</h1>
 
             <img 

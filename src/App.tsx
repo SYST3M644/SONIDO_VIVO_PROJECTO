@@ -7,14 +7,16 @@ import Contacto from './paginas/Contacto'
 import Nosotros from './paginas/Nosotros'
 import DetalleProducto from './paginas/DetalleProducto'
 import Login from './paginas/Login'
+import Pie from './componentes/organismos/Pie'
 
 
 function App() {
 
   return (
-      <div className='text-center mt-5'>
-
+      <>
         <Navbar />
+
+        <div className='text-center contenido'>
 
         <Routes>
           <Route 
@@ -49,7 +51,10 @@ function App() {
 
         </Routes>
 
-      </div>
+        </div>
+
+        <Pie />
+      </>
   )
 }
 
