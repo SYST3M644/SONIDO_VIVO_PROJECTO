@@ -1,6 +1,15 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { useSesion } from "../../contexto/SesionContext"
 
 function Navbar() {
+    const { usuario, cerrarSesion } = useSesion();
+    const navegar = useNavigate();
+
+    const salir = () => {
+        cerrarSesion();
+        navegar("/");
+    };
+
     return(
         <nav className="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
             <div className="container">
@@ -21,7 +30,7 @@ function Navbar() {
                 </button>
 
                 <div className="collapse navbar-collapse" id="menuPrincipal">
-                    <div className="navbar-nav ms-auto">
+                    <div className="navbar-nav ms-auto align-items-lg-center">
                         <Link className="nav-link text-white" to="/">
                             Inicio
                         </Link>
@@ -38,9 +47,25 @@ function Navbar() {
                             Nosotros
                         </Link>
 
-                        <Link className="nav-link text-white" to="/login">
-                            Login
-                        </Link>
+                        {usuario === null ? (
+                            <Link className="nav-link text-white" to="/login">
+                                Login
+                            </Link>
+                        ) : (
+                            <>
+                                <span className="nav-link text-white">
+                                    {usuario.nombre} ({usuario.rol})
+                                </span>
+
+                                <button 
+                                    type="button"
+                                    className="btn btn-outline-light btn-sm"
+                                    onClick={salir}
+                                >
+                                    Cerrar Sesión
+                                </button>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
