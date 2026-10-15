@@ -105,4 +105,28 @@ export const productos: Producto[] = [
     stock: 3,
     imagen: "/img/piano-digital.svg",
   },
+  {
+    id: 9,
+    nombre: "Amplificador de Guitarra 15W",
+    marca: "Marshall",
+    modelo: "MG15G",
+    categoria: "amplificadores",
+    descripcion:
+      "Combo de 15 watts con canales limpio y overdrive, reverberación digital y salida para audífonos. Suficiente para ensayo y sala pequeña.",
+    precio: 219990,
+    stock: 5,
+    imagen: "/img/amplificador-guitarra.svg",
+  },
+  {
+    id: 10,
+    nombre: "Amplificador de Bajo 25W",
+    marca: "Fender",
+    modelo: "Rumble 25",
+    categoria: "amplificadores",
+    descripcion:
+      "Combo de bajo de 25 watts con parlante de 8 pulgadas y ecualizador de tres bandas. Actualmente sin stock: se repone en 10 días hábiles.",
+    precio: 299990,
+    stock: 0,
+    imagen: "/img/amplificador-bajo.svg",
+  },
 ];
