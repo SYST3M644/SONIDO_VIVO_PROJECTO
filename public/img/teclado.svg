@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" role="img" aria-label="Teclado portatil">
+  <rect width="400" height="300" fill="#faf7f2"/>
+  <!-- Carcasa -->
+  <rect x="48" y="86" width="304" height="128" rx="8" fill="#1c1a1f"/>
+  <!-- Panel de control -->
+  <rect x="62" y="96" width="112" height="30" rx="4" fill="#e0a23b"/>
+  <g fill="#b4541e">
+    <circle cx="200" cy="111" r="9"/>
+    <circle cx="226" cy="111" r="9"/>
+    <circle cx="252" cy="111" r="9"/>
+  </g>
+  <g fill="#4a4751">
+    <rect x="272" y="104" width="66" height="7" rx="3"/>
+    <rect x="272" y="115" width="66" height="7" rx="3"/>
+  </g>
+  <!-- Teclas blancas -->
+  <g fill="#faf7f2">
+    <rect x="60" y="134" width="19" height="70" rx="2"/><rect x="80" y="134" width="19" height="70" rx="2"/>
+    <rect x="100" y="134" width="19" height="70" rx="2"/><rect x="120" y="134" width="19" height="70" rx="2"/>
+    <rect x="140" y="134" width="19" height="70" rx="2"/><rect x="160" y="134" width="19" height="70" rx="2"/>
+    <rect x="180" y="134" width="19" height="70" rx="2"/><rect x="200" y="134" width="19" height="70" rx="2"/>
+    <rect x="220" y="134" width="19" height="70" rx="2"/><rect x="240" y="134" width="19" height="70" rx="2"/>
+    <rect x="260" y="134" width="19" height="70" rx="2"/><rect x="280" y="134" width="19" height="70" rx="2"/>
+    <rect x="300" y="134" width="19" height="70" rx="2"/><rect x="320" y="134" width="19" height="70" rx="2"/>
+  </g>
+  <!-- Teclas negras -->
+  <g fill="#1c1a1f">
+    <rect x="74" y="134" width="12" height="44" rx="2"/><rect x="94" y="134" width="12" height="44" rx="2"/>
+    <rect x="134" y="134" width="12" height="44" rx="2"/><rect x="154" y="134" width="12" height="44" rx="2"/>
+    <rect x="174" y="134" width="12" height="44" rx="2"/><rect x="214" y="134" width="12" height="44" rx="2"/>
+    <rect x="234" y="134" width="12" height="44" rx="2"/><rect x="274" y="134" width="12" height="44" rx="2"/>
+    <rect x="294" y="134" width="12" height="44" rx="2"/><rect x="314" y="134" width="12" height="44" rx="2"/>
+  </g>
+</svg>
