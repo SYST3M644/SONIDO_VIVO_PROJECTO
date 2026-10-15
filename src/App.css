@@ -26,3 +26,16 @@
     border-color: var(--sv-caoba-oscuro);
     color: #ffffff;
 }
+
+.imagen-carrusel {
+    height: 360px;
+    object-fit: contain;
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+
+@media (max-width: 575.98px) {
+    .imagen-carrusel {
+        height: 220px;
+    }
+}
