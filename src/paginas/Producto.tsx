@@ -52,7 +52,7 @@ function Productos(){
                     titulo="Bajo Electrico"
                     descripcion= "Squier Affinity Precision Bass"
                     precio= {379990}
-                    imagen= "/img/bajo-electrico.svg"
+                    imagen= "/img/bajo-electrico.jpg"
                     />
 
                     <CardProductos 
@@ -76,7 +76,7 @@ function Productos(){
                     titulo="Piano Digital"
                     descripcion= "Yamaha P-45 de 88 Teclas"
                     precio= {649990}
-                    imagen= "/img/piano-digital.svg"
+                    imagen= "/img/piano-digital.jpg"
                     />
 
                     <CardProductos 
