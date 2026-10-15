@@ -118,6 +118,22 @@ function Productos(){
                     precio= {24990}
                     imagen= "/img/afinador.svg"
                     />
+
+                    <CardProductos 
+                    id={15}
+                    titulo="Saxofon Alto"
+                    descripcion= "Yamaha YAS-280 laqueado"
+                    precio= {1149990}
+                    imagen= "/img/saxofon-alto.jpg"
+                    />
+
+                    <CardProductos 
+                    id={16}
+                    titulo="Ukelele Soprano"
+                    descripcion= "Kala KA-15S de caoba"
+                    precio= {69990}
+                    imagen= "/img/ukelele-soprano.jpg"
+                    />
             </div>
         </div>
     );

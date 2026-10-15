@@ -99,6 +99,20 @@ const listaProductos = [
         descripcion: "Korg PitchClip 2",
         precio: 24990,
         imagen: "/img/afinador.svg"
+    },
+    {
+        id: 15,
+        titulo: "Saxofon Alto",
+        descripcion: "Yamaha YAS-280 laqueado",
+        precio: 1149990,
+        imagen: "/img/saxofon-alto.jpg"
+    },
+    {
+        id: 16,
+        titulo: "Ukelele Soprano",
+        descripcion: "Kala KA-15S de caoba",
+        precio: 69990,
+        imagen: "/img/ukelele-soprano.jpg"
     }
 ];
 
