@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" role="img" aria-label="Bajo electrico">
+  <rect width="400" height="300" fill="#faf7f2"/>
+  <!-- Mastil largo -->
+  <rect x="172" y="138" width="170" height="24" rx="4" fill="#c9a06a"/>
+  <rect x="184" y="141" width="158" height="18" rx="2" fill="#5a3a20"/>
+  <g stroke="#e0d2b4" stroke-width="1.5">
+    <line x1="210" y1="141" x2="210" y2="159"/>
+    <line x1="240" y1="141" x2="240" y2="159"/>
+    <line x1="270" y1="141" x2="270" y2="159"/>
+    <line x1="300" y1="141" x2="300" y2="159"/>
+  </g>
+  <!-- Cuerpo -->
+  <g fill="#1c1a1f">
+    <ellipse cx="100" cy="178" rx="70" ry="60"/>
+    <ellipse cx="126" cy="126" rx="58" ry="46"/>
+  </g>
+  <!-- Golpeador -->
+  <ellipse cx="122" cy="152" rx="44" ry="48" fill="#e0a23b" opacity="0.9"/>
+  <!-- Pastilla de bajo en dos mitades -->
+  <g fill="#2e2b33">
+    <rect x="138" y="118" width="16" height="28" rx="3"/>
+    <rect x="152" y="152" width="16" height="28" rx="3"/>
+  </g>
+  <!-- Clavijero de 4 clavijas -->
+  <path d="M340 128h30a9 9 0 0 1 9 9v26a9 9 0 0 1-9 9h-30z" fill="#1c1a1f"/>
+  <g fill="#e0a23b">
+    <circle cx="354" cy="136" r="5"/><circle cx="368" cy="136" r="5"/>
+    <circle cx="354" cy="164" r="5"/><circle cx="368" cy="164" r="5"/>
+  </g>
+  <!-- 4 cuerdas gruesas -->
+  <g stroke="#d9d2c6" stroke-width="1.6">
+    <line x1="160" y1="143" x2="344" y2="143"/>
+    <line x1="160" y1="148" x2="344" y2="148"/>
+    <line x1="160" y1="153" x2="344" y2="153"/>
+    <line x1="160" y1="158" x2="344" y2="158"/>
+  </g>
+</svg>

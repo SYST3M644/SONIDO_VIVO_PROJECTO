@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" role="img" aria-label="Guitarra electrica">
+  <rect width="400" height="300" fill="#faf7f2"/>
+  <!-- Mastil y diapason -->
+  <rect x="180" y="137" width="155" height="26" rx="4" fill="#8a5a33"/>
+  <rect x="192" y="140" width="143" height="20" rx="2" fill="#5a3a20"/>
+  <g stroke="#c9a06a" stroke-width="1.5">
+    <line x1="212" y1="140" x2="212" y2="160"/>
+    <line x1="236" y1="140" x2="236" y2="160"/>
+    <line x1="260" y1="140" x2="260" y2="160"/>
+    <line x1="284" y1="140" x2="284" y2="160"/>
+    <line x1="308" y1="140" x2="308" y2="160"/>
+  </g>
+  <!-- Cuerpo -->
+  <g fill="#b4541e">
+    <ellipse cx="106" cy="176" rx="72" ry="62"/>
+    <ellipse cx="132" cy="124" rx="60" ry="48"/>
+  </g>
+  <!-- Golpeador -->
+  <ellipse cx="128" cy="150" rx="46" ry="52" fill="#f2e7d5" opacity="0.85"/>
+  <!-- Pastillas -->
+  <g fill="#1c1a1f">
+    <rect x="140" y="112" width="14" height="30" rx="3"/>
+    <rect x="140" y="146" width="14" height="30" rx="3"/>
+    <rect x="140" y="180" width="14" height="26" rx="3"/>
+    <rect x="166" y="134" width="12" height="32" rx="2"/>
+  </g>
+  <!-- Clavijero -->
+  <path d="M333 130h32a9 9 0 0 1 9 9v22a9 9 0 0 1-9 9h-32z" fill="#1c1a1f"/>
+  <g fill="#e0a23b">
+    <circle cx="346" cy="137" r="4"/><circle cx="358" cy="137" r="4"/><circle cx="368" cy="137" r="4"/>
+    <circle cx="346" cy="163" r="4"/><circle cx="358" cy="163" r="4"/><circle cx="368" cy="163" r="4"/>
+  </g>
+  <!-- Cuerdas -->
+  <g stroke="#d9d2c6" stroke-width="1">
+    <line x1="170" y1="141" x2="338" y2="141"/>
+    <line x1="170" y1="145" x2="338" y2="145"/>
+    <line x1="170" y1="148" x2="338" y2="148"/>
+    <line x1="170" y1="152" x2="338" y2="152"/>
+    <line x1="170" y1="155" x2="338" y2="155"/>
+    <line x1="170" y1="159" x2="338" y2="159"/>
+  </g>
+</svg>
