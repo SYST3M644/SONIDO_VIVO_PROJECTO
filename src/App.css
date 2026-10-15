@@ -123,3 +123,19 @@
     border-bottom: 3px solid var(--sv-caoba);
     margin-bottom: 24px;
 }
+
+.tarjeta-producto h2 {
+    font-size: 1.15rem;
+    padding: 14px 16px 0 16px;
+    margin-bottom: 0;
+}
+
+.tarjeta-producto .card-body {
+    padding-top: 8px;
+}
+
+.precio-producto {
+    color: var(--sv-caoba);
+    font-size: 1.25rem;
+    font-weight: 600;
+}

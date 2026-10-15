@@ -27,7 +27,7 @@ function CardProducto({id, titulo, descripcion, precio, imagen}: CardProps) {
                     {descripcion}
                 </p>
 
-                <p className="card-text">
+                <p className="card-text precio-producto">
                     ${precio.toLocaleString("es-CL")}
                 </p>
 
