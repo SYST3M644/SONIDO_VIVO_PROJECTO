@@ -78,6 +78,13 @@ const listaProductos = [
         descripcion: "Fender Rumble 25",
         precio: 299990,
         imagen: "/img/amplificador-bajo.svg"
+    },
+    {
+        id: 12,
+        titulo: "Pedal de Distorsion",
+        descripcion: "Boss DS-1",
+        precio: 89990,
+        imagen: "/img/pedal-efectos.svg"
     }
 ];
 

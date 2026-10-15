@@ -94,6 +94,14 @@ function Productos(){
                     precio= {299990}
                     imagen= "/img/amplificador-bajo.svg"
                     />
+
+                    <CardProductos 
+                    id={12}
+                    titulo="Pedal de Distorsion"
+                    descripcion= "Boss DS-1"
+                    precio= {89990}
+                    imagen= "/img/pedal-efectos.svg"
+                    />
             </div>
         </div>
     );
