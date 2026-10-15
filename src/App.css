@@ -145,9 +145,13 @@ body {
 }
 
 a,
-button,
-.btn {
-    cursor: url("/cursor-saxofon.svg") 9 3, pointer;
+.btn,
+.nav-link,
+.navbar-brand,
+button:not(:disabled),
+[type="button"]:not(:disabled),
+[type="submit"]:not(:disabled) {
+    cursor: url("/cursor-pua.svg") 5 5, pointer;
 }
 
 input,
