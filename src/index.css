@@ -1,9 +1,3 @@
-/*
- * Tema visual de Sonido Vivo
- * Paleta inspirada en la madera de los instrumentos y los metales de
- * los vientos: carbon, caoba y laton sobre un fondo crema.
- */
-
 :root {
   --sv-carbon: #1c1a1f;
   --sv-carbon-suave: #2e2b33;
@@ -48,7 +42,6 @@ h2 {
   font-size: 1.5rem;
 }
 
-/* El ancho y la alineacion de cada vista los controla Bootstrap. */
 #root {
   min-height: 100svh;
   display: flex;
