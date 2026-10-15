@@ -15,7 +15,7 @@ test("El catalogo muestra los instrumentos de Sonido Vivo", () => {
     </MemoryRouter>
   );
 
-  expect(screen.getByText("Bajo Electrico")).toBeDefined();
+  expect(screen.getByText("Guitarra Acustica Folk")).toBeDefined();
   expect(screen.getByText("Saxofon Alto")).toBeDefined();
   expect(screen.getByText("Zampona Andina")).toBeDefined();
 });
@@ -40,7 +40,7 @@ test("Todos los productos del catalogo tienen fotografia", () => {
 
   const imagenes = container.querySelectorAll("img");
 
-  expect(imagenes.length).toBe(10);
+  expect(imagenes.length).toBe(12);
   imagenes.forEach((imagen) => {
     expect(imagen.getAttribute("src")).toContain(".jpg");
   });
