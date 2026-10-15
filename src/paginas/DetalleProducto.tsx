@@ -40,7 +40,7 @@ const listaProductos = [
     {
         id: 6,
         titulo: "Bajo Electrico",
-        descripcion: "Squier Affinity Precision Bass",
+        descripcion: "Ibanez GSR200",
         precio: 379990,
         imagen: "/img/bajo-electrico.jpg"
     },
@@ -61,7 +61,7 @@ const listaProductos = [
     {
         id: 9,
         titulo: "Piano Digital",
-        descripcion: "Yamaha P-45 de 88 Teclas",
+        descripcion: "Korg LP-180 de 88 Teclas",
         precio: 649990,
         imagen: "/img/piano-digital.jpg"
     },
