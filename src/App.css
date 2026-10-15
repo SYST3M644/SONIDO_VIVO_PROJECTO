@@ -1,65 +1,16 @@
-.sv-portada {
-  background: linear-gradient(135deg, var(--sv-carbon) 0%, var(--sv-carbon-suave) 100%);
-  color: var(--sv-crema);
-  border-radius: 0.75rem;
-  padding: 3rem 1.5rem;
+.tarjeta-producto {
+    border: 1px solid var(--sv-borde);
+    border-radius: 10px;
+    transition: box-shadow 0.2s, transform 0.2s;
 }
 
-.sv-portada h1 {
-  color: var(--sv-crema);
+.tarjeta-producto:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(28, 26, 31, 0.12);
 }
 
-.sv-portada__destacado {
-  color: var(--sv-laton);
-}
-
-.sv-card {
-  border: 1px solid var(--sv-borde);
-  border-radius: 0.75rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.sv-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 0.75rem 1.5rem rgba(28, 26, 31, 0.12);
-}
-
-.sv-card__imagen {
-  height: 200px;
-  object-fit: contain;
-  background-color: #fff;
-  border-top-left-radius: 0.75rem;
-  border-top-right-radius: 0.75rem;
-  padding: 0.75rem;
-}
-
-.sv-etiqueta {
-  background-color: var(--sv-crema);
-  border: 1px solid var(--sv-borde);
-  color: var(--sv-texto-suave);
-  border-radius: 999px;
-  font-size: 0.75rem;
-  padding: 0.15rem 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.sv-pie {
-  background-color: var(--sv-carbon);
-  color: var(--sv-crema);
-}
-
-.sv-pie a {
-  color: var(--sv-laton);
-  text-decoration: none;
-}
-
-.sv-pie a:hover {
-  text-decoration: underline;
-}
-
-@media (max-width: 575.98px) {
-  .sv-portada {
-    padding: 2rem 1rem;
-  }
+.tarjeta-producto img {
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
 }
