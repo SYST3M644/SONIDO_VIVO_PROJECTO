@@ -12,7 +12,7 @@ import Login from './paginas/Login'
 function App() {
 
   return (
-      <div className='container text-center mt-5'>
+      <div className='text-center mt-5'>
 
         <Navbar />
 
