@@ -38,6 +38,22 @@ function Productos(){
                     precio= {139990}
                     imagen= "/img/microfono.svg"
                     />
+
+                    <CardProductos 
+                    id={5}
+                    titulo="Guitarra Clasica"
+                    descripcion= "Yamaha C40"
+                    precio= {149990}
+                    imagen= "/img/guitarra-clasica.svg"
+                    />
+
+                    <CardProductos 
+                    id={6}
+                    titulo="Bajo Electrico"
+                    descripcion= "Squier Affinity Precision Bass"
+                    precio= {379990}
+                    imagen= "/img/bajo-electrico.svg"
+                    />
             </div>
         </div>
     );

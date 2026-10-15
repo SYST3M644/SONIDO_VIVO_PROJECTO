@@ -6,15 +6,15 @@ const listaProductos = [
         id: 1,
         titulo: "Guitarra Electrica",
         descripcion: "Squier Affinity Stratocaster",
-        precio: 329990, 
+        precio: 329990,
         imagen: "/img/guitarra-electrica.svg"
     },
     {
         id: 2,
         titulo: "Guitarra Acustica",
         descripcion: "Yamaha F310",
-        imagen: "/img/guitarra-acustica.svg",
-        precio: 179990
+        precio: 179990,
+        imagen: "/img/guitarra-acustica.svg"
     },
     {
         id: 3,
@@ -29,6 +29,20 @@ const listaProductos = [
         descripcion: "Shure SM58",
         precio: 139990,
         imagen: "/img/microfono.svg"
+    },
+    {
+        id: 5,
+        titulo: "Guitarra Clasica",
+        descripcion: "Yamaha C40",
+        precio: 149990,
+        imagen: "/img/guitarra-clasica.svg"
+    },
+    {
+        id: 6,
+        titulo: "Bajo Electrico",
+        descripcion: "Squier Affinity Precision Bass",
+        precio: 379990,
+        imagen: "/img/bajo-electrico.svg"
     }
 ];
 
