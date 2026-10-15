@@ -64,6 +64,20 @@ const listaProductos = [
         descripcion: "Yamaha P-45 de 88 Teclas",
         precio: 649990,
         imagen: "/img/piano-digital.svg"
+    },
+    {
+        id: 10,
+        titulo: "Amplificador de Guitarra",
+        descripcion: "Marshall MG15G de 15W",
+        precio: 219990,
+        imagen: "/img/amplificador-guitarra.svg"
+    },
+    {
+        id: 11,
+        titulo: "Amplificador de Bajo",
+        descripcion: "Fender Rumble 25",
+        precio: 299990,
+        imagen: "/img/amplificador-bajo.svg"
     }
 ];
 
