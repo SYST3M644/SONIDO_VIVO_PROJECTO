@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" role="img" aria-label="Amplificador de guitarra">
+  <rect width="400" height="300" fill="#faf7f2"/>
+  <defs>
+    <pattern id="rejilla-g" width="6" height="6" patternUnits="userSpaceOnUse">
+      <path d="M0 0l6 6M6 0L0 6" stroke="#4a4751" stroke-width="0.8"/>
+    </pattern>
+  </defs>
+  <!-- Mueble -->
+  <rect x="68" y="66" width="264" height="178" rx="10" fill="#1c1a1f"/>
+  <!-- Panel de control -->
+  <rect x="84" y="78" width="232" height="30" rx="4" fill="#e0a23b"/>
+  <g fill="#1c1a1f">
+    <circle cx="106" cy="93" r="8"/><circle cx="134" cy="93" r="8"/>
+    <circle cx="162" cy="93" r="8"/><circle cx="190" cy="93" r="8"/>
+    <circle cx="218" cy="93" r="8"/>
+  </g>
+  <rect x="246" y="86" width="56" height="14" rx="3" fill="#8f4118"/>
+  <!-- Rejilla -->
+  <rect x="84" y="118" width="232" height="112" rx="5" fill="#2e2b33"/>
+  <rect x="84" y="118" width="232" height="112" rx="5" fill="url(#rejilla-g)"/>
+  <!-- Parlante tras la rejilla -->
+  <circle cx="200" cy="174" r="40" fill="#1c1a1f" opacity="0.55"/>
+  <circle cx="200" cy="174" r="12" fill="#b4541e" opacity="0.8"/>
+  <!-- Esquineros y asa -->
+  <g fill="#9b96a3">
+    <rect x="72" y="70" width="14" height="14" rx="3"/>
+    <rect x="314" y="70" width="14" height="14" rx="3"/>
+    <rect x="72" y="226" width="14" height="14" rx="3"/>
+    <rect x="314" y="226" width="14" height="14" rx="3"/>
+  </g>
+  <rect x="172" y="56" width="56" height="9" rx="4" fill="#4a4751"/>
+  <!-- Patas -->
+  <g fill="#2e2b33">
+    <rect x="92" y="244" width="22" height="10" rx="3"/>
+    <rect x="286" y="244" width="22" height="10" rx="3"/>
+  </g>
+</svg>
