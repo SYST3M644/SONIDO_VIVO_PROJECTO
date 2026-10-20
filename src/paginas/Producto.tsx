@@ -1,7 +1,11 @@
 import CardProductos from "../componentes/moleculas/CardProductos"
 import { productos } from "../servicios/Productos"
 
-function Productos() {
+type ProductosProps = {
+    agregarProducto: (id: number) => void;
+};
+
+function Productos({ agregarProducto }: ProductosProps) {
     return (
         <div className="container mt-4">
             <h1 className="titulo-seccion">Productos</h1>
@@ -10,6 +14,7 @@ function Productos() {
                     <CardProductos
                         key={producto.id}
                         {...producto}
+                        agregarProducto={agregarProducto}
                     />
                 ))}
             </div>
