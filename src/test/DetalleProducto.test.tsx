@@ -36,3 +36,19 @@ test("Tiene el boton para volver al catalogo", () => {
 
     expect(screen.getByText("Regresar a Productos")).toBeDefined();
 });
+
+test("Muestra la ficha tecnica del producto", () => {
+    mostrarDetalle(1);
+
+    expect(screen.getByText("Características")).toBeDefined();
+    expect(screen.getByText("Peso")).toBeDefined();
+    expect(screen.getByText("2,1 kg")).toBeDefined();
+    expect(screen.getByText("Garantía")).toBeDefined();
+});
+
+test("Cada producto tiene su propia ficha tecnica", () => {
+    mostrarDetalle(5);
+
+    expect(screen.getByText("Afinación")).toBeDefined();
+    expect(screen.getByText("Mi bemol")).toBeDefined();
+});
