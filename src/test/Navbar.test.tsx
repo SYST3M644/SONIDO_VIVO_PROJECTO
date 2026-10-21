@@ -65,3 +65,48 @@ test("La barra muestra el enlace Login cuando no hay sesion", () => {
 
   expect(screen.getByText("Login")).toBeDefined();
 });
+
+function sesionCon(rol: string) {
+  return {
+    usuario: {
+      correo: "usuario@sonidovivo.cl",
+      nombre: "Usuario Prueba",
+      rol: rol,
+      token: "token-de-prueba"
+    },
+    guardarUsuario: () => {},
+    cerrarSesion: () => {}
+  };
+}
+
+function mostrarNavbarCon(rol: string) {
+  render(
+    <MemoryRouter>
+      <SesionContext.Provider value={sesionCon(rol)}>
+        <Navbar cantidadCarrito={0} />
+      </SesionContext.Provider>
+    </MemoryRouter>
+  );
+}
+
+test("El cliente ve el enlace del carrito", () => {
+  mostrarNavbarCon("cliente");
+
+  expect(screen.getByText("Carrito")).toBeDefined();
+});
+
+test("El vendedor no ve el enlace del carrito", () => {
+  mostrarNavbarCon("vendedor");
+
+  expect(screen.queryByText("Carrito")).toBeNull();
+});
+
+test("Solo el administrador ve el enlace de administracion", () => {
+  mostrarNavbarCon("administrador");
+  expect(screen.getByText("Administración")).toBeDefined();
+
+  cleanup();
+
+  mostrarNavbarCon("vendedor");
+  expect(screen.queryByText("Administración")).toBeNull();
+});

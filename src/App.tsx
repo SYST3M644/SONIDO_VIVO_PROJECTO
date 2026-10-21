@@ -100,7 +100,7 @@ function App() {
           <Route
             path='/carrito'
             element={
-              <RutaProtegida>
+              <RutaProtegida roles={["cliente", "administrador"]}>
                 <Carrito
                   carrito={carrito}
                   sumarCantidad={sumarCantidad}

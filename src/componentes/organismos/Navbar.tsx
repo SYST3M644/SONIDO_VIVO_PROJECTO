@@ -43,12 +43,14 @@ function Navbar({ cantidadCarrito }: NavbarProps) {
                             Productos
                         </Link>
 
-                        <Link className="nav-link" to="/carrito">
-                            Carrito
-                            <span className="badge text-bg-light ms-2">
-                                {cantidadCarrito}
-                            </span>
-                        </Link>
+                        {(usuario === null || usuario.rol !== "vendedor") && (
+                            <Link className="nav-link" to="/carrito">
+                                Carrito
+                                <span className="badge text-bg-light ms-2">
+                                    {cantidadCarrito}
+                                </span>
+                            </Link>
+                        )}
 
                         <Link className="nav-link" to="/contacto">
                             Contacto
