@@ -16,7 +16,7 @@ function FormularioLogin() {
 
 
         if (correo.trim() === "") {
-            alert("Debe ingresar su correo");
+            alert("Debe ingresar su correo electrónico");
             return;
         }
 
