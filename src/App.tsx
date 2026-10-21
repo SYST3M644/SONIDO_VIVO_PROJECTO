@@ -9,6 +9,7 @@ import Nosotros from './paginas/Nosotros'
 import DetalleProducto from './paginas/DetalleProducto'
 import Login from './paginas/Login'
 import Carrito from './paginas/Carrito'
+import Admin from './paginas/Admin'
 import Pie from './componentes/organismos/Pie'
 import RutaProtegida from './componentes/RutaProtegida'
 import { productos } from './servicios/Productos'
@@ -118,8 +119,17 @@ function App() {
             }
           />
 
-          <Route 
-            path='/contacto' 
+          <Route
+            path='/admin'
+            element={
+              <RutaProtegida roles={["administrador"]}>
+                <Admin />
+              </RutaProtegida>
+            }
+          />
+
+          <Route
+            path='/contacto'
             element={<Contacto />}
           />
 
