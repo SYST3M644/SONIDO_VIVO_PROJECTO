@@ -85,34 +85,50 @@ goto menu
 
 :subir
 cls
-echo  Archivos que vas a subir:
-echo.
-git status --short
+echo  Revisando si hay cambios...
 echo.
 
-git add .
-git diff --cached --quiet
-if not errorlevel 1 (
-    echo  No hay nada nuevo para subir.
+set CAMBIOS=
+for /f "delims=" %%c in ('git status --porcelain') do set CAMBIOS=1
+
+if not defined CAMBIOS (
+    echo  No hay nada para subir. Ya esta todo guardado.
     echo.
     pause
     goto menu
 )
 
+echo  Se van a subir estos archivos:
+echo.
+git status --short
+echo.
+set RESPUESTA=
+set /p RESPUESTA=Esta bien? Escribe S para seguir o N para cancelar:
+
+if /i not "%RESPUESTA%"=="S" (
+    echo.
+    echo  Cancelado. No se subio nada.
+    echo.
+    pause
+    goto menu
+)
+
+echo.
 echo  Escribe en una linea que hiciste.
 echo  Ejemplo:  feat carrito: agregue el boton de comprar
 echo.
 set MENSAJE=
-set /p MENSAJE=Mensaje: 
+set /p MENSAJE=Mensaje:
 
 if "%MENSAJE%"=="" (
     echo.
     echo  Cancelado: no escribiste nada.
-    git reset >nul
     echo.
     pause
     goto menu
 )
+
+git add .
 
 echo.
 echo  Guardando...
