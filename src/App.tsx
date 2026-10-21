@@ -11,13 +11,22 @@ import Login from './paginas/Login'
 import Carrito from './paginas/Carrito'
 import Admin from './paginas/Admin'
 import Pie from './componentes/organismos/Pie'
-import RutaProtegida from './componentes/RutaProtegida'
 import { productos } from './servicios/Productos'
 import type { ProductoCarrito } from './servicios/Productos'
+import type { Usuario } from './servicios/Autenticacion'
 
 
 function App() {
   const [carrito, setCarrito] = useState<ProductoCarrito[]>([])
+  const [usuario, setUsuario] = useState<Usuario | null>(null)
+
+  const guardarUsuario = (nuevoUsuario: Usuario) => {
+    setUsuario(nuevoUsuario)
+  }
+
+  const cerrarSesion = () => {
+    setUsuario(null)
+  }
 
   const agregarProducto = (id: number) => {
     const producto = productos.find(producto => producto.id === id)
@@ -75,15 +84,31 @@ function App() {
     cantidadCarrito += item.cantidad
   }
 
+  let puedeComprar = false
+
+  if (usuario !== null && usuario.rol !== "vendedor") {
+    puedeComprar = true
+  }
+
+  let esAdministrador = false
+
+  if (usuario !== null && usuario.rol === "administrador") {
+    esAdministrador = true
+  }
+
   return (
       <>
-        <Navbar cantidadCarrito={cantidadCarrito} />
+        <Navbar
+          cantidadCarrito={cantidadCarrito}
+          usuario={usuario}
+          cerrarSesion={cerrarSesion}
+        />
 
         <div className='text-center contenido'>
 
         <Routes>
-          <Route 
-            path='/' 
+          <Route
+            path='/'
             element={<Inicio />}
           />
 
@@ -100,23 +125,31 @@ function App() {
           <Route
             path='/carrito'
             element={
-              <RutaProtegida roles={["cliente", "administrador"]}>
+              puedeComprar ? (
                 <Carrito
                   carrito={carrito}
                   sumarCantidad={sumarCantidad}
                   restarCantidad={restarCantidad}
                   quitarProducto={quitarProducto}
                 />
-              </RutaProtegida>
+              ) : (
+                <p className='mt-5'>
+                  Debes iniciar sesión como cliente para usar el carrito.
+                </p>
+              )
             }
           />
 
           <Route
             path='/admin'
             element={
-              <RutaProtegida roles={["administrador"]}>
+              esAdministrador ? (
                 <Admin />
-              </RutaProtegida>
+              ) : (
+                <p className='mt-5'>
+                  Debes iniciar sesión como administrador para ver esta página.
+                </p>
+              )
             }
           />
 
@@ -125,14 +158,14 @@ function App() {
             element={<Contacto />}
           />
 
-          <Route 
-            path='/nosotros' 
+          <Route
+            path='/nosotros'
             element={<Nosotros />}
           />
 
-          <Route 
-            path='/login' 
-            element={<Login />}
+          <Route
+            path='/login'
+            element={<Login guardarUsuario={guardarUsuario} />}
           />
 
         </Routes>

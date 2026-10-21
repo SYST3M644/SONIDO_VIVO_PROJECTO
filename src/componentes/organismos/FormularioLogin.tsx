@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import CampoFormulario from "../moleculas/CampoFormulario";
-import { useSesion } from "../../contexto/SesionContext";
 import { iniciarSesion } from "../../servicios/Autenticacion";
+import type { Usuario } from "../../servicios/Autenticacion";
 
-function FormularioLogin() {
+type FormularioLoginProps = {
+    guardarUsuario: (usuario: Usuario) => void;
+};
+
+function FormularioLogin({ guardarUsuario }: FormularioLoginProps) {
     const [correo, setCorreo] = useState("");
     const [contrasena, setContrasena] = useState("");
-
-    const { guardarUsuario } = useSesion();
-    const navegar = useNavigate();
 
     const validarLogin = (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -25,9 +25,9 @@ function FormularioLogin() {
             return;
         }
 
-        if (contrasena.trim() === "" || contrasena.length < 8) { 
-            alert("Debe ingresar una contraseña de al menos 8 caracteres"); 
-            return; 
+        if (contrasena.trim() === "" || contrasena.length < 8) {
+            alert("Debe ingresar una contraseña de al menos 8 caracteres");
+            return;
         }
 
         const usuario = iniciarSesion(correo, contrasena);
@@ -38,7 +38,7 @@ function FormularioLogin() {
         }
 
         guardarUsuario(usuario);
-        navegar("/productos");
+        alert("Bienvenido " + usuario.nombre);
     };
 
     return(

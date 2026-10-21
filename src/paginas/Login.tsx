@@ -1,6 +1,11 @@
 import FormularioLogin from "../componentes/organismos/FormularioLogin";
+import type { Usuario } from "../servicios/Autenticacion";
 
-function Login(){
+type LoginProps = {
+    guardarUsuario: (usuario: Usuario) => void;
+};
+
+function Login({ guardarUsuario }: LoginProps){
     return(
         <div className="container mt-5">
             <div className="row justify-content-center">
@@ -8,7 +13,7 @@ function Login(){
                     <div className="card shadow-sm p-4">
                         <h2 className="mt-4">Formulario de Login</h2>
 
-                        <FormularioLogin />
+                        <FormularioLogin guardarUsuario={guardarUsuario} />
                     </div>
                 </div>
             </div>

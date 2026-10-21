@@ -1,19 +1,13 @@
-import { Link, useNavigate } from "react-router-dom"
-import { useSesion } from "../../contexto/SesionContext"
+import { Link } from "react-router-dom"
+import type { Usuario } from "../../servicios/Autenticacion"
 
 type NavbarProps = {
     cantidadCarrito: number;
+    usuario: Usuario | null;
+    cerrarSesion: () => void;
 };
 
-function Navbar({ cantidadCarrito }: NavbarProps) {
-    const { usuario, cerrarSesion } = useSesion();
-    const navegar = useNavigate();
-
-    const salir = () => {
-        cerrarSesion();
-        navegar("/");
-    };
-
+function Navbar({ cantidadCarrito, usuario, cerrarSesion }: NavbarProps) {
     return(
         <nav className="navbar navbar-expand-lg barra-navegacion" data-bs-theme="dark">
             <div className="container">
@@ -21,10 +15,10 @@ function Navbar({ cantidadCarrito }: NavbarProps) {
                     Sonido Vivo
                 </Link>
 
-                <button 
-                    className="navbar-toggler" 
-                    type="button" 
-                    data-bs-toggle="collapse" 
+                <button
+                    className="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
                     data-bs-target="#menuPrincipal"
                     aria-controls="menuPrincipal"
                     aria-expanded="false"
@@ -76,10 +70,10 @@ function Navbar({ cantidadCarrito }: NavbarProps) {
                                     {usuario.nombre} ({usuario.rol})
                                 </span>
 
-                                <button 
+                                <button
                                     type="button"
                                     className="btn btn-outline-light btn-sm"
-                                    onClick={salir}
+                                    onClick={cerrarSesion}
                                 >
                                     Cerrar Sesión
                                 </button>

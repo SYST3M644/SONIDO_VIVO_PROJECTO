@@ -1,43 +1,55 @@
 // @vitest-environment jsdom
 
-import { afterEach, expect, test } from "vitest";
+import { afterEach, expect, test, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 
 import App from "../App";
-import { SesionContext } from "../contexto/SesionContext";
 
 afterEach(cleanup);
 
-const sesionCliente = {
-    usuario: {
-        correo: "cliente@sonidovivo.cl",
-        nombre: "Pedro Diaz",
-        rol: "cliente",
-        token: "token-de-prueba"
-    },
-    guardarUsuario: () => {},
-    cerrarSesion: () => {}
-};
+function entrarComoCliente() {
+    vi.spyOn(window, "alert").mockImplementation(() => {});
 
-function mostrarApp(ruta: string) {
     render(
-        <MemoryRouter initialEntries={[ruta]}>
-            <SesionContext.Provider value={sesionCliente}>
-                <App />
-            </SesionContext.Provider>
+        <MemoryRouter initialEntries={["/login"]}>
+            <App />
         </MemoryRouter>
     );
+
+    fireEvent.change(screen.getByPlaceholderText("correo"), {
+        target: { value: "cliente@sonidovivo.cl" }
+    });
+
+    fireEvent.change(screen.getByPlaceholderText("contraseña"), {
+        target: { value: "cliente123" }
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Ingresar" }));
 }
 
+test("El carrito pide iniciar sesion cuando no hay usuario", () => {
+    render(
+        <MemoryRouter initialEntries={["/carrito"]}>
+            <App />
+        </MemoryRouter>
+    );
+
+    expect(screen.getByText("Debes iniciar sesión como cliente para usar el carrito.")).toBeDefined();
+});
+
 test("El carrito vacio muestra un mensaje", () => {
-    mostrarApp("/carrito");
+    entrarComoCliente();
+
+    fireEvent.click(screen.getByText("Carrito"));
 
     expect(screen.getByText("El carrito está vacío")).toBeDefined();
 });
 
 test("Se puede agregar, sumar, restar y quitar un producto", () => {
-    mostrarApp("/productos");
+    entrarComoCliente();
+
+    fireEvent.click(screen.getByText("Productos"));
 
     const botonesAgregar = screen.getAllByText("Agregar al carrito");
     fireEvent.click(botonesAgregar[0]);

@@ -5,13 +5,18 @@ import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 
 import FormularioLogin from "../componentes/organismos/FormularioLogin";
+import type { Usuario } from "../servicios/Autenticacion";
 
 afterEach(cleanup);
 
+let usuarioGuardado: Usuario | null = null;
+
 function mostrarFormulario() {
+    usuarioGuardado = null;
+
     render(
         <MemoryRouter>
-            <FormularioLogin />
+            <FormularioLogin guardarUsuario={(usuario) => { usuarioGuardado = usuario; }} />
         </MemoryRouter>
     );
 }
@@ -75,7 +80,7 @@ test("Avisa cuando las credenciales no coinciden", () => {
     alerta.mockRestore();
 });
 
-test("No muestra ninguna alerta cuando las credenciales son correctas", () => {
+test("Guarda el usuario cuando las credenciales son correctas", () => {
     const alerta = vi.spyOn(window, "alert").mockImplementation(() => {});
 
     mostrarFormulario();
@@ -83,7 +88,8 @@ test("No muestra ninguna alerta cuando las credenciales son correctas", () => {
     escribir("contraseña", "admin123");
     presionarIngresar();
 
-    expect(alerta).not.toHaveBeenCalled();
+    expect(usuarioGuardado).not.toBeNull();
+    expect(alerta).toHaveBeenCalledWith("Bienvenido Carlos Rojas");
 
     alerta.mockRestore();
 });
