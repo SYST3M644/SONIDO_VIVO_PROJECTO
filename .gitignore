@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Documento del caso entregado por el profesor
+Caso Semestral/
