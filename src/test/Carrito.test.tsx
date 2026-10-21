@@ -5,25 +5,39 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 
 import App from "../App";
+import { SesionContext } from "../contexto/SesionContext";
 
 afterEach(cleanup);
 
-test("El carrito vacio muestra un mensaje", () => {
+const sesionCliente = {
+    usuario: {
+        correo: "cliente@sonidovivo.cl",
+        nombre: "Pedro Diaz",
+        rol: "cliente",
+        token: "token-de-prueba"
+    },
+    guardarUsuario: () => {},
+    cerrarSesion: () => {}
+};
+
+function mostrarApp(ruta: string) {
     render(
-        <MemoryRouter initialEntries={["/carrito"]}>
-            <App />
+        <MemoryRouter initialEntries={[ruta]}>
+            <SesionContext.Provider value={sesionCliente}>
+                <App />
+            </SesionContext.Provider>
         </MemoryRouter>
     );
+}
+
+test("El carrito vacio muestra un mensaje", () => {
+    mostrarApp("/carrito");
 
     expect(screen.getByText("El carrito está vacío")).toBeDefined();
 });
 
 test("Se puede agregar, sumar, restar y quitar un producto", () => {
-    render(
-        <MemoryRouter initialEntries={["/productos"]}>
-            <App />
-        </MemoryRouter>
-    );
+    mostrarApp("/productos");
 
     const botonesAgregar = screen.getAllByText("Agregar al carrito");
     fireEvent.click(botonesAgregar[0]);

@@ -8,7 +8,11 @@ import Contacto from './paginas/Contacto'
 import Nosotros from './paginas/Nosotros'
 import DetalleProducto from './paginas/DetalleProducto'
 import Login from './paginas/Login'
+import Carrito from './paginas/Carrito'
 import Pie from './componentes/organismos/Pie'
+import RutaProtegida from './componentes/RutaProtegida'
+import { productos } from './servicios/Productos'
+import type { ProductoCarrito } from './servicios/Productos'
 
 
 function App() {
@@ -84,7 +88,11 @@ function App() {
 
           <Route 
             path='/productos' 
-            element={<Productos />}
+            element={
+              <RutaProtegida>
+                <Productos agregarProducto={agregarProducto} />
+              </RutaProtegida>
+            }
           />
 
           <Route 
@@ -99,12 +107,14 @@ function App() {
           <Route
             path='/carrito'
             element={
-              <Carrito
-                carrito={carrito}
-                sumarCantidad={sumarCantidad}
-                restarCantidad={restarCantidad}
-                quitarProducto={quitarProducto}
-              />
+              <RutaProtegida>
+                <Carrito
+                  carrito={carrito}
+                  sumarCantidad={sumarCantidad}
+                  restarCantidad={restarCantidad}
+                  quitarProducto={quitarProducto}
+                />
+              </RutaProtegida>
             }
           />
 
