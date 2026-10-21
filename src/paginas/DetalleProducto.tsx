@@ -14,9 +14,10 @@ function DetalleProducto() {
             <h1 className="titulo-seccion">Detalle del Producto</h1>
 
             <img
+                className="d-block mx-auto"
                 src={producto?.imagen}
                 alt={producto?.titulo}
-                style={{ width: '300px' }}
+                style={{ width: '300px', maxWidth: '100%' }}
             />
 
             <h2>{producto?.titulo}</h2>
