@@ -26,17 +26,19 @@ if "%USUARIO%"=="" goto configurar
 echo  Trabajando como: %USUARIO%
 echo.
 echo    1. Actualizar el proyecto
-echo    2. Subir mis cambios
-echo    3. Ver que archivos cambie
-echo    4. Salir
+echo    2. Subir todo junto en un commit
+echo    3. Subir archivo por archivo, un commit cada uno
+echo    4. Ver que archivos cambie
+echo    5. Salir
 echo.
 set OPCION=
-set /p OPCION=Elige una opcion del 1 al 4: 
+set /p OPCION=Elige una opcion del 1 al 5:
 
 if "%OPCION%"=="1" goto actualizar
 if "%OPCION%"=="2" goto subir
-if "%OPCION%"=="3" goto estado
-if "%OPCION%"=="4" exit /b
+if "%OPCION%"=="3" goto subiruno
+if "%OPCION%"=="4" goto estado
+if "%OPCION%"=="5" exit /b
 goto menu
 
 
@@ -152,6 +154,93 @@ echo ==========================================
 echo.
 pause
 goto menu
+
+
+:subiruno
+cls
+git ls-files --modified --others --deleted --exclude-standard > "%TEMP%\sv_lista.txt"
+
+for %%s in ("%TEMP%\sv_lista.txt") do if %%~zs equ 0 (
+    echo  No hay nada para subir. Ya esta todo guardado.
+    echo.
+    del "%TEMP%\sv_lista.txt"
+    pause
+    goto menu
+)
+
+echo  Vas a crear un commit por cada archivo.
+echo.
+echo  Archivos encontrados:
+echo.
+type "%TEMP%\sv_lista.txt"
+echo.
+set RESPUESTA=
+set /p RESPUESTA=Empezamos? Escribe S para seguir o N para cancelar:
+
+if /i not "%RESPUESTA%"=="S" (
+    echo.
+    echo  Cancelado. No se subio nada.
+    echo.
+    del "%TEMP%\sv_lista.txt"
+    pause
+    goto menu
+)
+
+for /f "usebackq delims=" %%f in ("%TEMP%\sv_lista.txt") do call :commitarchivo "%%f"
+
+del "%TEMP%\sv_lista.txt"
+
+cls
+set NUEVOS=0
+for /f %%n in ('git rev-list --count origin/main..HEAD') do set NUEVOS=%%n
+
+if "%NUEVOS%"=="0" (
+    echo  No guardaste ningun archivo. No hay nada que subir.
+    echo.
+    pause
+    goto menu
+)
+
+echo  Guardaste %NUEVOS% commits.
+echo.
+echo  Trayendo cambios del equipo antes de subir...
+git pull --rebase
+if errorlevel 1 goto problema
+
+echo.
+echo  Subiendo a GitHub...
+git push
+if errorlevel 1 goto problema
+
+echo.
+echo ==========================================
+echo   LISTO. Tus commits ya estan en GitHub.
+echo ==========================================
+echo.
+pause
+goto menu
+
+
+:commitarchivo
+cls
+echo ==========================================
+echo   %~1
+echo ==========================================
+echo.
+set MENSAJE=
+set /p MENSAJE=Que hiciste aqui? Deja vacio para saltarlo:
+
+if "%MENSAJE%"=="" (
+    echo.
+    echo  Saltado. Ese archivo queda sin subir.
+    timeout /t 2 >nul
+    goto :eof
+)
+
+git add "%~1"
+git commit -m "%MENSAJE%"
+timeout /t 1 >nul
+goto :eof
 
 
 :problema
