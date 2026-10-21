@@ -87,22 +87,14 @@ function App() {
             element={<Inicio />}
           />
 
-          <Route 
-            path='/productos' 
-            element={
-              <RutaProtegida>
-                <Productos agregarProducto={agregarProducto} />
-              </RutaProtegida>
-            }
+          <Route
+            path='/productos'
+            element={<Productos agregarProducto={agregarProducto} />}
           />
 
-          <Route 
-            path='/productos/:id' 
-            element={
-              <RutaProtegida>
-                <DetalleProducto />
-              </RutaProtegida>
-            }
+          <Route
+            path='/productos/:id'
+            element={<DetalleProducto />}
           />
 
           <Route
