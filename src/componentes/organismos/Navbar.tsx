@@ -58,6 +58,12 @@ function Navbar({ cantidadCarrito }: NavbarProps) {
                             Nosotros
                         </Link>
 
+                        {usuario !== null && usuario.rol === "administrador" && (
+                            <Link className="nav-link" to="/admin">
+                                Administración
+                            </Link>
+                        )}
+
                         {usuario === null ? (
                             <Link className="nav-link" to="/login">
                                 Login

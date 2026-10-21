@@ -32,7 +32,7 @@ test("Avisa cuando el correo esta vacio", () => {
     mostrarFormulario();
     presionarIngresar();
 
-    expect(alerta).toHaveBeenCalledWith("Debe ingresar su correo");
+    expect(alerta).toHaveBeenCalledWith("Debe ingresar su correo electrónico");
 
     alerta.mockRestore();
 });
