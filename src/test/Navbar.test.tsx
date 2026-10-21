@@ -12,7 +12,7 @@ afterEach(cleanup);
 test("La barra de navegacion muestra el nombre de la tienda", () => {
   render(
     <MemoryRouter>
-      <Navbar />
+      <Navbar cantidadCarrito={0} />
     </MemoryRouter>
   );
 
@@ -22,7 +22,7 @@ test("La barra de navegacion muestra el nombre de la tienda", () => {
 test("La barra de navegacion tiene el boton hamburguesa", () => {
   render(
     <MemoryRouter>
-      <Navbar />
+      <Navbar cantidadCarrito={0} />
     </MemoryRouter>
   );
 
@@ -47,7 +47,7 @@ test("La barra muestra el usuario cuando hay sesion iniciada", () => {
   render(
     <MemoryRouter>
       <SesionContext.Provider value={sesion}>
-        <Navbar />
+        <Navbar cantidadCarrito={0} />
       </SesionContext.Provider>
     </MemoryRouter>
   );
@@ -59,7 +59,7 @@ test("La barra muestra el usuario cuando hay sesion iniciada", () => {
 test("La barra muestra el enlace Login cuando no hay sesion", () => {
   render(
     <MemoryRouter>
-      <Navbar />
+      <Navbar cantidadCarrito={0} />
     </MemoryRouter>
   );
 

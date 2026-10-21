@@ -1,7 +1,11 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useSesion } from "../../contexto/SesionContext"
 
-function Navbar() {
+type NavbarProps = {
+    cantidadCarrito: number;
+};
+
+function Navbar({ cantidadCarrito }: NavbarProps) {
     const { usuario, cerrarSesion } = useSesion();
     const navegar = useNavigate();
 
@@ -37,6 +41,13 @@ function Navbar() {
 
                         <Link className="nav-link" to="/productos">
                             Productos
+                        </Link>
+
+                        <Link className="nav-link" to="/carrito">
+                            Carrito
+                            <span className="badge text-bg-light ms-2">
+                                {cantidadCarrito}
+                            </span>
                         </Link>
 
                         <Link className="nav-link" to="/contacto">

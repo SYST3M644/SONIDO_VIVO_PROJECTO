@@ -1,4 +1,5 @@
 import './App.css'
+import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './componentes/organismos/Navbar'
 import Inicio from './paginas/Inicio'
@@ -8,14 +9,70 @@ import Nosotros from './paginas/Nosotros'
 import DetalleProducto from './paginas/DetalleProducto'
 import Login from './paginas/Login'
 import Pie from './componentes/organismos/Pie'
-import RutaProtegida from './componentes/RutaProtegida'
 
 
 function App() {
+  const [carrito, setCarrito] = useState<ProductoCarrito[]>([])
+
+  const agregarProducto = (id: number) => {
+    const producto = productos.find(producto => producto.id === id)
+
+    if (producto === undefined) {
+      return
+    }
+
+    const yaEstaEnCarrito = carrito.find(item => item.id === id)
+
+    if (yaEstaEnCarrito) {
+      sumarCantidad(id)
+      return
+    }
+
+    const nuevoProducto = {
+      id: producto.id,
+      titulo: producto.titulo,
+      precio: producto.precio,
+      imagen: producto.imagen,
+      cantidad: 1
+    }
+
+    setCarrito([...carrito, nuevoProducto])
+  }
+
+  const sumarCantidad = (id: number) => {
+    const nuevoCarrito = carrito.map(item => {
+      if (item.id === id) {
+        return { ...item, cantidad: item.cantidad + 1 }
+      }
+      return item
+    })
+    setCarrito(nuevoCarrito)
+  }
+
+  const restarCantidad = (id: number) => {
+    const nuevoCarrito = carrito.map(item => {
+      if (item.id === id && item.cantidad > 1) {
+        return { ...item, cantidad: item.cantidad - 1 }
+      }
+      return item
+    })
+    setCarrito(nuevoCarrito)
+  }
+
+  const quitarProducto = (id: number) => {
+    const nuevoCarrito = carrito.filter(item => item.id !== id)
+    setCarrito(nuevoCarrito)
+  }
+
+  let cantidadCarrito = 0
+
+  for (const item of carrito) {
+    cantidadCarrito += item.cantidad
+  }
 
   return (
       <>
-        <Navbar />
+        <Navbar cantidadCarrito={cantidadCarrito} />
 
         <div className='text-center contenido'>
 
@@ -27,11 +84,7 @@ function App() {
 
           <Route 
             path='/productos' 
-            element={
-              <RutaProtegida>
-                <Productos />
-              </RutaProtegida>
-            }
+            element={<Productos />}
           />
 
           <Route 
@@ -40,6 +93,18 @@ function App() {
               <RutaProtegida>
                 <DetalleProducto />
               </RutaProtegida>
+            }
+          />
+
+          <Route
+            path='/carrito'
+            element={
+              <Carrito
+                carrito={carrito}
+                sumarCantidad={sumarCantidad}
+                restarCantidad={restarCantidad}
+                quitarProducto={quitarProducto}
+              />
             }
           />
 

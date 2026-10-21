@@ -7,9 +7,10 @@ interface CardProps {
     descripcion: string;
     precio: number;
     imagen: string;
+    agregarProducto: (id: number) => void;
 }
 
-function CardProducto({id, titulo, descripcion, precio, imagen}: CardProps) {
+function CardProducto({id, titulo, descripcion, precio, imagen, agregarProducto}: CardProps) {
     return(
         <div className="card tarjeta-producto" style={{ width: '20rem', maxWidth: '100%'}}>
 
@@ -33,6 +34,13 @@ function CardProducto({id, titulo, descripcion, precio, imagen}: CardProps) {
 
                 <div className="mt-auto">
                     <Boton id={id}/>
+                    <button
+                        className="btn boton-tienda mt-2 w-100"
+                        type="button"
+                        onClick={() => agregarProducto(id)}
+                    >
+                        Agregar al carrito
+                    </button>
                 </div>
 
             </div>

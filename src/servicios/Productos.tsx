@@ -6,6 +6,14 @@ export type Producto = {
     imagen: string;
 };
 
+export type ProductoCarrito = {
+    id: number;
+    titulo: string;
+    precio: number;
+    imagen: string;
+    cantidad: number;
+};
+
 export const productos: Producto[] = [
     {
         id: 1,

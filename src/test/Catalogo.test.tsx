@@ -11,7 +11,7 @@ afterEach(cleanup);
 test("El catalogo muestra los instrumentos de Sonido Vivo", () => {
   render(
     <MemoryRouter>
-      <Productos />
+      <Productos agregarProducto={() => {}} />
     </MemoryRouter>
   );
 
@@ -23,7 +23,7 @@ test("El catalogo muestra los instrumentos de Sonido Vivo", () => {
 test("El catalogo ya no muestra los productos de hardware", () => {
   render(
     <MemoryRouter>
-      <Productos />
+      <Productos agregarProducto={() => {}} />
     </MemoryRouter>
   );
 
@@ -34,7 +34,7 @@ test("El catalogo ya no muestra los productos de hardware", () => {
 test("Todos los productos del catalogo tienen fotografia", () => {
   const { container } = render(
     <MemoryRouter>
-      <Productos />
+      <Productos agregarProducto={() => {}} />
     </MemoryRouter>
   );
 
@@ -49,7 +49,7 @@ test("Todos los productos del catalogo tienen fotografia", () => {
 test("Los precios se muestran con separador de miles", () => {
   render(
     <MemoryRouter>
-      <Productos />
+      <Productos agregarProducto={() => {}} />
     </MemoryRouter>
   );
 
@@ -60,7 +60,7 @@ test("Los precios se muestran con separador de miles", () => {
 test("Cada producto tiene su boton para ver el detalle", () => {
   render(
     <MemoryRouter>
-      <Productos />
+      <Productos agregarProducto={() => {}} />
     </MemoryRouter>
   );
 
