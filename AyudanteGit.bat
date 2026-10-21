@@ -1,12 +1,10 @@
 @echo off
 chcp 65001 >nul
-title Sonido Vivo - Ayudante de Git
+title Sonido Vivo - Actualizar proyecto
 cd /d "%~dp0"
 
-:menu
-cls
 echo ==========================================
-echo      SONIDO VIVO - Ayudante de Git
+echo    SONIDO VIVO - Actualizar proyecto
 echo ==========================================
 echo.
 
@@ -19,244 +17,29 @@ if errorlevel 1 (
     exit /b
 )
 
-set USUARIO=
-for /f "delims=" %%u in ('git config user.name 2^>nul') do set USUARIO=%%u
-if "%USUARIO%"=="" goto configurar
-
-echo  Trabajando como: %USUARIO%
-echo.
-echo    1. Actualizar el proyecto
-echo    2. Subir todo junto en un commit
-echo    3. Subir archivo por archivo, un commit cada uno
-echo    4. Ver que archivos cambie
-echo    5. Salir
-echo.
-set OPCION=
-set /p OPCION=Elige una opcion del 1 al 5:
-
-if "%OPCION%"=="1" goto actualizar
-if "%OPCION%"=="2" goto subir
-if "%OPCION%"=="3" goto subiruno
-if "%OPCION%"=="4" goto estado
-if "%OPCION%"=="5" exit /b
-goto menu
-
-
-:configurar
-echo  Primero hay que configurar quien eres.
-echo.
-set NOMBRE=
-set /p NOMBRE=Tu nombre y apellido: 
-set CORREO=
-set /p CORREO=Tu correo de GitHub: 
-if "%NOMBRE%"=="" goto menu
-if "%CORREO%"=="" goto menu
-git config user.name "%NOMBRE%"
-git config user.email "%CORREO%"
-echo.
-echo  Listo. Tus commits van a salir a tu nombre.
-echo.
-pause
-goto menu
-
-
-:actualizar
-cls
 echo  Trayendo los cambios del equipo...
 echo.
 git pull --rebase
-if errorlevel 1 goto problema
-echo.
-echo  Proyecto actualizado.
-echo.
-pause
-goto menu
 
-
-:estado
-cls
-echo  Archivos que cambiaste:
-echo.
-git status --short
-echo.
-echo  Si no aparece nada, no has cambiado nada todavia.
-echo.
-pause
-goto menu
-
-
-:subir
-cls
-echo  Revisando si hay cambios...
-echo.
-
-set CAMBIOS=
-for /f "delims=" %%c in ('git status --porcelain') do set CAMBIOS=1
-
-if not defined CAMBIOS (
-    echo  No hay nada para subir. Ya esta todo guardado.
+if errorlevel 1 (
+    echo.
+    echo ==========================================
+    echo   ALGO SALIO MAL
+    echo ==========================================
+    echo.
+    echo   Lo mas probable es un conflicto: los dos
+    echo   cambiaron el mismo archivo.
+    echo.
+    echo   Para volver todo como estaba:
+    echo       git rebase --abort
     echo.
     pause
-    goto menu
+    exit /b
 )
-
-echo  Se van a subir estos archivos:
-echo.
-git status --short
-echo.
-set RESPUESTA=
-set /p RESPUESTA=Esta bien? Escribe S para seguir o N para cancelar:
-
-if /i not "%RESPUESTA%"=="S" (
-    echo.
-    echo  Cancelado. No se subio nada.
-    echo.
-    pause
-    goto menu
-)
-
-echo.
-echo  Escribe en una linea que hiciste.
-echo  Ejemplo:  feat carrito: agregue el boton de comprar
-echo.
-set MENSAJE=
-set /p MENSAJE=Mensaje:
-
-if "%MENSAJE%"=="" (
-    echo.
-    echo  Cancelado: no escribiste nada.
-    echo.
-    pause
-    goto menu
-)
-
-git add .
-
-echo.
-echo  Guardando...
-git commit -m "%MENSAJE%"
-if errorlevel 1 goto problema
-
-echo.
-echo  Trayendo cambios del equipo antes de subir...
-git pull --rebase
-if errorlevel 1 goto problema
-
-echo.
-echo  Subiendo a GitHub...
-git push
-if errorlevel 1 goto problema
 
 echo.
 echo ==========================================
-echo   LISTO. Tus cambios ya estan en GitHub.
+echo   LISTO. Proyecto actualizado.
 echo ==========================================
 echo.
 pause
-goto menu
-
-
-:subiruno
-cls
-git ls-files --modified --others --deleted --exclude-standard > "%TEMP%\sv_lista.txt"
-
-for %%s in ("%TEMP%\sv_lista.txt") do if %%~zs equ 0 (
-    echo  No hay nada para subir. Ya esta todo guardado.
-    echo.
-    del "%TEMP%\sv_lista.txt"
-    pause
-    goto menu
-)
-
-echo  Vas a crear un commit por cada archivo.
-echo.
-echo  Archivos encontrados:
-echo.
-type "%TEMP%\sv_lista.txt"
-echo.
-set RESPUESTA=
-set /p RESPUESTA=Empezamos? Escribe S para seguir o N para cancelar:
-
-if /i not "%RESPUESTA%"=="S" (
-    echo.
-    echo  Cancelado. No se subio nada.
-    echo.
-    del "%TEMP%\sv_lista.txt"
-    pause
-    goto menu
-)
-
-for /f "usebackq delims=" %%f in ("%TEMP%\sv_lista.txt") do call :commitarchivo "%%f"
-
-del "%TEMP%\sv_lista.txt"
-
-cls
-set NUEVOS=0
-for /f %%n in ('git rev-list --count origin/main..HEAD') do set NUEVOS=%%n
-
-if "%NUEVOS%"=="0" (
-    echo  No guardaste ningun archivo. No hay nada que subir.
-    echo.
-    pause
-    goto menu
-)
-
-echo  Guardaste %NUEVOS% commits.
-echo.
-echo  Trayendo cambios del equipo antes de subir...
-git pull --rebase
-if errorlevel 1 goto problema
-
-echo.
-echo  Subiendo a GitHub...
-git push
-if errorlevel 1 goto problema
-
-echo.
-echo ==========================================
-echo   LISTO. Tus commits ya estan en GitHub.
-echo ==========================================
-echo.
-pause
-goto menu
-
-
-:commitarchivo
-cls
-echo ==========================================
-echo   %~1
-echo ==========================================
-echo.
-set MENSAJE=
-set /p MENSAJE=Que hiciste aqui? Deja vacio para saltarlo:
-
-if "%MENSAJE%"=="" (
-    echo.
-    echo  Saltado. Ese archivo queda sin subir.
-    timeout /t 2 >nul
-    goto :eof
-)
-
-git add "%~1"
-git commit -m "%MENSAJE%"
-timeout /t 1 >nul
-goto :eof
-
-
-:problema
-echo.
-echo ==========================================
-echo   ALGO SALIO MAL
-echo ==========================================
-echo.
-echo   Lo mas probable es un conflicto: los dos
-echo   cambiaron el mismo archivo.
-echo.
-echo   NO sigas a ciegas. Avisale a tu companero
-echo   y lean juntos el mensaje de arriba.
-echo.
-echo   Para volver todo como estaba:
-echo       git rebase --abort
-echo.
-pause
-goto menu
