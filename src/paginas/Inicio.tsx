@@ -82,16 +82,16 @@ function Inicio() {
                 </button>
             </div>
 
-            <p className="mt-4">
+            <h2 className="mt-4">
                 Bienvenido a Sonido Vivo, tu tienda de instrumentos musicales en Viña del Mar.
-            </p>
+            </h2>
 
-            <p>
+            <h5 className="mt-3">
                 Encuentra guitarras, bajos, baterías, teclados, amplificadores,
                 micrófonos, pedales de efectos y accesorios para músicos.
-            </p>
+            </h5>
 
-            <p>
+            <p className="mt-3">
                 También realizamos reparación de instrumentos de cuerda.
             </p>
         </div>
