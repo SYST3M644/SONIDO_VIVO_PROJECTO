@@ -11,8 +11,9 @@ function Navbar({ cantidadCarrito, usuario, cerrarSesion }: NavbarProps) {
     return(
         <nav className="navbar navbar-expand-lg barra-navegacion" data-bs-theme="dark">
             <div className="container">
-                <Link className="navbar-brand fw-semibold" to="/">
-                    Sonido Vivo
+                <Link className="navbar-brand py-0" to="/">
+                    <img src="/img/logo/logo-navbar.png" alt="" className="logo-navbar" />
+                    <span className="visually-hidden">Sonido Vivo</span>
                 </Link>
 
                 <button
