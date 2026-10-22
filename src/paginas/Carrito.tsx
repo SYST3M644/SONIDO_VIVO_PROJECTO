@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Regresar from "../componentes/atomos/Regresar";
 import type { ProductoCarrito } from "../servicios/Productos";
 
@@ -7,14 +7,27 @@ type CarritoProps = {
     sumarCantidad: (id: number) => void;
     restarCantidad: (id: number) => void;
     quitarProducto: (id: number) => void;
+    puedeComprar: boolean;
 }
 
-function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto }: CarritoProps) {
+function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puedeComprar }: CarritoProps) {
+    const navigate = useNavigate();
+
     let total = 0;
 
     for (const producto of carrito) {
         total += producto.precio * producto.cantidad;
     }
+
+    const pagar = () => {
+        if (!puedeComprar) {
+            alert("Debes iniciar sesión para pagar");
+            navigate("/login");
+            return;
+        }
+
+        alert("¡Gracias por tu compra! Total: $" + total.toLocaleString("es-CL"));
+    };
 
     if (carrito.length === 0) {
         return (
@@ -83,6 +96,10 @@ function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto }: Car
             ))}
 
             <h3>Total: ${total.toLocaleString("es-CL")}</h3>
+
+            <button className="btn boton-tienda me-2" onClick={pagar}>
+                Pagar
+            </button>
 
             <Regresar />
         </div>

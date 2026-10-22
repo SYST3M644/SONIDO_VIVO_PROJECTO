@@ -28,14 +28,42 @@ function entrarComoCliente() {
     fireEvent.click(screen.getByRole("button", { name: "Ingresar" }));
 }
 
-test("El carrito pide iniciar sesion cuando no hay usuario", () => {
+test("Sin sesion se puede ver el carrito", () => {
     render(
         <MemoryRouter initialEntries={["/carrito"]}>
             <App />
         </MemoryRouter>
     );
 
-    expect(screen.getByText("Debes iniciar sesión como cliente para usar el carrito.")).toBeDefined();
+    expect(screen.getByText("El carrito está vacío")).toBeDefined();
+});
+
+test("Al pagar sin sesion pide iniciar sesion", () => {
+    const alerta = vi.spyOn(window, "alert").mockImplementation(() => {});
+
+    render(
+        <MemoryRouter initialEntries={["/productos"]}>
+            <App />
+        </MemoryRouter>
+    );
+
+    fireEvent.click(screen.getAllByText("Agregar al carrito")[0]);
+    fireEvent.click(screen.getByText("Carrito"));
+    fireEvent.click(screen.getByText("Pagar"));
+
+    expect(alerta).toHaveBeenCalledWith("Debes iniciar sesión para pagar");
+    expect(screen.getByText("Formulario de Login")).toBeDefined();
+});
+
+test("Al pagar con sesion muestra el total", () => {
+    entrarComoCliente();
+
+    fireEvent.click(screen.getByText("Productos"));
+    fireEvent.click(screen.getAllByText("Agregar al carrito")[0]);
+    fireEvent.click(screen.getByText("Carrito"));
+    fireEvent.click(screen.getByText("Pagar"));
+
+    expect(window.alert).toHaveBeenCalledWith("¡Gracias por tu compra! Total: $129.990");
 });
 
 test("El carrito vacio muestra un mensaje", () => {

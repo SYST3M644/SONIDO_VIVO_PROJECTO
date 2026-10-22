@@ -90,6 +90,12 @@ function App() {
     puedeComprar = true
   }
 
+  let esVendedor = false
+
+  if (usuario !== null && usuario.rol === "vendedor") {
+    esVendedor = true
+  }
+
   let esAdministrador = false
 
   if (usuario !== null && usuario.rol === "administrador") {
@@ -125,17 +131,18 @@ function App() {
           <Route
             path='/carrito'
             element={
-              puedeComprar ? (
+              esVendedor ? (
+                <p className='mt-5'>
+                  Los vendedores no pueden usar el carrito.
+                </p>
+              ) : (
                 <Carrito
                   carrito={carrito}
                   sumarCantidad={sumarCantidad}
                   restarCantidad={restarCantidad}
                   quitarProducto={quitarProducto}
+                  puedeComprar={puedeComprar}
                 />
-              ) : (
-                <p className='mt-5'>
-                  Debes iniciar sesión como cliente para usar el carrito.
-                </p>
               )
             }
           />
