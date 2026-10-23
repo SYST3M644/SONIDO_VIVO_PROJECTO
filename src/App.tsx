@@ -102,6 +102,12 @@ function App() {
     esAdministrador = true
   }
 
+  let atiendeLaTienda = false
+
+  if (esVendedor || esAdministrador) {
+    atiendeLaTienda = true
+  }
+
   return (
       <>
         <Navbar
