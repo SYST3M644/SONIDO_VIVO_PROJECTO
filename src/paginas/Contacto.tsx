@@ -1,6 +1,10 @@
 import FormularioContacto from "../componentes/organismos/FormularioContacto";
 
-function Contacto(){
+type ContactoProps = {
+    mostrarNotificacion: (texto: string, tipo: string) => void;
+};
+
+function Contacto({ mostrarNotificacion }: ContactoProps){
     return(
         <div className="container mt-5">
             <div className="row justify-content-center">
@@ -13,7 +17,7 @@ function Contacto(){
                             Escríbenos y te respondemos el mismo día.
                         </p>
 
-                        <FormularioContacto />
+                        <FormularioContacto mostrarNotificacion={mostrarNotificacion} />
                     </div>
                 </div>
             </div>

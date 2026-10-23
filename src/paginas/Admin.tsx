@@ -10,7 +10,11 @@ import {
 } from "../servicios/Usuarios";
 import type { Usuario } from "../servicios/Usuarios";
 
-function Admin() {
+type AdminProps = {
+    mostrarNotificacion: (texto: string, tipo: string) => void;
+};
+
+function Admin({ mostrarNotificacion }: AdminProps) {
     const [usuarios, setUsuarios] = useState<Usuario[]>(listarUsuarios());
     const [nombre, setNombre] = useState("");
     const [correo, setCorreo] = useState("");
@@ -32,17 +36,17 @@ function Admin() {
         e.preventDefault();
 
         if (nombre.trim() === "") {
-            alert("Debe ingresar el nombre");
+            mostrarNotificacion("Debe ingresar el nombre", "error");
             return;
         }
 
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
-            alert("Ingrese un correo válido");
+            mostrarNotificacion("Ingrese un correo válido", "error");
             return;
         }
 
         if (correoRepetido(correo, editando)) {
-            alert("Ese correo ya está registrado");
+            mostrarNotificacion("Ese correo ya está registrado", "error");
             return;
         }
 

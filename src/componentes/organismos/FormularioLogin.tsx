@@ -5,9 +5,10 @@ import type { Usuario } from "../../servicios/Autenticacion";
 
 type FormularioLoginProps = {
     guardarUsuario: (usuario: Usuario) => void;
+    mostrarNotificacion: (texto: string, tipo: string) => void;
 };
 
-function FormularioLogin({ guardarUsuario }: FormularioLoginProps) {
+function FormularioLogin({ guardarUsuario, mostrarNotificacion }: FormularioLoginProps) {
     const [correo, setCorreo] = useState("");
     const [contrasena, setContrasena] = useState("");
 
@@ -16,29 +17,29 @@ function FormularioLogin({ guardarUsuario }: FormularioLoginProps) {
 
 
         if (correo.trim() === "") {
-            alert("Debe ingresar su correo electrónico");
+            mostrarNotificacion("Debe ingresar su correo electrónico", "error");
             return;
         }
 
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
-            alert("Ingrese un correo válido");
+            mostrarNotificacion("Ingrese un correo válido", "error");
             return;
         }
 
         if (contrasena.trim() === "" || contrasena.length < 8) {
-            alert("Debe ingresar una contraseña de al menos 8 caracteres");
+            mostrarNotificacion("Debe ingresar una contraseña de al menos 8 caracteres", "error");
             return;
         }
 
         const usuario = iniciarSesion(correo, contrasena);
 
         if (usuario === null) {
-            alert("Correo o contraseña incorrectos");
+            mostrarNotificacion("Correo o contraseña incorrectos", "error");
             return;
         }
 
         guardarUsuario(usuario);
-        alert("Bienvenido " + usuario.nombre);
+        mostrarNotificacion("Bienvenido " + usuario.nombre, "exito");
     };
 
     return(

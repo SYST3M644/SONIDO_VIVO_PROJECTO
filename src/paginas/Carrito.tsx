@@ -8,9 +8,10 @@ type CarritoProps = {
     restarCantidad: (id: number) => void;
     quitarProducto: (id: number) => void;
     puedeComprar: boolean;
+    mostrarNotificacion: (texto: string, tipo: string) => void;
 }
 
-function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puedeComprar }: CarritoProps) {
+function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puedeComprar, mostrarNotificacion }: CarritoProps) {
     const navigate = useNavigate();
 
     let total = 0;
@@ -21,12 +22,12 @@ function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puede
 
     const pagar = () => {
         if (!puedeComprar) {
-            alert("Debes iniciar sesión para pagar");
+            mostrarNotificacion("Debes iniciar sesión para pagar", "error");
             navigate("/login");
             return;
         }
 
-        alert("¡Gracias por tu compra! Total: $" + total.toLocaleString("es-CL"));
+        mostrarNotificacion("¡Gracias por tu compra! Total: $" + total.toLocaleString("es-CL"), "exito");
     };
 
     if (carrito.length === 0) {

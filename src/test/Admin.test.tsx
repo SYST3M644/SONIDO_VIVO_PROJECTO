@@ -8,7 +8,7 @@ import Admin from "../paginas/Admin";
 afterEach(cleanup);
 
 test("Muestra la tabla con los usuarios del sistema", () => {
-    render(<Admin />);
+    render(<Admin mostrarNotificacion={() => {}} />);
 
     expect(screen.getByText("Carlos Rojas")).toBeDefined();
     expect(screen.getByText("Ana Soto")).toBeDefined();
@@ -16,7 +16,7 @@ test("Muestra la tabla con los usuarios del sistema", () => {
 });
 
 test("Muestra el rol y el estado de cada usuario", () => {
-    const { container } = render(<Admin />);
+    const { container } = render(<Admin mostrarNotificacion={() => {}} />);
 
     const tabla = container.querySelector("table");
 
@@ -26,7 +26,7 @@ test("Muestra el rol y el estado de cada usuario", () => {
 });
 
 test("Crea un usuario nuevo desde el formulario", () => {
-    render(<Admin />);
+    render(<Admin mostrarNotificacion={() => {}} />);
 
     fireEvent.change(screen.getByPlaceholderText("nombre"), {
         target: { value: "Javiera Mora" }
@@ -42,7 +42,7 @@ test("Crea un usuario nuevo desde el formulario", () => {
 });
 
 test("Desactiva un usuario desde la tabla", () => {
-    render(<Admin />);
+    render(<Admin mostrarNotificacion={() => {}} />);
 
     const botones = screen.getAllByRole("button", { name: "Desactivar" });
     fireEvent.click(botones[0]);
@@ -51,7 +51,7 @@ test("Desactiva un usuario desde la tabla", () => {
 });
 
 test("Carga los datos del usuario al presionar Editar", () => {
-    render(<Admin />);
+    render(<Admin mostrarNotificacion={() => {}} />);
 
     const botones = screen.getAllByRole("button", { name: "Editar" });
     fireEvent.click(botones[0]);

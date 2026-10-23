@@ -1,7 +1,11 @@
 import { useState } from "react";
 import CampoFormulario from "../moleculas/CampoFormulario";
 
-function FormularioContacto() {
+type FormularioContactoProps = {
+    mostrarNotificacion: (texto: string, tipo: string) => void;
+};
+
+function FormularioContacto({ mostrarNotificacion }: FormularioContactoProps) {
     const [nombre, setNombre] = useState("");
     const [correo, setCorreo] = useState("");
     const [mensaje, setMensaje] = useState("");
@@ -10,26 +14,26 @@ function FormularioContacto() {
         e.preventDefault();
 
         if (nombre.trim() === "") {
-            alert("Debe ingresar su nombre");
+            mostrarNotificacion("Debe ingresar su nombre", "error");
             return;
         }
 
         if (correo.trim() === "") {
-            alert("Debe ingresar su correo");
+            mostrarNotificacion("Debe ingresar su correo", "error");
             return;
         }
 
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
-            alert("Ingrese un correo válido");
+            mostrarNotificacion("Ingrese un correo válido", "error");
             return;
         }
 
         if (mensaje.trim() === "") {
-            alert("Debe ingresar un mensaje");
+            mostrarNotificacion("Debe ingresar un mensaje", "error");
             return;
         }
 
-        alert("Formulario enviado correctamente");
+        mostrarNotificacion("Formulario enviado correctamente", "exito");
     };
 
     return(

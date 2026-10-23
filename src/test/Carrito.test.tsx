@@ -39,8 +39,6 @@ test("Sin sesion se puede ver el carrito", () => {
 });
 
 test("Al pagar sin sesion pide iniciar sesion", () => {
-    const alerta = vi.spyOn(window, "alert").mockImplementation(() => {});
-
     render(
         <MemoryRouter initialEntries={["/productos"]}>
             <App />
@@ -51,7 +49,7 @@ test("Al pagar sin sesion pide iniciar sesion", () => {
     fireEvent.click(screen.getByText("Carrito"));
     fireEvent.click(screen.getByText("Pagar"));
 
-    expect(alerta).toHaveBeenCalledWith("Debes iniciar sesión para pagar");
+    expect(screen.getByText("Debes iniciar sesión para pagar")).toBeDefined();
     expect(screen.getByText("Formulario de Login")).toBeDefined();
 });
 
@@ -63,7 +61,7 @@ test("Al pagar con sesion muestra el total", () => {
     fireEvent.click(screen.getByText("Carrito"));
     fireEvent.click(screen.getByText("Pagar"));
 
-    expect(window.alert).toHaveBeenCalledWith("¡Gracias por tu compra! Total: $129.990");
+    expect(screen.getByText("¡Gracias por tu compra! Total: $129.990")).toBeDefined();
 });
 
 test("El carrito vacio muestra un mensaje", () => {

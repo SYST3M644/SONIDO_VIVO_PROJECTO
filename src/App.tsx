@@ -14,6 +14,7 @@ import Vendedor from './paginas/Vendedor'
 import Stock from './paginas/Stock'
 import Reportes from './paginas/Reportes'
 import Pie from './componentes/organismos/Pie'
+import Notificacion from './componentes/organismos/Notificacion'
 import { productos } from './servicios/Productos'
 import type { ProductoCarrito } from './servicios/Productos'
 import type { Usuario } from './servicios/Autenticacion'
@@ -22,6 +23,21 @@ import type { Usuario } from './servicios/Autenticacion'
 function App() {
   const [carrito, setCarrito] = useState<ProductoCarrito[]>([])
   const [usuario, setUsuario] = useState<Usuario | null>(null)
+  const [notificacion, setNotificacion] = useState("")
+  const [tipoNotificacion, setTipoNotificacion] = useState("exito")
+
+  const mostrarNotificacion = (texto: string, tipo: string) => {
+    setNotificacion(texto)
+    setTipoNotificacion(tipo)
+
+    setTimeout(() => {
+      setNotificacion("")
+    }, 4000)
+  }
+
+  const cerrarNotificacion = () => {
+    setNotificacion("")
+  }
 
   const guardarUsuario = (nuevoUsuario: Usuario) => {
     setUsuario(nuevoUsuario)
@@ -151,6 +167,7 @@ function App() {
                   restarCantidad={restarCantidad}
                   quitarProducto={quitarProducto}
                   puedeComprar={puedeComprar}
+                  mostrarNotificacion={mostrarNotificacion}
                 />
               )
             }
@@ -199,7 +216,7 @@ function App() {
             path='/admin'
             element={
               esAdministrador ? (
-                <Admin />
+                <Admin mostrarNotificacion={mostrarNotificacion} />
               ) : (
                 <p className='mt-5'>
                   Debes iniciar sesión como administrador para ver esta página.
@@ -210,7 +227,7 @@ function App() {
 
           <Route
             path='/contacto'
-            element={<Contacto />}
+            element={<Contacto mostrarNotificacion={mostrarNotificacion} />}
           />
 
           <Route
@@ -220,7 +237,7 @@ function App() {
 
           <Route
             path='/login'
-            element={<Login guardarUsuario={guardarUsuario} />}
+            element={<Login guardarUsuario={guardarUsuario} mostrarNotificacion={mostrarNotificacion} />}
           />
 
         </Routes>
@@ -228,6 +245,14 @@ function App() {
         </div>
 
         <Pie />
+
+        {notificacion !== "" && (
+          <Notificacion
+            texto={notificacion}
+            tipo={tipoNotificacion}
+            cerrar={cerrarNotificacion}
+          />
+        )}
       </>
   )
 }
