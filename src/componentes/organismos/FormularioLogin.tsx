@@ -5,42 +5,51 @@ import type { Usuario } from "../../servicios/Autenticacion";
 
 type FormularioLoginProps = {
     guardarUsuario: (usuario: Usuario) => void;
-    mostrarNotificacion: (texto: string, tipo: string) => void;
 };
 
-function FormularioLogin({ guardarUsuario, mostrarNotificacion }: FormularioLoginProps) {
+function FormularioLogin({ guardarUsuario }: FormularioLoginProps) {
     const [correo, setCorreo] = useState("");
     const [contrasena, setContrasena] = useState("");
+    const [mensaje, setMensaje] = useState("");
+    const [tipoMensaje, setTipoMensaje] = useState("error");
 
     const validarLogin = (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        setTipoMensaje("error");
 
         if (correo.trim() === "") {
-            mostrarNotificacion("Debe ingresar su correo electrónico", "error");
+            setMensaje("Debe ingresar su correo electrónico");
             return;
         }
 
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
-            mostrarNotificacion("Ingrese un correo válido", "error");
+            setMensaje("Ingrese un correo válido");
             return;
         }
 
         if (contrasena.trim() === "" || contrasena.length < 8) {
-            mostrarNotificacion("Debe ingresar una contraseña de al menos 8 caracteres", "error");
+            setMensaje("Debe ingresar una contraseña de al menos 8 caracteres");
             return;
         }
 
         const usuario = iniciarSesion(correo, contrasena);
 
         if (usuario === null) {
-            mostrarNotificacion("Correo o contraseña incorrectos", "error");
+            setMensaje("Correo o contraseña incorrectos");
             return;
         }
 
         guardarUsuario(usuario);
-        mostrarNotificacion("Bienvenido " + usuario.nombre, "exito");
+        setTipoMensaje("exito");
+        setMensaje("Bienvenido " + usuario.nombre);
     };
+
+    let estiloMensaje = "mensaje-error";
+
+    if (tipoMensaje === "exito") {
+        estiloMensaje = "mensaje-exito";
+    }
 
     return(
         <form onSubmit={validarLogin} noValidate>
@@ -48,6 +57,10 @@ function FormularioLogin({ guardarUsuario, mostrarNotificacion }: FormularioLogi
             <CampoFormulario etiqueta="Correo Electrónico" tipo="email" nombre="correo" valor={correo} alCambiar={setCorreo}/>
 
             <CampoFormulario etiqueta="Contraseña" tipo="password" nombre="contraseña"valor={contrasena} alCambiar={setContrasena}/>
+
+            {mensaje !== "" && (
+                <p className={estiloMensaje}>{mensaje}</p>
+            )}
 
             <button type="submit" className="btn boton-tienda">Ingresar</button>
 

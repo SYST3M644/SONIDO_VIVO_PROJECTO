@@ -10,20 +10,13 @@ import type { Usuario } from "../servicios/Autenticacion";
 afterEach(cleanup);
 
 let usuarioGuardado: Usuario | null = null;
-let mensaje = "";
-let tipoMensaje = "";
 
 function mostrarFormulario() {
     usuarioGuardado = null;
-    mensaje = "";
-    tipoMensaje = "";
 
     render(
         <MemoryRouter>
-            <FormularioLogin
-                guardarUsuario={(usuario) => { usuarioGuardado = usuario; }}
-                mostrarNotificacion={(texto, tipo) => { mensaje = texto; tipoMensaje = tipo; }}
-            />
+            <FormularioLogin guardarUsuario={(usuario) => { usuarioGuardado = usuario; }} />
         </MemoryRouter>
     );
 }
@@ -38,12 +31,14 @@ function presionarIngresar() {
     fireEvent.click(screen.getByRole("button", { name: "Ingresar" }));
 }
 
-test("Avisa cuando el correo esta vacio", () => {
+test("Avisa debajo del formulario cuando el correo esta vacio", () => {
     mostrarFormulario();
     presionarIngresar();
 
-    expect(mensaje).toBe("Debe ingresar su correo electrónico");
-    expect(tipoMensaje).toBe("error");
+    const aviso = screen.getByText("Debe ingresar su correo electrónico");
+
+    expect(aviso).toBeDefined();
+    expect(aviso.className).toBe("mensaje-error");
 });
 
 test("Avisa cuando el correo no tiene formato valido", () => {
@@ -51,7 +46,7 @@ test("Avisa cuando el correo no tiene formato valido", () => {
     escribir("correo", "correo-sin-arroba");
     presionarIngresar();
 
-    expect(mensaje).toBe("Ingrese un correo válido");
+    expect(screen.getByText("Ingrese un correo válido")).toBeDefined();
 });
 
 test("Avisa cuando la contraseña tiene menos de 8 caracteres", () => {
@@ -60,7 +55,7 @@ test("Avisa cuando la contraseña tiene menos de 8 caracteres", () => {
     escribir("contraseña", "1234");
     presionarIngresar();
 
-    expect(mensaje).toBe("Debe ingresar una contraseña de al menos 8 caracteres");
+    expect(screen.getByText("Debe ingresar una contraseña de al menos 8 caracteres")).toBeDefined();
 });
 
 test("Avisa cuando las credenciales no coinciden", () => {
@@ -69,7 +64,7 @@ test("Avisa cuando las credenciales no coinciden", () => {
     escribir("contraseña", "claveincorrecta");
     presionarIngresar();
 
-    expect(mensaje).toBe("Correo o contraseña incorrectos");
+    expect(screen.getByText("Correo o contraseña incorrectos")).toBeDefined();
     expect(usuarioGuardado).toBeNull();
 });
 
@@ -79,7 +74,8 @@ test("Guarda el usuario cuando las credenciales son correctas", () => {
     escribir("contraseña", "admin123");
     presionarIngresar();
 
+    const bienvenida = screen.getByText("Bienvenido Carlos Rojas");
+
     expect(usuarioGuardado).not.toBeNull();
-    expect(mensaje).toBe("Bienvenido Carlos Rojas");
-    expect(tipoMensaje).toBe("exito");
+    expect(bienvenida.className).toBe("mensaje-exito");
 });

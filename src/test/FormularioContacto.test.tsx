@@ -7,20 +7,6 @@ import FormularioContacto from "../componentes/organismos/FormularioContacto";
 
 afterEach(cleanup);
 
-let mensaje = "";
-let tipoMensaje = "";
-
-function mostrarFormulario() {
-    mensaje = "";
-    tipoMensaje = "";
-
-    render(
-        <FormularioContacto
-            mostrarNotificacion={(texto, tipo) => { mensaje = texto; tipoMensaje = tipo; }}
-        />
-    );
-}
-
 function escribir(campo: string, valor: string) {
     fireEvent.change(screen.getByPlaceholderText(campo), {
         target: { value: valor }
@@ -31,30 +17,31 @@ function presionarEnviar() {
     fireEvent.click(screen.getByRole("button", { name: "Enviar Mensaje" }));
 }
 
-test("Avisa cuando el nombre esta vacio", () => {
-    mostrarFormulario();
+test("Avisa debajo del formulario cuando el nombre esta vacio", () => {
+    render(<FormularioContacto />);
     presionarEnviar();
 
-    expect(mensaje).toBe("Debe ingresar su nombre");
-    expect(tipoMensaje).toBe("error");
+    expect(screen.getByText("Debe ingresar su nombre")).toBeDefined();
 });
 
 test("Avisa cuando falta el mensaje", () => {
-    mostrarFormulario();
+    render(<FormularioContacto />);
     escribir("nombre", "Pedro Diaz");
     escribir("correo", "pedro@sonidovivo.cl");
     presionarEnviar();
 
-    expect(mensaje).toBe("Debe ingresar un mensaje");
+    expect(screen.getByText("Debe ingresar un mensaje")).toBeDefined();
 });
 
 test("Confirma cuando el formulario esta completo", () => {
-    mostrarFormulario();
+    render(<FormularioContacto />);
     escribir("nombre", "Pedro Diaz");
     escribir("correo", "pedro@sonidovivo.cl");
     escribir("mensaje", "Quiero cotizar una guitarra");
     presionarEnviar();
 
-    expect(mensaje).toBe("Formulario enviado correctamente");
-    expect(tipoMensaje).toBe("exito");
+    const confirmacion = screen.getByText("Formulario enviado correctamente");
+
+    expect(confirmacion).toBeDefined();
+    expect(confirmacion.className).toBe("mensaje-exito");
 });

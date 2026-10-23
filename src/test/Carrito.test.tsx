@@ -50,7 +50,6 @@ test("Al pagar sin sesion pide iniciar sesion", () => {
     fireEvent.click(screen.getByText("Pagar"));
 
     expect(screen.getByText("Debes iniciar sesión para pagar")).toBeDefined();
-    expect(screen.getByText("Formulario de Login")).toBeDefined();
 });
 
 test("Al pagar con sesion muestra el total", () => {

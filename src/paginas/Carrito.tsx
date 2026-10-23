@@ -1,4 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import Regresar from "../componentes/atomos/Regresar";
 import type { ProductoCarrito } from "../servicios/Productos";
 
@@ -8,11 +9,11 @@ type CarritoProps = {
     restarCantidad: (id: number) => void;
     quitarProducto: (id: number) => void;
     puedeComprar: boolean;
-    mostrarNotificacion: (texto: string, tipo: string) => void;
 }
 
-function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puedeComprar, mostrarNotificacion }: CarritoProps) {
-    const navigate = useNavigate();
+function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puedeComprar }: CarritoProps) {
+    const [mensaje, setMensaje] = useState("");
+    const [tipoMensaje, setTipoMensaje] = useState("error");
 
     let total = 0;
 
@@ -22,13 +23,20 @@ function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puede
 
     const pagar = () => {
         if (!puedeComprar) {
-            mostrarNotificacion("Debes iniciar sesión para pagar", "error");
-            navigate("/login");
+            setTipoMensaje("error");
+            setMensaje("Debes iniciar sesión para pagar");
             return;
         }
 
-        mostrarNotificacion("¡Gracias por tu compra! Total: $" + total.toLocaleString("es-CL"), "exito");
+        setTipoMensaje("exito");
+        setMensaje("¡Gracias por tu compra! Total: $" + total.toLocaleString("es-CL"));
     };
+
+    let estiloMensaje = "mensaje-error";
+
+    if (tipoMensaje === "exito") {
+        estiloMensaje = "mensaje-exito";
+    }
 
     if (carrito.length === 0) {
         return (
@@ -103,6 +111,10 @@ function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puede
             </button>
 
             <Regresar />
+
+            {mensaje !== "" && (
+                <p className={estiloMensaje}>{mensaje}</p>
+            )}
         </div>
     );
 }

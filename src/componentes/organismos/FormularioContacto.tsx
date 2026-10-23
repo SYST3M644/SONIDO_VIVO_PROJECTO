@@ -1,40 +1,47 @@
 import { useState } from "react";
 import CampoFormulario from "../moleculas/CampoFormulario";
 
-type FormularioContactoProps = {
-    mostrarNotificacion: (texto: string, tipo: string) => void;
-};
-
-function FormularioContacto({ mostrarNotificacion }: FormularioContactoProps) {
+function FormularioContacto() {
     const [nombre, setNombre] = useState("");
     const [correo, setCorreo] = useState("");
+    const [mensajeContacto, setMensajeContacto] = useState("");
     const [mensaje, setMensaje] = useState("");
+    const [tipoMensaje, setTipoMensaje] = useState("error");
 
     const validarEnvioMSG = (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        setTipoMensaje("error");
+
         if (nombre.trim() === "") {
-            mostrarNotificacion("Debe ingresar su nombre", "error");
+            setMensaje("Debe ingresar su nombre");
             return;
         }
 
         if (correo.trim() === "") {
-            mostrarNotificacion("Debe ingresar su correo", "error");
+            setMensaje("Debe ingresar su correo");
             return;
         }
 
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
-            mostrarNotificacion("Ingrese un correo válido", "error");
+            setMensaje("Ingrese un correo válido");
             return;
         }
 
-        if (mensaje.trim() === "") {
-            mostrarNotificacion("Debe ingresar un mensaje", "error");
+        if (mensajeContacto.trim() === "") {
+            setMensaje("Debe ingresar un mensaje");
             return;
         }
 
-        mostrarNotificacion("Formulario enviado correctamente", "exito");
+        setTipoMensaje("exito");
+        setMensaje("Formulario enviado correctamente");
     };
+
+    let estiloMensaje = "mensaje-error";
+
+    if (tipoMensaje === "exito") {
+        estiloMensaje = "mensaje-exito";
+    }
 
     return(
         <form onSubmit={validarEnvioMSG} noValidate>
@@ -42,7 +49,11 @@ function FormularioContacto({ mostrarNotificacion }: FormularioContactoProps) {
 
             <CampoFormulario etiqueta="Correo Electrónico" tipo="email" nombre="correo" valor={correo} alCambiar={setCorreo}/>
 
-            <CampoFormulario etiqueta="Mensaje" tipo="text" nombre="mensaje"valor={mensaje} alCambiar={setMensaje}/>
+            <CampoFormulario etiqueta="Mensaje" tipo="text" nombre="mensaje" valor={mensajeContacto} alCambiar={setMensajeContacto}/>
+
+            {mensaje !== "" && (
+                <p className={estiloMensaje}>{mensaje}</p>
+            )}
 
             <button type="submit" className="btn boton-tienda">Enviar Mensaje</button>
 

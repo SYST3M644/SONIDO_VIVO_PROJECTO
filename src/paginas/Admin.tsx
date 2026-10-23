@@ -10,16 +10,13 @@ import {
 } from "../servicios/Usuarios";
 import type { Usuario } from "../servicios/Usuarios";
 
-type AdminProps = {
-    mostrarNotificacion: (texto: string, tipo: string) => void;
-};
-
-function Admin({ mostrarNotificacion }: AdminProps) {
+function Admin() {
     const [usuarios, setUsuarios] = useState<Usuario[]>(listarUsuarios());
     const [nombre, setNombre] = useState("");
     const [correo, setCorreo] = useState("");
     const [rol, setRol] = useState("cliente");
     const [editando, setEditando] = useState(0);
+    const [mensaje, setMensaje] = useState("");
 
     const refrescar = () => {
         setUsuarios([...listarUsuarios()]);
@@ -35,18 +32,20 @@ function Admin({ mostrarNotificacion }: AdminProps) {
     const guardar = (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        setMensaje("");
+
         if (nombre.trim() === "") {
-            mostrarNotificacion("Debe ingresar el nombre", "error");
+            setMensaje("Debe ingresar el nombre");
             return;
         }
 
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
-            mostrarNotificacion("Ingrese un correo válido", "error");
+            setMensaje("Ingrese un correo válido");
             return;
         }
 
         if (correoRepetido(correo, editando)) {
-            mostrarNotificacion("Ese correo ya está registrado", "error");
+            setMensaje("Ese correo ya está registrado");
             return;
         }
 
@@ -115,6 +114,10 @@ function Admin({ mostrarNotificacion }: AdminProps) {
                                     ))}
                                 </select>
                             </div>
+
+                            {mensaje !== "" && (
+                                <p className="mensaje-error">{mensaje}</p>
+                            )}
 
                             <button type="submit" className="btn boton-tienda">
                                 {editando === 0 ? "Crear Usuario" : "Guardar Cambios"}

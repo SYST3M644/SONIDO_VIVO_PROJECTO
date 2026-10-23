@@ -3,10 +3,9 @@ import type { Usuario } from "../servicios/Autenticacion";
 
 type LoginProps = {
     guardarUsuario: (usuario: Usuario) => void;
-    mostrarNotificacion: (texto: string, tipo: string) => void;
 };
 
-function Login({ guardarUsuario, mostrarNotificacion }: LoginProps){
+function Login({ guardarUsuario }: LoginProps){
     return(
         <div className="container mt-5">
             <div className="row justify-content-center">
@@ -14,7 +13,7 @@ function Login({ guardarUsuario, mostrarNotificacion }: LoginProps){
                     <div className="card shadow-sm p-4">
                         <h2 className="mt-4">Formulario de Login</h2>
 
-                        <FormularioLogin guardarUsuario={guardarUsuario} mostrarNotificacion={mostrarNotificacion} />
+                        <FormularioLogin guardarUsuario={guardarUsuario} />
                     </div>
                 </div>
             </div>
