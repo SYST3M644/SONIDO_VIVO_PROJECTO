@@ -10,6 +10,9 @@ import DetalleProducto from './paginas/DetalleProducto'
 import Login from './paginas/Login'
 import Carrito from './paginas/Carrito'
 import Admin from './paginas/Admin'
+import Vendedor from './paginas/Vendedor'
+import Stock from './paginas/Stock'
+import Reportes from './paginas/Reportes'
 import Pie from './componentes/organismos/Pie'
 import { productos } from './servicios/Productos'
 import type { ProductoCarrito } from './servicios/Productos'
@@ -149,6 +152,45 @@ function App() {
                   quitarProducto={quitarProducto}
                   puedeComprar={puedeComprar}
                 />
+              )
+            }
+          />
+
+          <Route
+            path='/vendedor'
+            element={
+              atiendeLaTienda ? (
+                <Vendedor />
+              ) : (
+                <p className='mt-5'>
+                  Debes iniciar sesión como vendedor para ver los pedidos.
+                </p>
+              )
+            }
+          />
+
+          <Route
+            path='/vendedor/stock'
+            element={
+              atiendeLaTienda ? (
+                <Stock />
+              ) : (
+                <p className='mt-5'>
+                  Debes iniciar sesión como vendedor para ver el stock.
+                </p>
+              )
+            }
+          />
+
+          <Route
+            path='/reportes'
+            element={
+              esAdministrador ? (
+                <Reportes />
+              ) : (
+                <p className='mt-5'>
+                  Debes iniciar sesión como administrador para ver los reportes.
+                </p>
               )
             }
           />
