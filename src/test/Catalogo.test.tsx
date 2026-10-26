@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { test, expect, afterEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen, cleanup, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 
 import Productos from "../paginas/Producto";
@@ -65,4 +65,48 @@ test("Cada producto tiene su boton para ver el detalle", () => {
   );
 
   expect(screen.getAllByText("Ver Producto").length).toBe(12);
+});
+
+test("El buscador muestra solo los productos que coinciden", () => {
+  render(
+    <MemoryRouter>
+      <Productos agregarProducto={() => {}} />
+    </MemoryRouter>
+  );
+
+  fireEvent.change(screen.getByPlaceholderText("Buscar producto"), {
+    target: { value: "guitarra" }
+  });
+
+  expect(screen.getByText("Guitarra Acustica Folk")).toBeDefined();
+  expect(screen.queryByText("Saxofon Alto")).toBeNull();
+});
+
+test("El filtro muestra solo la categoria elegida", () => {
+  render(
+    <MemoryRouter>
+      <Productos agregarProducto={() => {}} />
+    </MemoryRouter>
+  );
+
+  fireEvent.change(screen.getByRole("combobox"), {
+    target: { value: "Vientos" }
+  });
+
+  expect(screen.getByText("Saxofon Alto")).toBeDefined();
+  expect(screen.queryByText("Guitarra Acustica Folk")).toBeNull();
+});
+
+test("Si no hay resultados muestra un mensaje", () => {
+  render(
+    <MemoryRouter>
+      <Productos agregarProducto={() => {}} />
+    </MemoryRouter>
+  );
+
+  fireEvent.change(screen.getByPlaceholderText("Buscar producto"), {
+    target: { value: "violonchelo" }
+  });
+
+  expect(screen.getByText("No se encontraron productos")).toBeDefined();
 });
