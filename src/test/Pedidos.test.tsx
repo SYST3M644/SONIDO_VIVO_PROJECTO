@@ -5,7 +5,8 @@ import {
     cambiarEstado,
     listarMeses,
     pedidosDelMes,
-    agregarPedido
+    agregarPedido,
+    pedidosDeCliente
 } from "../servicios/Pedidos";
 
 test("Parte con los pedidos de la tienda", () => {
@@ -40,6 +41,11 @@ test("Con el periodo todos devuelve el total de pedidos", () => {
     expect(pedidosDelMes("todos").length).toBe(8);
 });
 
+test("Lista solo los pedidos de un cliente", () => {
+    expect(pedidosDeCliente("Pedro Diaz").length).toBe(3);
+    expect(pedidosDeCliente("Cliente Sin Compras").length).toBe(0);
+});
+
 test("Agrega un pedido nuevo en preparacion", () => {
     const pedido = agregarPedido("Pedro Diaz", 129990, "despacho");
 
@@ -47,4 +53,4 @@ test("Agrega un pedido nuevo en preparacion", () => {
     expect(pedido.estado).toBe("en preparacion");
     expect(pedido.entrega).toBe("despacho");
     expect(listarPedidos().length).toBe(9);
-});
+});
