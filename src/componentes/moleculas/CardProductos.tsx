@@ -42,7 +42,7 @@ function CardProducto({id, titulo, descripcion, precio, imagen, agregarProducto}
                         aria-label="Agregar al carrito"
                         onClick={() => agregarProducto(id)}
                     >
-                        <img src="/img/carrito.svg" alt="" width="20" height="20" />
+                        <img src="/img/carrito.svg" alt="" width="22" height="22" />
                     </button>
                 </div>
 
