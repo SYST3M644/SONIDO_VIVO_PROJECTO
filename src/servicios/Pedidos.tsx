@@ -114,3 +114,20 @@ export function pedidosDelMes(mes: string) {
 
     return pedidos.filter(pedido => pedido.fecha.slice(0, 7) === mes);
 }
+
+export function agregarPedido(cliente: string, total: number, entrega: string) {
+    const ultimoPedido = pedidos[pedidos.length - 1];
+
+    const nuevoPedido: Pedido = {
+        id: ultimoPedido.id + 1,
+        cliente: cliente,
+        fecha: new Date().toISOString().slice(0, 10),
+        total: total,
+        entrega: entrega,
+        estado: "en preparacion"
+    };
+
+    pedidos = [...pedidos, nuevoPedido];
+
+    return nuevoPedido;
+}
