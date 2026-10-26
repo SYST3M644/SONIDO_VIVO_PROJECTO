@@ -33,6 +33,8 @@ function CardProducto({id, titulo, descripcion, precio, imagen, agregarProducto}
                 </p>
 
                 <div className="mt-auto d-flex gap-2">
+                    <Boton id={id}/>
+
                     <button
                         className="btn boton-carrito"
                         type="button"
@@ -45,8 +47,6 @@ function CardProducto({id, titulo, descripcion, precio, imagen, agregarProducto}
                             <path d="M5 13a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
                         </svg>
                     </button>
-
-                    <Boton id={id}/>
                 </div>
 
             </div>
