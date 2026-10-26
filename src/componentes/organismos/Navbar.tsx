@@ -47,6 +47,12 @@ function Navbar({ cantidadCarrito, usuario, cerrarSesion }: NavbarProps) {
                             </Link>
                         )}
 
+                        {usuario !== null && usuario.rol === "cliente" && (
+                            <Link className="nav-link" to="/mis-pedidos">
+                                Mis pedidos
+                            </Link>
+                        )}
+
                         <Link className="nav-link" to="/contacto">
                             Contacto
                         </Link>
@@ -105,4 +111,4 @@ function Navbar({ cantidadCarrito, usuario, cerrarSesion }: NavbarProps) {
     );
 }
 
-export default Navbar
+export default Navbar
