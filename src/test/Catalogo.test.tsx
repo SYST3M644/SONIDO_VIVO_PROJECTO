@@ -38,7 +38,7 @@ test("Todos los productos del catalogo tienen fotografia", () => {
     </MemoryRouter>
   );
 
-  const imagenes = container.querySelectorAll("img");
+  const imagenes = container.querySelectorAll("img.card-img-top");
 
   expect(imagenes.length).toBe(12);
   imagenes.forEach((imagen) => {
