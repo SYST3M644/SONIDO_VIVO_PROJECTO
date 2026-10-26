@@ -38,7 +38,7 @@ test("Sin sesion se puede ver el carrito", () => {
     expect(screen.getByText("El carrito está vacío")).toBeDefined();
 });
 
-test("Al pagar sin sesion pide iniciar sesion", () => {
+test("Al confirmar sin sesion pide iniciar sesion", () => {
     render(
         <MemoryRouter initialEntries={["/productos"]}>
             <App />
@@ -47,20 +47,34 @@ test("Al pagar sin sesion pide iniciar sesion", () => {
 
     fireEvent.click(screen.getAllByText("Agregar al carrito")[0]);
     fireEvent.click(screen.getByText("Carrito"));
-    fireEvent.click(screen.getByText("Pagar"));
+    fireEvent.click(screen.getByText("Confirmar pedido"));
 
-    expect(screen.getByText("Debes iniciar sesión para pagar")).toBeDefined();
+    expect(screen.getByText("Debes iniciar sesión para confirmar el pedido")).toBeDefined();
 });
 
-test("Al pagar con sesion muestra el total", () => {
+test("Al confirmar con sesion se crea el pedido y se vacia el carrito", () => {
     entrarComoCliente();
 
     fireEvent.click(screen.getByText("Productos"));
     fireEvent.click(screen.getAllByText("Agregar al carrito")[0]);
     fireEvent.click(screen.getByText("Carrito"));
-    fireEvent.click(screen.getByText("Pagar"));
+    fireEvent.click(screen.getByText("Confirmar pedido"));
 
-    expect(screen.getByText("¡Gracias por tu compra! Total: $129.990")).toBeDefined();
+    expect(screen.getByText("¡Gracias por tu compra! Tu pedido N° 1009 fue confirmado")).toBeDefined();
+    expect(screen.getByText("El carrito está vacío")).toBeDefined();
+});
+
+test("Se puede elegir retiro en tienda", () => {
+    entrarComoCliente();
+
+    fireEvent.click(screen.getByText("Productos"));
+    fireEvent.click(screen.getAllByText("Agregar al carrito")[0]);
+    fireEvent.click(screen.getByText("Carrito"));
+
+    const retiro = screen.getByLabelText("Retiro en tienda") as HTMLInputElement;
+    fireEvent.click(retiro);
+
+    expect(retiro.checked).toBe(true);
 });
 
 test("El carrito vacio muestra un mensaje", () => {

@@ -81,6 +81,10 @@ function App() {
     setCarrito(nuevoCarrito)
   }
 
+  const vaciarCarrito = () => {
+    setCarrito([])
+  }
+
   let cantidadCarrito = 0
 
   for (const item of carrito) {
@@ -91,6 +95,12 @@ function App() {
 
   if (usuario !== null && usuario.rol !== "vendedor") {
     puedeComprar = true
+  }
+
+  let nombreCliente = ""
+
+  if (usuario !== null) {
+    nombreCliente = usuario.nombre
   }
 
   let esVendedor = false
@@ -151,7 +161,8 @@ function App() {
                   restarCantidad={restarCantidad}
                   quitarProducto={quitarProducto}
                   puedeComprar={puedeComprar}
-                 
+                  vaciarCarrito={vaciarCarrito}
+                  nombreCliente={nombreCliente}
                 />
               )
             }

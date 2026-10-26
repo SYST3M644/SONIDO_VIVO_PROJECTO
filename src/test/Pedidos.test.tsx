@@ -4,7 +4,8 @@ import {
     buscarPedido,
     cambiarEstado,
     listarMeses,
-    pedidosDelMes
+    pedidosDelMes,
+    agregarPedido
 } from "../servicios/Pedidos";
 
 test("Parte con los pedidos de la tienda", () => {
@@ -37,4 +38,13 @@ test("Filtra los pedidos de un mes", () => {
 
 test("Con el periodo todos devuelve el total de pedidos", () => {
     expect(pedidosDelMes("todos").length).toBe(8);
+});
+
+test("Agrega un pedido nuevo en preparacion", () => {
+    const pedido = agregarPedido("Pedro Diaz", 129990, "despacho");
+
+    expect(pedido.id).toBe(1009);
+    expect(pedido.estado).toBe("en preparacion");
+    expect(pedido.entrega).toBe("despacho");
+    expect(listarPedidos().length).toBe(9);
 });
