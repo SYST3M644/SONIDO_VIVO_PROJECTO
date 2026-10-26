@@ -75,3 +75,18 @@ test("Solo el administrador ve el enlace de administracion", () => {
   mostrarNavbar(usuarioCon("vendedor"));
   expect(screen.queryByText("Administración")).toBeNull();
 });
+
+test("Solo el cliente ve el enlace de mis pedidos", () => {
+  mostrarNavbar(usuarioCon("cliente"));
+  expect(screen.getByText("Mis pedidos")).toBeDefined();
+
+  cleanup();
+
+  mostrarNavbar(usuarioCon("vendedor"));
+  expect(screen.queryByText("Mis pedidos")).toBeNull();
+
+  cleanup();
+
+  mostrarNavbar(null);
+  expect(screen.queryByText("Mis pedidos")).toBeNull();
+});
