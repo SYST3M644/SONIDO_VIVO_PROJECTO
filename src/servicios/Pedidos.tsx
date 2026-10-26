@@ -131,3 +131,7 @@ export function agregarPedido(cliente: string, total: number, entrega: string) {
 
     return nuevoPedido;
 }
+
+export function pedidosDeCliente(cliente: string) {
+    return pedidos.filter(pedido => pedido.cliente === cliente);
+}
