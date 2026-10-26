@@ -27,6 +27,18 @@
     color: #ffffff;
 }
 
+.boton-ver {
+    background-color: transparent;
+    border: 1px solid var(--sv-caoba);
+    color: var(--sv-caoba);
+}
+
+.boton-ver:hover {
+    background-color: var(--sv-caoba);
+    border-color: var(--sv-caoba);
+    color: #ffffff;
+}
+
 .carrusel-tienda {
     border-radius: 10px;
     overflow: hidden;
@@ -219,8 +231,8 @@ textarea {
 }
 
 .boton-carrito {
-    background-color: var(--sv-carbon);
-    border: 1px solid var(--sv-carbon);
+    background-color: var(--sv-caoba);
+    border: 1px solid var(--sv-caoba);
     color: #ffffff;
     display: flex;
     align-items: center;
@@ -230,7 +242,7 @@ textarea {
 }
 
 .boton-carrito:hover {
-    background-color: var(--sv-caoba);
-    border-color: var(--sv-caoba);
+    background-color: var(--sv-caoba-oscuro);
+    border-color: var(--sv-caoba-oscuro);
     color: #ffffff;
 }
