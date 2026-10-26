@@ -13,6 +13,7 @@ import Admin from './paginas/Admin'
 import Vendedor from './paginas/Vendedor'
 import Stock from './paginas/Stock'
 import Reportes from './paginas/Reportes'
+import MisPedidos from './paginas/MisPedidos'
 import Pie from './componentes/organismos/Pie'
 import { productos } from './servicios/Productos'
 import type { ProductoCarrito } from './servicios/Productos'
@@ -103,6 +104,12 @@ function App() {
     nombreCliente = usuario.nombre
   }
 
+  let esCliente = false
+
+  if (usuario !== null && usuario.rol === "cliente") {
+    esCliente = true
+  }
+
   let esVendedor = false
 
   if (usuario !== null && usuario.rol === "vendedor") {
@@ -164,6 +171,19 @@ function App() {
                   vaciarCarrito={vaciarCarrito}
                   nombreCliente={nombreCliente}
                 />
+              )
+            }
+          />
+
+          <Route
+            path='/mis-pedidos'
+            element={
+              esCliente ? (
+                <MisPedidos nombreCliente={nombreCliente} />
+              ) : (
+                <p className='mt-5'>
+                  Debes iniciar sesión como cliente para ver tus pedidos.
+                </p>
               )
             }
           />
