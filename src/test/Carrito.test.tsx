@@ -45,7 +45,7 @@ test("Al confirmar sin sesion pide iniciar sesion", () => {
         </MemoryRouter>
     );
 
-    fireEvent.click(screen.getAllByText("Agregar al carrito")[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: "Agregar al carrito" })[0]);
     fireEvent.click(screen.getByText("Carrito"));
     fireEvent.click(screen.getByText("Confirmar pedido"));
 
@@ -56,7 +56,7 @@ test("Al confirmar con sesion se crea el pedido y se vacia el carrito", () => {
     entrarComoCliente();
 
     fireEvent.click(screen.getByText("Productos"));
-    fireEvent.click(screen.getAllByText("Agregar al carrito")[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: "Agregar al carrito" })[0]);
     fireEvent.click(screen.getByText("Carrito"));
     fireEvent.click(screen.getByText("Confirmar pedido"));
 
@@ -68,7 +68,7 @@ test("Se puede elegir retiro en tienda", () => {
     entrarComoCliente();
 
     fireEvent.click(screen.getByText("Productos"));
-    fireEvent.click(screen.getAllByText("Agregar al carrito")[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: "Agregar al carrito" })[0]);
     fireEvent.click(screen.getByText("Carrito"));
 
     const retiro = screen.getByLabelText("Retiro en tienda") as HTMLInputElement;
@@ -90,7 +90,7 @@ test("Se puede agregar, sumar, restar y quitar un producto", () => {
 
     fireEvent.click(screen.getByText("Productos"));
 
-    const botonesAgregar = screen.getAllByText("Agregar al carrito");
+    const botonesAgregar = screen.getAllByRole("button", { name: "Agregar al carrito" });
     fireEvent.click(botonesAgregar[0]);
     fireEvent.click(botonesAgregar[0]);
 

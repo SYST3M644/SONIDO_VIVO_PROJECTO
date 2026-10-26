@@ -17,7 +17,7 @@ interface BotonProps {
 function Boton({id}: BotonProps) {
     return (
         <Link to={`/productos/${id}`}
-        className="btn boton-tienda"
+        className="btn boton-tienda flex-grow-1"
         >
             Ver Producto
         </Link>

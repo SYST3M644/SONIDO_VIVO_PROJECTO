@@ -217,3 +217,20 @@ textarea {
     margin-top: 4px;
     margin-bottom: 12px;
 }
+
+.boton-carrito {
+    background-color: var(--sv-carbon);
+    border: 1px solid var(--sv-carbon);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    flex-shrink: 0;
+}
+
+.boton-carrito:hover {
+    background-color: var(--sv-caoba);
+    border-color: var(--sv-caoba);
+    color: #ffffff;
+}
