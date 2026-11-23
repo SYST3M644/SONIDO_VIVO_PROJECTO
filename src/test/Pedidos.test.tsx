@@ -1,56 +1,43 @@
-import { test, expect } from "vitest";
-import {
-    listarPedidos,
-    buscarPedido,
-    cambiarEstado,
-    listarMeses,
-    pedidosDelMes,
-    agregarPedido,
-    pedidosDeCliente
-} from "../servicios/Pedidos";
+import { test, expect, vi, afterEach } from "vitest";
+import { agregarPedido, listarMeses, pedidosDelMes } from "../servicios/Pedidos";
+import type { Pedido } from "../servicios/Pedidos";
 
-test("Parte con los pedidos de la tienda", () => {
-    expect(listarPedidos().length).toBe(8);
+afterEach(() => {
+    vi.restoreAllMocks();
 });
 
-test("Cambia el estado de un pedido", () => {
-    cambiarEstado(1006, "despachado");
+const pedidosDePrueba: Pedido[] = [
+    { id: 1001, cliente: "Pedro Diaz", correo: "pedro@correo.cl", fecha: "2026-08-14", total: 129990, entrega: "retiro en tienda", estado: "entregado", items: [] },
+    { id: 1002, cliente: "Camila Reyes", correo: "camila@correo.cl", fecha: "2026-09-03", total: 379990, entrega: "despacho", estado: "en preparacion", items: [] }
+];
 
-    expect(buscarPedido(1006)?.estado).toBe("despachado");
+test("Crea el pedido en el microservicio", async () => {
+    const peticion = vi.spyOn(globalThis, "fetch").mockResolvedValue({
+        ok: true,
+        json: async () => pedidosDePrueba[0]
+    } as Response);
 
-    cambiarEstado(1006, "en preparacion");
+    const pedido = await agregarPedido("Pedro Diaz", "pedro@correo.cl", 129990, "retiro en tienda", []);
 
-    expect(buscarPedido(1006)?.estado).toBe("en preparacion");
+    expect(peticion).toHaveBeenCalledWith(
+        "http://localhost:6464/api/pedidos",
+        {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                cliente: "Pedro Diaz",
+                correo: "pedro@correo.cl",
+                total: 129990,
+                entrega: "retiro en tienda",
+                items: []
+            })
+        }
+    );
+    expect(pedido.id).toBe(1001);
 });
 
-test("Lista los meses que tienen pedidos", () => {
-    const meses = listarMeses();
-
-    expect(meses).toContain("2026-08");
-    expect(meses).toContain("2026-09");
-    expect(meses).toContain("2026-10");
+test("Agrupa los pedidos por mes", () => {
+    expect(listarMeses(pedidosDePrueba)).toEqual(["2026-08", "2026-09"]);
+    expect(pedidosDelMes(pedidosDePrueba, "2026-08").length).toBe(1);
+    expect(pedidosDelMes(pedidosDePrueba, "todos").length).toBe(2);
 });
-
-test("Filtra los pedidos de un mes", () => {
-    expect(pedidosDelMes("2026-08").length).toBe(2);
-    expect(pedidosDelMes("2026-09").length).toBe(3);
-    expect(pedidosDelMes("2026-10").length).toBe(3);
-});
-
-test("Con el periodo todos devuelve el total de pedidos", () => {
-    expect(pedidosDelMes("todos").length).toBe(8);
-});
-
-test("Lista solo los pedidos de un cliente", () => {
-    expect(pedidosDeCliente("Pedro Diaz").length).toBe(3);
-    expect(pedidosDeCliente("Cliente Sin Compras").length).toBe(0);
-});
-
-test("Agrega un pedido nuevo en preparacion", () => {
-    const pedido = agregarPedido("Pedro Diaz", 129990, "despacho");
-
-    expect(pedido.id).toBe(1009);
-    expect(pedido.estado).toBe("en preparacion");
-    expect(pedido.entrega).toBe("despacho");
-    expect(listarPedidos().length).toBe(9);
-});

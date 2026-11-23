@@ -15,6 +15,7 @@ vi.mock("../servicios/Productos", () => ({
     listarProductos: () => Promise.resolve(productosDePrueba),
     buscarProducto: (id: number) => Promise.resolve(productosDePrueba.find((p) => p.id === id)),
     actualizarStock: () => Promise.resolve({}),
+    descontarStock: () => Promise.resolve({}),
     urlImagen: (imagen: string) => "http://localhost:6464/api/productos/imagenes/" + imagen
 }));
 
@@ -39,6 +40,22 @@ function entrarComoCliente() {
 
     fireEvent.click(screen.getByRole("button", { name: "Ingresar" }));
 }
+
+vi.mock("../servicios/Pedidos", () => ({
+    estados: ["en preparacion", "despachado", "entregado"],
+    agregarPedido: (cliente: string) => Promise.resolve({
+        id: 1001,
+        cliente: cliente,
+        correo: "cliente@sonidovivo.cl",
+        fecha: "2026-11-23",
+        total: 129990,
+        entrega: "despacho",
+        estado: "en preparacion",
+        items: []
+    }),
+    pedidosDeCliente: () => Promise.resolve([]),
+    listarPedidos: () => Promise.resolve([])
+}));
 
 vi.mock("../servicios/Autenticacion", () => ({
     iniciarSesion: () => Promise.resolve({
@@ -91,7 +108,7 @@ test("Un invitado puede comprar sin iniciar sesion", async () => {
 
     fireEvent.click(screen.getByText("Confirmar pedido"));
 
-    expect(screen.getByText(/fue confirmado/)).toBeDefined();
+    expect(await screen.findByText(/fue confirmado/)).toBeDefined();
     expect(screen.getByText("El carrito está vacío")).toBeDefined();
 });
 
@@ -105,7 +122,7 @@ test("Al confirmar con sesion se crea el pedido y se vacia el carrito", async ()
     fireEvent.click(screen.getByText("Carrito"));
     fireEvent.click(screen.getByText("Confirmar pedido"));
 
-    expect(screen.getByText(/¡Gracias por tu compra! Tu pedido N° \d+ fue confirmado/)).toBeDefined();
+    expect(await screen.findByText(/¡Gracias por tu compra! Tu pedido N° \d+ fue confirmado/)).toBeDefined();
     expect(screen.getByText("El carrito está vacío")).toBeDefined();
 });
 

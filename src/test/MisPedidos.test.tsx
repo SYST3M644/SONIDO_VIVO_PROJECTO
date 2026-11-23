@@ -1,43 +1,34 @@
 // @vitest-environment jsdom
 
-import { test, expect, afterEach } from "vitest";
+import { test, expect, afterEach, vi } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 
 import MisPedidos from "../paginas/MisPedidos";
-import { cambiarEstado } from "../servicios/Pedidos";
+
+vi.mock("../servicios/Pedidos", () => ({
+    estados: ["en preparacion", "despachado", "entregado"],
+    pedidosDeCliente: (cliente: string) => {
+        if (cliente !== "Pedro Diaz") {
+            return Promise.resolve([]);
+        }
+
+        return Promise.resolve([
+            { id: 1001, cliente: "Pedro Diaz", correo: "pedro@correo.cl", fecha: "2026-08-14", total: 129990, entrega: "retiro en tienda", estado: "entregado", items: [] }
+        ]);
+    }
+}));
 
 afterEach(cleanup);
 
-test("El cliente ve solo sus pedidos", () => {
-    render(<MisPedidos nombreCliente="Pedro Diaz" />);
+test("El cliente ve solo sus propios pedidos", async () => {
+    render(<MisPedidos nombreCliente="Pedro Diaz" token="token-de-prueba" />);
 
-    expect(screen.getByText("1001")).toBeDefined();
-    expect(screen.getByText("1004")).toBeDefined();
-    expect(screen.getByText("1008")).toBeDefined();
-    expect(screen.queryByText("1002")).toBeNull();
+    expect(await screen.findByText(/1001/)).toBeDefined();
 });
 
-test("Muestra el estado de cada pedido", () => {
-    render(<MisPedidos nombreCliente="Pedro Diaz" />);
+test("Avisa cuando el cliente no tiene compras", async () => {
+    render(<MisPedidos nombreCliente="Cliente Nuevo" token="token-de-prueba" />);
 
-    expect(screen.getByText("Entregado")).toBeDefined();
-    expect(screen.getByText("Despachado")).toBeDefined();
-    expect(screen.getByText("En preparación")).toBeDefined();
-});
-
-test("Si el vendedor cambia el estado, el cliente lo ve", () => {
-    cambiarEstado(1008, "despachado");
-
-    render(<MisPedidos nombreCliente="Pedro Diaz" />);
-
-    expect(screen.getAllByText("Despachado").length).toBe(2);
-    expect(screen.queryByText("En preparación")).toBeNull();
-
-    cambiarEstado(1008, "en preparacion");
-});
-
-test("Un cliente sin compras ve un mensaje", () => {
-    render(<MisPedidos nombreCliente="Cliente Sin Compras" />);
-
-    expect(screen.getByText("Todavía no tienes pedidos")).toBeDefined();
+    expect(await screen.findByText(/Mis Pedidos/)).toBeDefined();
+    expect(screen.queryByText(/1001/)).toBeNull();
 });

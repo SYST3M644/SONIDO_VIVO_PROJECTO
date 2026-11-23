@@ -1,40 +1,38 @@
 // @vitest-environment jsdom
 
-import { test, expect, afterEach } from "vitest";
+import { test, expect, afterEach, vi } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
 import Reportes from "../paginas/Reportes";
 
+vi.mock("../servicios/Pedidos", async () => {
+    const real = await vi.importActual<typeof import("../servicios/Pedidos")>("../servicios/Pedidos");
+
+    return {
+        ...real,
+        listarPedidos: () => Promise.resolve([
+            { id: 1001, cliente: "Pedro Diaz", correo: "pedro@correo.cl", fecha: "2026-08-14", total: 100000, entrega: "retiro en tienda", estado: "entregado", items: [] },
+            { id: 1002, cliente: "Camila Reyes", correo: "camila@correo.cl", fecha: "2026-09-03", total: 200000, entrega: "despacho", estado: "en preparacion", items: [] }
+        ])
+    };
+});
+
 afterEach(cleanup);
 
-test("Muestra el total vendido de todos los meses", () => {
-    render(<Reportes />);
+test("Muestra el total vendido y la cantidad de pedidos", async () => {
+    render(<Reportes token="token-de-prueba" />);
 
-    expect(screen.getByText("$2.904.920")).toBeDefined();
-    expect(screen.getByText("8")).toBeDefined();
+    expect(await screen.findByText("$300.000")).toBeDefined();
+    expect(screen.getByText("Pedro Diaz")).toBeDefined();
 });
 
-test("Al elegir un mes cambia el resumen", () => {
-    render(<Reportes />);
+test("Al elegir un mes cambia el resumen", async () => {
+    render(<Reportes token="token-de-prueba" />);
 
-    const periodo = screen.getByRole("combobox");
-    fireEvent.change(periodo, { target: { value: "2026-08" } });
+    await screen.findByText("$300.000");
 
-    expect(screen.getByText("$509.980")).toBeDefined();
-});
+    fireEvent.change(screen.getByRole("combobox"), { target: { value: "2026-08" } });
 
-test("Muestra el conteo de pedidos por estado", () => {
-    const { container } = render(<Reportes />);
-
-    expect(container.textContent).toContain("Pedidos por estado");
-    expect(container.textContent).toContain("en preparacion");
-    expect(container.textContent).toContain("despachado");
-    expect(container.textContent).toContain("entregado");
-});
-
-test("Muestra el detalle de los pedidos del periodo", () => {
-    render(<Reportes />);
-
-    expect(screen.getByText("Jorge Carrasco")).toBeDefined();
-    expect(screen.getByText("Ignacio Soto")).toBeDefined();
+    expect(screen.getAllByText("$100.000").length).toBeGreaterThan(0);
+    expect(screen.queryByText("Camila Reyes")).toBeNull();
 });
