@@ -1,11 +1,25 @@
-import { useState } from "react";
-import { listarMeses, pedidosDelMes, estados } from "../servicios/Pedidos";
+import { useEffect, useState } from "react";
+import { listarPedidos, listarMeses, pedidosDelMes, estados } from "../servicios/Pedidos";
+import type { Pedido } from "../servicios/Pedidos";
 
-function Reportes() {
+type ReportesProps = {
+    token: string;
+};
+
+function Reportes({ token }: ReportesProps) {
     const [mes, setMes] = useState("todos");
+    const [todos, setTodos] = useState<Pedido[]>([]);
+    const [cargando, setCargando] = useState(true);
 
-    const meses = listarMeses();
-    const pedidos = pedidosDelMes(mes);
+    useEffect(() => {
+        listarPedidos(token)
+            .then((datos) => setTodos(datos))
+            .catch(() => setTodos([]))
+            .finally(() => setCargando(false));
+    }, [token]);
+
+    const meses = listarMeses(todos);
+    const pedidos = pedidosDelMes(todos, mes);
 
     let total = 0;
 
@@ -26,6 +40,14 @@ function Reportes() {
     return (
         <div className="container mt-4">
             <h1 className="titulo-seccion">Resumen de Ventas</h1>
+
+            {cargando && (
+                <p>Cargando ventas...</p>
+            )}
+
+            {!cargando && todos.length === 0 && (
+                <p>Todavía no hay ventas registradas</p>
+            )}
 
             <div className="row justify-content-center mb-4">
                 <div className="col-12 col-md-6 col-lg-4">

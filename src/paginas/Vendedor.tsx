@@ -1,13 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { listarPedidos, cambiarEstado, estados } from "../servicios/Pedidos";
 import type { Pedido } from "../servicios/Pedidos";
 
-function Vendedor() {
-    const [pedidos, setPedidos] = useState<Pedido[]>(listarPedidos());
+type VendedorProps = {
+    token: string;
+};
 
-    const actualizarEstado = (id: number, estado: string) => {
-        cambiarEstado(id, estado);
-        setPedidos([...listarPedidos()]);
+function Vendedor({ token }: VendedorProps) {
+    const [pedidos, setPedidos] = useState<Pedido[]>([]);
+    const [cargando, setCargando] = useState(true);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        listarPedidos(token)
+            .then((datos) => {
+                setPedidos(datos);
+                setError("");
+            })
+            .catch(() => {
+                setPedidos([]);
+                setError("No se pudieron cargar los pedidos. Revisa que el backend esté encendido.");
+            })
+            .finally(() => setCargando(false));
+    }, [token]);
+
+    const actualizarEstado = async (id: number, estado: string) => {
+        setPedidos(pedidos.map((pedido) => {
+            if (pedido.id === id) {
+                return { ...pedido, estado: estado };
+            }
+            return pedido;
+        }));
+
+        try {
+            await cambiarEstado(id, estado, token);
+        } catch (error) {
+            console.error("No se pudo cambiar el estado:", error);
+        }
     };
 
     return (
@@ -18,12 +47,25 @@ function Vendedor() {
                 Cambia el estado de cada pedido a medida que avanza.
             </p>
 
+            {cargando && (
+                <p>Cargando pedidos...</p>
+            )}
+
+            {!cargando && error && (
+                <p className="mensaje-error">{error}</p>
+            )}
+
+            {!cargando && !error && pedidos.length === 0 && (
+                <p>Todavía no hay pedidos</p>
+            )}
+
             <div className="table-responsive">
                 <table className="table table-striped align-middle">
                     <thead>
                         <tr>
                             <th>Pedido</th>
                             <th>Cliente</th>
+                            <th>Productos</th>
                             <th>Fecha</th>
                             <th>Entrega</th>
                             <th>Total</th>
@@ -35,7 +77,23 @@ function Vendedor() {
                         {pedidos.map((pedido) => (
                             <tr key={pedido.id}>
                                 <td>{pedido.id}</td>
-                                <td>{pedido.cliente}</td>
+                                <td>
+                                    {pedido.cliente}
+
+                                    {pedido.correo && (
+                                        <span className="d-block text-body-secondary small">
+                                            {pedido.correo}
+                                        </span>
+                                    )}
+                                </td>
+
+                                <td className="text-start">
+                                    {pedido.items.map((item) => (
+                                        <span className="d-block small" key={item.productoId}>
+                                            {item.cantidad} x {item.titulo}
+                                        </span>
+                                    ))}
+                                </td>
                                 <td>{pedido.fecha}</td>
                                 <td>{pedido.entrega}</td>
                                 <td>${pedido.total.toLocaleString("es-CL")}</td>

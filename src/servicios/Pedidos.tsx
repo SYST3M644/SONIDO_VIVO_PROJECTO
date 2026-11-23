@@ -1,99 +1,99 @@
+export type PedidoItem = {
+    productoId: number;
+    titulo: string;
+    precio: number;
+    cantidad: number;
+}
+
 export type Pedido = {
     id: number;
     cliente: string;
+    correo: string;
     fecha: string;
     total: number;
     entrega: string;
     estado: string;
+    items: PedidoItem[];
 }
 
 export const estados = ["en preparacion", "despachado", "entregado"];
 
-let pedidos: Pedido[] = [
-    {
-        id: 1001,
-        cliente: "Pedro Diaz",
-        fecha: "2026-08-14",
-        total: 129990,
-        entrega: "retiro en tienda",
-        estado: "entregado"
-    },
-    {
-        id: 1002,
-        cliente: "Marcela Fuentes",
-        fecha: "2026-08-27",
-        total: 379990,
-        entrega: "despacho",
-        estado: "entregado"
-    },
-    {
-        id: 1003,
-        cliente: "Jorge Carrasco",
-        fecha: "2026-09-03",
-        total: 1149990,
-        entrega: "retiro en tienda",
-        estado: "entregado"
-    },
-    {
-        id: 1004,
-        cliente: "Pedro Diaz",
-        fecha: "2026-09-19",
-        total: 69990,
-        entrega: "despacho",
-        estado: "despachado"
-    },
-    {
-        id: 1005,
-        cliente: "Camila Reyes",
-        fecha: "2026-09-30",
-        total: 649990,
-        entrega: "despacho",
-        estado: "despachado"
-    },
-    {
-        id: 1006,
-        cliente: "Ignacio Soto",
-        fecha: "2026-10-05",
-        total: 54990,
-        entrega: "retiro en tienda",
-        estado: "en preparacion"
-    },
-    {
-        id: 1007,
-        cliente: "Marcela Fuentes",
-        fecha: "2026-10-12",
-        total: 279990,
-        entrega: "despacho",
-        estado: "en preparacion"
-    },
-    {
-        id: 1008,
-        cliente: "Pedro Diaz",
-        fecha: "2026-10-20",
-        total: 189990,
-        entrega: "retiro en tienda",
-        estado: "en preparacion"
-    }
-];
+const API = "http://localhost:6464/api/pedidos";
 
-export function listarPedidos() {
-    return pedidos;
+function autorizacion(token: string) {
+    return {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token,
+    };
 }
 
-export function buscarPedido(id: number) {
-    return pedidos.find(pedido => pedido.id === id);
-}
-
-export function cambiarEstado(id: number, estado: string) {
-    pedidos = pedidos.map(pedido => {
-        if (pedido.id === id) {
-            return { ...pedido, estado: estado };
-        }
-        return pedido;
+export async function listarPedidos(token: string): Promise<Pedido[]> {
+    const respuesta = await fetch(API, {
+        headers: autorizacion(token),
     });
+
+    if (!respuesta.ok) {
+        throw new Error("Error HTTP " + respuesta.status);
+    }
+
+    return await respuesta.json();
 }
 
-export function listarMeses() {
+export async function pedidosDeCliente(cliente: string, token: string): Promise<Pedido[]> {
+    const respuesta = await fetch(API + "?cliente=" + encodeURIComponent(cliente), {
+        headers: autorizacion(token),
+    });
+
+    if (!respuesta.ok) {
+        throw new Error("Error HTTP " + respuesta.status);
+    }
+
+    return await respuesta.json();
+}
+
+export async function agregarPedido(cliente: string, correo: string, total: number, entrega: string, items: PedidoItem[]): Promise<Pedido> {
+    const respuesta = await fetch(API, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            cliente: cliente,
+            correo: correo,
+            total: total,
+            entrega: entrega,
+            items: items,
+        }),
+    });
+
+    if (!respuesta.ok) {
+        const detalle = await respuesta.json().catch(() => null);
+
+        if (detalle !== null && detalle.message) {
+            throw new Error(detalle.message);
+        }
+
+        throw new Error("Error HTTP " + respuesta.status);
+    }
+
+    return await respuesta.json();
+}
+
+export async function cambiarEstado(id: number, estado: string, token: string): Promise<Pedido> {
+    const respuesta = await fetch(API + "/" + id + "/estado", {
+        method: "PUT",
+        headers: autorizacion(token),
+        body: JSON.stringify({ estado: estado }),
+    });
+
+    if (!respuesta.ok) {
+        throw new Error("Error HTTP " + respuesta.status);
+    }
+
+    return await respuesta.json();
+}
+
+export function listarMeses(pedidos: Pedido[]) {
     const meses: string[] = [];
 
     for (const pedido of pedidos) {
@@ -107,31 +107,10 @@ export function listarMeses() {
     return meses;
 }
 
-export function pedidosDelMes(mes: string) {
+export function pedidosDelMes(pedidos: Pedido[], mes: string) {
     if (mes === "todos") {
         return pedidos;
     }
 
     return pedidos.filter(pedido => pedido.fecha.slice(0, 7) === mes);
-}
-
-export function agregarPedido(cliente: string, total: number, entrega: string) {
-    const ultimoPedido = pedidos[pedidos.length - 1];
-
-    const nuevoPedido: Pedido = {
-        id: ultimoPedido.id + 1,
-        cliente: cliente,
-        fecha: new Date().toISOString().slice(0, 10),
-        total: total,
-        entrega: entrega,
-        estado: "en preparacion"
-    };
-
-    pedidos = [...pedidos, nuevoPedido];
-
-    return nuevoPedido;
-}
-
-export function pedidosDeCliente(cliente: string) {
-    return pedidos.filter(pedido => pedido.cliente === cliente);
 }

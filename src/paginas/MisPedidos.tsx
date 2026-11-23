@@ -1,11 +1,31 @@
+import { useEffect, useState } from "react";
 import { pedidosDeCliente } from "../servicios/Pedidos";
+import type { Pedido } from "../servicios/Pedidos";
 
 type MisPedidosProps = {
     nombreCliente: string;
+    token: string;
 };
 
-function MisPedidos({ nombreCliente }: MisPedidosProps) {
-    const pedidos = pedidosDeCliente(nombreCliente);
+function MisPedidos({ nombreCliente, token }: MisPedidosProps) {
+    const [pedidos, setPedidos] = useState<Pedido[]>([]);
+    const [cargando, setCargando] = useState(true);
+
+    useEffect(() => {
+        pedidosDeCliente(nombreCliente, token)
+            .then((datos) => setPedidos(datos))
+            .catch(() => setPedidos([]))
+            .finally(() => setCargando(false));
+    }, [nombreCliente, token]);
+
+    if (cargando) {
+        return (
+            <div className="container mt-4">
+                <h1 className="titulo-seccion">Mis Pedidos</h1>
+                <p>Cargando tus pedidos...</p>
+            </div>
+        );
+    }
 
     if (pedidos.length === 0) {
         return (
