@@ -1,16 +1,45 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import Regresar from "../componentes/atomos/Regresar";
-import { productos } from "../servicios/Productos";
+import { buscarProducto, urlImagen } from "../servicios/Productos";
+import type { Producto } from "../servicios/Productos";
 import { buscarFicha } from "../servicios/Caracteristicas";
 
-function DetalleProducto() {
+type DetalleProductoProps = {
+    agregarProducto: (id: number) => void;
+};
+
+function DetalleProducto({ agregarProducto }: DetalleProductoProps) {
     const { id } = useParams()
 
-    const producto = productos.find(
-        producto => producto.id === Number(id)
-    )
+    const [producto, setProducto] = useState<Producto | null>(null);
+    const [cargando, setCargando] = useState(true);
+
+    useEffect(() => {
+        buscarProducto(Number(id))
+            .then((datos) => setProducto(datos))
+            .catch(() => setProducto(null))
+            .finally(() => setCargando(false));
+    }, [id]);
 
     const ficha = buscarFicha(Number(id));
+
+    if (cargando) {
+        return (
+            <div className="container mt-4">
+                <p>Cargando producto...</p>
+            </div>
+        );
+    }
+
+    if (producto === null) {
+        return (
+            <div className="container mt-4">
+                <p>No se encontró el producto</p>
+                <Regresar />
+            </div>
+        );
+    }
 
     return (
         <div className="container mt-4">
@@ -20,18 +49,18 @@ function DetalleProducto() {
                 <div className="col-12 col-md-5">
                     <img
                         className="img-fluid"
-                        src={producto?.imagen}
-                        alt={producto?.titulo}
+                        src={urlImagen(producto.imagen)}
+                        alt={producto.titulo}
                     />
                 </div>
 
                 <div className="col-12 col-md-6 text-start">
-                    <h2>{producto?.titulo}</h2>
+                    <h2>{producto.titulo}</h2>
 
-                    <p className="text-body-secondary">{producto?.descripcion}</p>
+                    <p className="text-body-secondary">{producto.descripcion}</p>
 
                     <p className="precio-producto">
-                        ${producto?.precio.toLocaleString("es-CL")}
+                        ${producto.precio.toLocaleString("es-CL")}
                     </p>
 
                     <h3 className="h5 mt-4">Características</h3>
@@ -49,7 +78,17 @@ function DetalleProducto() {
                         </table>
                     </div>
 
-                    <Regresar />
+                    <div className="d-flex gap-2 flex-wrap">
+                        <button
+                            type="button"
+                            className="btn boton-tienda"
+                            onClick={() => agregarProducto(producto.id)}
+                        >
+                            Agregar al carrito
+                        </button>
+
+                        <Regresar />
+                    </div>
                 </div>
             </div>
         </div>

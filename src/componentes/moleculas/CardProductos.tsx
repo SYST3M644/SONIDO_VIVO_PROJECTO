@@ -1,4 +1,5 @@
 import Boton from "../atomos/Boton";
+import { urlImagen } from "../../servicios/Productos";
 
 
 interface CardProps {
@@ -15,7 +16,7 @@ function CardProducto({id, titulo, descripcion, precio, imagen, agregarProducto}
         <div className="card tarjeta-producto" style={{ width: '20rem', maxWidth: '100%'}}>
 
             <img 
-            src={imagen} className="card-img-top" 
+            src={urlImagen(imagen)} className="card-img-top" 
             alt={titulo} 
             style={{height: '200px',objectFit: 'contain'}}
             />

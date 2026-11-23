@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Regresar from "../componentes/atomos/Regresar";
 import type { ProductoCarrito } from "../servicios/Productos";
+import { urlImagen } from "../servicios/Productos";
 import { agregarPedido } from "../servicios/Pedidos";
 
 type CarritoProps = {
@@ -73,7 +74,7 @@ function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puede
 
                         <div className="col-12 col-md-2">
                             <img
-                                src={producto.imagen}
+                                src={urlImagen(producto.imagen)}
                                 alt={producto.titulo}
                                 style={{ width: '100px' }}
                             />

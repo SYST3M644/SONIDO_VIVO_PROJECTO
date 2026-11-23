@@ -1,5 +1,5 @@
 import './App.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './componentes/organismos/Navbar'
 import Inicio from './paginas/Inicio'
@@ -14,15 +14,32 @@ import Vendedor from './paginas/Vendedor'
 import Stock from './paginas/Stock'
 import Reportes from './paginas/Reportes'
 import MisPedidos from './paginas/MisPedidos'
+import Mensajes from './paginas/Mensajes'
 import Pie from './componentes/organismos/Pie'
-import { productos } from './servicios/Productos'
-import type { ProductoCarrito } from './servicios/Productos'
+import { listarProductos } from './servicios/Productos'
+import type { Producto, ProductoCarrito } from './servicios/Productos'
 import type { Usuario } from './servicios/Autenticacion'
 
 
 function App() {
   const [carrito, setCarrito] = useState<ProductoCarrito[]>([])
   const [usuario, setUsuario] = useState<Usuario | null>(null)
+  const [productos, setProductos] = useState<Producto[]>([])
+  const [cargando, setCargando] = useState(true)
+  const [errorCatalogo, setErrorCatalogo] = useState("")
+
+  useEffect(() => {
+    listarProductos()
+      .then((datos) => {
+        setProductos(datos)
+        setErrorCatalogo("")
+      })
+      .catch(() => {
+        setProductos([])
+        setErrorCatalogo("No se pudo cargar el catálogo. Revisa que el backend esté encendido.")
+      })
+      .finally(() => setCargando(false))
+  }, [])
 
   const guardarUsuario = (nuevoUsuario: Usuario) => {
     setUsuario(nuevoUsuario)
@@ -146,12 +163,12 @@ function App() {
 
           <Route
             path='/productos'
-            element={<Productos agregarProducto={agregarProducto} />}
+            element={<Productos productos={productos} cargando={cargando} error={errorCatalogo} agregarProducto={agregarProducto} />}
           />
 
           <Route
             path='/productos/:id'
-            element={<DetalleProducto />}
+            element={<DetalleProducto agregarProducto={agregarProducto} />}
           />
 
           <Route
@@ -209,6 +226,19 @@ function App() {
               ) : (
                 <p className='mt-5'>
                   Debes iniciar sesión como vendedor para ver el stock.
+                </p>
+              )
+            }
+          />
+
+          <Route
+            path='/mensajes'
+            element={
+              esAdministrador && usuario !== null ? (
+                <Mensajes token={usuario.token} />
+              ) : (
+                <p className='mt-5'>
+                  Debes iniciar sesión como administrador para ver los mensajes.
                 </p>
               )
             }

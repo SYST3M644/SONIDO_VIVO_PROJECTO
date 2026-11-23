@@ -1,12 +1,15 @@
 import { useState } from "react"
 import CardProductos from "../componentes/moleculas/CardProductos"
-import { productos } from "../servicios/Productos"
+import type { Producto } from "../servicios/Productos"
 
 type ProductosProps = {
+    productos: Producto[];
+    cargando: boolean;
+    error?: string;
     agregarProducto: (id: number) => void;
 };
 
-function Productos({ agregarProducto }: ProductosProps) {
+function Productos({ productos, cargando, error, agregarProducto }: ProductosProps) {
     const [busqueda, setBusqueda] = useState("");
     const [categoria, setCategoria] = useState("Todas");
 
@@ -49,7 +52,15 @@ function Productos({ agregarProducto }: ProductosProps) {
                 </div>
             </div>
 
-            {productosFiltrados.length === 0 && (
+            {cargando && (
+                <p>Cargando productos...</p>
+            )}
+
+            {!cargando && error && (
+                <p className="mensaje-error">{error}</p>
+            )}
+
+            {!cargando && !error && productosFiltrados.length === 0 && (
                 <p>No se encontraron productos</p>
             )}
 

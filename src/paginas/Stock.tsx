@@ -1,20 +1,37 @@
-import { useState } from "react";
-import { productos } from "../servicios/Productos";
-import { listarExistencias, actualizarStock } from "../servicios/Stock";
-import type { Existencia } from "../servicios/Stock";
+import { useEffect, useState } from "react";
+import { actualizarStock, listarProductos } from "../servicios/Productos";
+import type { Producto } from "../servicios/Productos";
 
 function Stock() {
-    const [existencias, setExistencias] = useState<Existencia[]>(listarExistencias());
+    const [existencias, setExistencias] = useState<Producto[]>([]);
+    const [cargando, setCargando] = useState(true);
 
-    const cambiarCantidad = (id: number, valor: string) => {
+    useEffect(() => {
+        listarProductos()
+            .then((datos) => setExistencias(datos))
+            .catch(() => setExistencias([]))
+            .finally(() => setCargando(false));
+    }, []);
+
+    const cambiarCantidad = async (id: number, valor: string) => {
         const cantidad = Number(valor);
 
         if (valor === "" || cantidad < 0) {
             return;
         }
 
-        actualizarStock(id, cantidad);
-        setExistencias([...listarExistencias()]);
+        setExistencias(existencias.map((producto) => {
+            if (producto.id === id) {
+                return { ...producto, stock: cantidad };
+            }
+            return producto;
+        }));
+
+        try {
+            await actualizarStock(id, cantidad);
+        } catch (error) {
+            console.error("No se pudo actualizar el stock:", error);
+        }
     };
 
     return (
@@ -24,6 +41,10 @@ function Stock() {
             <p className="text-body-secondary">
                 Actualiza las unidades disponibles en bodega.
             </p>
+
+            {cargando && (
+                <p>Cargando stock...</p>
+            )}
 
             <div className="table-responsive">
                 <table className="table table-striped align-middle">
@@ -36,41 +57,35 @@ function Stock() {
                     </thead>
 
                     <tbody>
-                        {existencias.map((existencia) => {
-                            const producto = productos.find(
-                                producto => producto.id === existencia.id
-                            );
+                        {existencias.map((existencia) => (
+                            <tr key={existencia.id}>
+                                <td>{existencia.titulo}</td>
 
-                            return (
-                                <tr key={existencia.id}>
-                                    <td>{producto?.titulo}</td>
+                                <td style={{ width: '140px' }}>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        className="form-control form-control-sm"
+                                        value={existencia.stock}
+                                        onChange={(e) => cambiarCantidad(existencia.id, e.target.value)}
+                                    />
+                                </td>
 
-                                    <td style={{ width: '140px' }}>
-                                        <input
-                                            type="number"
-                                            min="0"
-                                            className="form-control form-control-sm"
-                                            value={existencia.cantidad}
-                                            onChange={(e) => cambiarCantidad(existencia.id, e.target.value)}
-                                        />
-                                    </td>
+                                <td>
+                                    {existencia.stock === 0 && (
+                                        <span className="badge text-bg-secondary">Sin stock</span>
+                                    )}
 
-                                    <td>
-                                        {existencia.cantidad === 0 && (
-                                            <span className="badge text-bg-secondary">Sin stock</span>
-                                        )}
+                                    {existencia.stock > 0 && existencia.stock <= 3 && (
+                                        <span className="badge text-bg-warning">Quedan pocas</span>
+                                    )}
 
-                                        {existencia.cantidad > 0 && existencia.cantidad <= 3 && (
-                                            <span className="badge text-bg-warning">Quedan pocas</span>
-                                        )}
-
-                                        {existencia.cantidad > 3 && (
-                                            <span className="badge text-bg-success">Disponible</span>
-                                        )}
-                                    </td>
-                                </tr>
-                            );
-                        })}
+                                    {existencia.stock > 3 && (
+                                        <span className="badge text-bg-success">Disponible</span>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>

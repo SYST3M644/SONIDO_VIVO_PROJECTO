@@ -4,6 +4,7 @@ export type Producto = {
     descripcion: string;
     precio: number;
     imagen: string;
+    stock: number;
     categoria: string;
 };
 
@@ -15,101 +16,44 @@ export type ProductoCarrito = {
     cantidad: number;
 };
 
-export const productos: Producto[] = [
-    {
-        id: 1,
-        titulo: "Guitarra Acustica Folk",
-        descripcion: "Yamaha F310",
-        precio: 129990,
-        imagen: "/img/guitarra-acustica.jpg",
-        categoria: "Cuerdas"
-    },
-    {
-        id: 2,
-        titulo: "Guitarra Acustica Dreadnought",
-        descripcion: "Fender CD-60S",
-        precio: 189990,
-        imagen: "/img/guitarra-dreadnought.jpg",
-        categoria: "Cuerdas"
-    },
-    {
-        id: 3,
-        titulo: "Bajo Electrico",
-        descripcion: "Ibanez GSR200",
-        precio: 379990,
-        imagen: "/img/bajo-electrico.jpg",
-        categoria: "Cuerdas"
-    },
-    {
-        id: 4,
-        titulo: "Piano Digital",
-        descripcion: "Korg LP-180 de 88 Teclas",
-        precio: 649990,
-        imagen: "/img/piano-digital.jpg",
-        categoria: "Teclados"
-    },
-    {
-        id: 5,
-        titulo: "Saxofon Alto",
-        descripcion: "Yamaha YAS-280 laqueado",
-        precio: 1149990,
-        imagen: "/img/saxofon-alto.jpg",
-        categoria: "Vientos"
-    },
-    {
-        id: 6,
-        titulo: "Ukelele Soprano",
-        descripcion: "Kala KA-15S de caoba",
-        precio: 69990,
-        imagen: "/img/ukelele-soprano.jpg",
-        categoria: "Cuerdas"
-    },
-    {
-        id: 7,
-        titulo: "Melodica 32 Teclas",
-        descripcion: "Hohner Student 32 con estuche",
-        precio: 54990,
-        imagen: "/img/melodica.jpg",
-        categoria: "Teclados"
-    },
-    {
-        id: 8,
-        titulo: "Zampona Andina",
-        descripcion: "Artesanal de bambu, 13 tubos",
-        precio: 24990,
-        imagen: "/img/zampona.jpg",
-        categoria: "Vientos"
-    },
-    {
-        id: 9,
-        titulo: "Arpa Celta",
-        descripcion: "34 cuerdas con llaves de semitono",
-        precio: 1290990,
-        imagen: "/img/arpa.jpg",
-        categoria: "Cuerdas"
-    },
-    {
-        id: 10,
-        titulo: "Set de Platillos",
-        descripcion: "Zildjian Planet Z de 4 piezas",
-        precio: 279990,
-        imagen: "/img/platillos.jpg",
-        categoria: "Percusión"
-    },
-    {
-        id: 11,
-        titulo: "Microfono para Vientos",
-        descripcion: "Shure Beta 98 con pinza",
-        precio: 349990,
-        imagen: "/img/microfono-vientos.jpg",
-        categoria: "Audio"
-    },
-    {
-        id: 12,
-        titulo: "Atril de Partituras",
-        descripcion: "Hercules BS050B plegable",
-        precio: 29990,
-        imagen: "/img/atril-partituras.jpg",
-        categoria: "Accesorios"
+const API = "http://localhost:6464/api/productos";
+
+export function urlImagen(imagen: string) {
+    return API + "/imagenes/" + imagen;
+}
+
+export async function listarProductos(): Promise<Producto[]> {
+    const respuesta = await fetch(API);
+
+    if (!respuesta.ok) {
+        throw new Error("Error HTTP " + respuesta.status);
     }
-];
+
+    return await respuesta.json();
+}
+
+export async function buscarProducto(id: number): Promise<Producto> {
+    const respuesta = await fetch(API + "/" + id);
+
+    if (!respuesta.ok) {
+        throw new Error("Error HTTP " + respuesta.status);
+    }
+
+    return await respuesta.json();
+}
+
+export async function actualizarStock(id: number, stock: number): Promise<Producto> {
+    const respuesta = await fetch(API + "/" + id + "/stock", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ stock: stock }),
+    });
+
+    if (!respuesta.ok) {
+        throw new Error("Error HTTP " + respuesta.status);
+    }
+
+    return await respuesta.json();
+}
