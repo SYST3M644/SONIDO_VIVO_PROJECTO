@@ -8,6 +8,9 @@ type NavbarProps = {
 };
 
 function Navbar({ cantidadCarrito, usuario, cerrarSesion }: NavbarProps) {
+    const esStaff = usuario !== null && (usuario.rol === "vendedor" || usuario.rol === "administrador");
+    const esCliente = usuario === null || usuario.rol === "cliente";
+
     return(
         <nav className="navbar navbar-expand-lg barra-navegacion" data-bs-theme="dark">
             <div className="container">
@@ -38,7 +41,7 @@ function Navbar({ cantidadCarrito, usuario, cerrarSesion }: NavbarProps) {
                             Productos
                         </Link>
 
-                        {(usuario === null || usuario.rol !== "vendedor") && (
+                        {esCliente && (
                             <Link className="nav-link" to="/carrito">
                                 Carrito
                                 <span className="badge text-bg-light ms-2">
@@ -53,36 +56,67 @@ function Navbar({ cantidadCarrito, usuario, cerrarSesion }: NavbarProps) {
                             </Link>
                         )}
 
-                        <Link className="nav-link" to="/contacto">
-                            Contacto
-                        </Link>
-
-                        <Link className="nav-link" to="/nosotros">
-                            Nosotros
-                        </Link>
-
-                        {usuario !== null && (usuario.rol === "vendedor" || usuario.rol === "administrador") && (
+                        {esCliente && (
                             <>
-                                <Link className="nav-link" to="/vendedor">
-                                    Pedidos
+                                <Link className="nav-link" to="/contacto">
+                                    Contacto
                                 </Link>
 
-                                <Link className="nav-link" to="/vendedor/stock">
-                                    Stock
+                                <Link className="nav-link" to="/nosotros">
+                                    Nosotros
                                 </Link>
                             </>
                         )}
 
-                        {usuario !== null && usuario.rol === "administrador" && (
-                            <>
-                                <Link className="nav-link" to="/reportes">
-                                    Reportes
-                                </Link>
+                        {esStaff && usuario !== null && (
+                            <div className="nav-item dropdown">
+                                <button
+                                    className="nav-link dropdown-toggle"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                >
+                                    Gestión
+                                </button>
 
-                                <Link className="nav-link" to="/admin">
-                                    Administración
-                                </Link>
-                            </>
+                                <ul className="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <Link className="dropdown-item" to="/vendedor">
+                                            Pedidos
+                                        </Link>
+                                    </li>
+
+                                    <li>
+                                        <Link className="dropdown-item" to="/vendedor/stock">
+                                            Stock
+                                        </Link>
+                                    </li>
+
+                                    {usuario.rol === "administrador" && (
+                                        <>
+                                            <li><hr className="dropdown-divider" /></li>
+
+                                            <li>
+                                                <Link className="dropdown-item" to="/mensajes">
+                                                    Mensajes
+                                                </Link>
+                                            </li>
+
+                                            <li>
+                                                <Link className="dropdown-item" to="/reportes">
+                                                    Reportes
+                                                </Link>
+                                            </li>
+
+                                            <li>
+                                                <Link className="dropdown-item" to="/admin">
+                                                    Usuarios
+                                                </Link>
+                                            </li>
+                                        </>
+                                    )}
+                                </ul>
+                            </div>
                         )}
 
                         {usuario === null ? (
@@ -111,4 +145,4 @@ function Navbar({ cantidadCarrito, usuario, cerrarSesion }: NavbarProps) {
     );
 }
 
-export default Navbar
+export default Navbar
