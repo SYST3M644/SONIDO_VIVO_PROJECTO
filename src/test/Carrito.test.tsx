@@ -60,7 +60,7 @@ test("Sin sesion se puede ver el carrito", () => {
     expect(screen.getByText("El carrito está vacío")).toBeDefined();
 });
 
-test("Al confirmar sin sesion pide iniciar sesion", async () => {
+async function agregarYAbrirCarrito() {
     render(
         <MemoryRouter initialEntries={["/productos"]}>
             <App />
@@ -71,9 +71,28 @@ test("Al confirmar sin sesion pide iniciar sesion", async () => {
 
     fireEvent.click(screen.getAllByRole("button", { name: "Agregar al carrito" })[0]);
     fireEvent.click(screen.getByText("Carrito"));
+}
+
+test("Un invitado puede comprar sin iniciar sesion", async () => {
+    await agregarYAbrirCarrito();
+
+    expect(screen.getByText("Comprar como invitado")).toBeDefined();
+
+    fireEvent.click(screen.getByText("Confirmar pedido"));
+    expect(screen.getByText("Debe ingresar su nombre para continuar")).toBeDefined();
+
+    fireEvent.change(screen.getByPlaceholderText("nombre"), {
+        target: { value: "Camila Reyes" }
+    });
+
+    fireEvent.change(screen.getByPlaceholderText("correo"), {
+        target: { value: "camila@correo.cl" }
+    });
+
     fireEvent.click(screen.getByText("Confirmar pedido"));
 
-    expect(screen.getByText("Debes iniciar sesión para confirmar el pedido")).toBeDefined();
+    expect(screen.getByText(/fue confirmado/)).toBeDefined();
+    expect(screen.getByText("El carrito está vacío")).toBeDefined();
 });
 
 test("Al confirmar con sesion se crea el pedido y se vacia el carrito", async () => {
@@ -86,7 +105,7 @@ test("Al confirmar con sesion se crea el pedido y se vacia el carrito", async ()
     fireEvent.click(screen.getByText("Carrito"));
     fireEvent.click(screen.getByText("Confirmar pedido"));
 
-    expect(screen.getByText("¡Gracias por tu compra! Tu pedido N° 1009 fue confirmado")).toBeDefined();
+    expect(screen.getByText(/¡Gracias por tu compra! Tu pedido N° \d+ fue confirmado/)).toBeDefined();
     expect(screen.getByText("El carrito está vacío")).toBeDefined();
 });
 

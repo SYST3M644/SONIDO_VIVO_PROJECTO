@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Regresar from "../componentes/atomos/Regresar";
+import CampoFormulario from "../componentes/moleculas/CampoFormulario";
 import type { ProductoCarrito } from "../servicios/Productos";
 import { urlImagen } from "../servicios/Productos";
 import { agregarPedido } from "../servicios/Pedidos";
@@ -13,12 +14,15 @@ type CarritoProps = {
     puedeComprar: boolean;
     vaciarCarrito: () => void;
     nombreCliente: string;
+    hayUsuario: boolean;
 }
 
-function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puedeComprar, vaciarCarrito, nombreCliente }: CarritoProps) {
+function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puedeComprar, vaciarCarrito, nombreCliente, hayUsuario }: CarritoProps) {
     const [mensaje, setMensaje] = useState("");
     const [tipoMensaje, setTipoMensaje] = useState("error");
     const [entrega, setEntrega] = useState("despacho");
+    const [nombreInvitado, setNombreInvitado] = useState("");
+    const [correoInvitado, setCorreoInvitado] = useState("");
 
     let total = 0;
 
@@ -29,13 +33,33 @@ function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puede
     const confirmarPedido = () => {
         if (!puedeComprar) {
             setTipoMensaje("error");
-            setMensaje("Debes iniciar sesión para confirmar el pedido");
+            setMensaje("Los vendedores no pueden confirmar pedidos");
             return;
         }
 
-        const pedido = agregarPedido(nombreCliente, total, entrega);
+        let cliente = nombreCliente;
+
+        if (!hayUsuario) {
+            if (nombreInvitado.trim() === "") {
+                setTipoMensaje("error");
+                setMensaje("Debe ingresar su nombre para continuar");
+                return;
+            }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correoInvitado)) {
+                setTipoMensaje("error");
+                setMensaje("Ingrese un correo válido para enviarle el seguimiento");
+                return;
+            }
+
+            cliente = nombreInvitado.trim();
+        }
+
+        const pedido = agregarPedido(cliente, total, entrega);
 
         vaciarCarrito();
+        setNombreInvitado("");
+        setCorreoInvitado("");
         setTipoMensaje("exito");
         setMensaje("¡Gracias por tu compra! Tu pedido N° " + pedido.id + " fue confirmado");
     };
@@ -151,6 +175,41 @@ function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puede
                     </label>
                 </div>
             </div>
+
+            {!hayUsuario && (
+                <div className="row justify-content-center my-4">
+                    <div className="col-12 col-md-8 col-lg-6">
+                        <div className="card p-4 text-start">
+                            <h2 className="h5">Comprar como invitado</h2>
+
+                            <p className="text-body-secondary">
+                                No necesitas crear una cuenta. Déjanos tus datos para avisarte
+                                cuando tu pedido esté listo.
+                            </p>
+
+                            <CampoFormulario
+                                etiqueta="Nombre Completo"
+                                tipo="text"
+                                nombre="nombre"
+                                valor={nombreInvitado}
+                                alCambiar={setNombreInvitado}
+                            />
+
+                            <CampoFormulario
+                                etiqueta="Correo Electrónico"
+                                tipo="email"
+                                nombre="correo"
+                                valor={correoInvitado}
+                                alCambiar={setCorreoInvitado}
+                            />
+
+                            <p className="text-body-secondary mb-0">
+                                ¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             <button className="btn boton-tienda me-2" onClick={confirmarPedido}>
                 Confirmar pedido

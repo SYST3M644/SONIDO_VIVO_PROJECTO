@@ -109,10 +109,16 @@ function App() {
     cantidadCarrito += item.cantidad
   }
 
-  let puedeComprar = false
+  let puedeComprar = true
 
-  if (usuario !== null && usuario.rol !== "vendedor") {
-    puedeComprar = true
+  if (usuario !== null && usuario.rol === "vendedor") {
+    puedeComprar = false
+  }
+
+  let hayUsuario = false
+
+  if (usuario !== null) {
+    hayUsuario = true
   }
 
   let nombreCliente = ""
@@ -187,6 +193,7 @@ function App() {
                   puedeComprar={puedeComprar}
                   vaciarCarrito={vaciarCarrito}
                   nombreCliente={nombreCliente}
+                  hayUsuario={hayUsuario}
                 />
               )
             }
