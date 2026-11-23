@@ -1,9 +1,13 @@
 // @vitest-environment jsdom
 
-import { test, expect, afterEach } from "vitest";
+import { test, expect, afterEach, vi } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
 import FormularioContacto from "../componentes/organismos/FormularioContacto";
+
+vi.mock("../servicios/Contacto", () => ({
+    enviarMensaje: () => Promise.resolve({ id: 1, estado: "PENDIENTE" })
+}));
 
 afterEach(cleanup);
 
@@ -33,14 +37,14 @@ test("Avisa cuando falta el mensaje", () => {
     expect(screen.getByText("Debe ingresar un mensaje")).toBeDefined();
 });
 
-test("Confirma cuando el formulario esta completo", () => {
+test("Confirma cuando el formulario esta completo", async () => {
     render(<FormularioContacto />);
     escribir("nombre", "Pedro Diaz");
     escribir("correo", "pedro@sonidovivo.cl");
     escribir("mensaje", "Quiero cotizar una guitarra");
     presionarEnviar();
 
-    const confirmacion = screen.getByText("Formulario enviado correctamente");
+    const confirmacion = await screen.findByText("Formulario enviado correctamente");
 
     expect(confirmacion).toBeDefined();
     expect(confirmacion.className).toBe("mensaje-exito");

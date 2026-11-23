@@ -66,14 +66,36 @@ test("El vendedor no ve el enlace del carrito", () => {
   expect(screen.queryByText("Carrito")).toBeNull();
 });
 
-test("Solo el administrador ve el enlace de administracion", () => {
+test("Solo el administrador ve los enlaces de administracion", () => {
   mostrarNavbar(usuarioCon("administrador"));
-  expect(screen.getByText("Administración")).toBeDefined();
+  expect(screen.getByText("Usuarios")).toBeDefined();
+  expect(screen.getByText("Mensajes")).toBeDefined();
+  expect(screen.getByText("Reportes")).toBeDefined();
 
   cleanup();
 
   mostrarNavbar(usuarioCon("vendedor"));
-  expect(screen.queryByText("Administración")).toBeNull();
+  expect(screen.queryByText("Usuarios")).toBeNull();
+  expect(screen.queryByText("Mensajes")).toBeNull();
+});
+
+test("El vendedor y el administrador ven el menu de gestion", () => {
+  mostrarNavbar(usuarioCon("vendedor"));
+  expect(screen.getByText("Gestión")).toBeDefined();
+  expect(screen.getByText("Pedidos")).toBeDefined();
+
+  cleanup();
+
+  mostrarNavbar(usuarioCon("cliente"));
+  expect(screen.queryByText("Gestión")).toBeNull();
+});
+
+test("El staff no ve el carrito ni las paginas de la tienda", () => {
+  mostrarNavbar(usuarioCon("administrador"));
+
+  expect(screen.queryByText("Carrito")).toBeNull();
+  expect(screen.queryByText("Contacto")).toBeNull();
+  expect(screen.queryByText("Nosotros")).toBeNull();
 });
 
 test("Solo el cliente ve el enlace de mis pedidos", () => {

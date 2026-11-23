@@ -1,11 +1,27 @@
 // @vitest-environment jsdom
 
-import { test, expect, afterEach } from "vitest";
+import { test, expect, afterEach, vi } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 
 import FormularioLogin from "../componentes/organismos/FormularioLogin";
 import type { Usuario } from "../servicios/Autenticacion";
+
+vi.mock("../servicios/Autenticacion", () => ({
+    iniciarSesion: (correo: string, clave: string) => {
+        if (correo === "admin@sonidovivo.cl" && clave === "admin123") {
+            return Promise.resolve({
+                nombre: "Carlos Rojas",
+                correo: "admin@sonidovivo.cl",
+                rol: "administrador",
+                token: "token-de-prueba"
+            });
+        }
+
+        return Promise.reject(new Error("Correo o contraseña incorrectos"));
+    },
+    rutaSegunRol: () => "/admin"
+}));
 
 afterEach(cleanup);
 
@@ -58,23 +74,23 @@ test("Avisa cuando la contraseña tiene menos de 8 caracteres", () => {
     expect(screen.getByText("Debe ingresar una contraseña de al menos 8 caracteres")).toBeDefined();
 });
 
-test("Avisa cuando las credenciales no coinciden", () => {
+test("Avisa cuando las credenciales no coinciden", async () => {
     mostrarFormulario();
     escribir("correo", "admin@sonidovivo.cl");
     escribir("contraseña", "claveincorrecta");
     presionarIngresar();
 
-    expect(screen.getByText("Correo o contraseña incorrectos")).toBeDefined();
+    expect(await screen.findByText("Correo o contraseña incorrectos")).toBeDefined();
     expect(usuarioGuardado).toBeNull();
 });
 
-test("Guarda el usuario cuando las credenciales son correctas", () => {
+test("Guarda el usuario cuando las credenciales son correctas", async () => {
     mostrarFormulario();
     escribir("correo", "admin@sonidovivo.cl");
     escribir("contraseña", "admin123");
     presionarIngresar();
 
-    const bienvenida = screen.getByText("Bienvenido Carlos Rojas");
+    const bienvenida = await screen.findByText("Bienvenido Carlos Rojas");
 
     expect(usuarioGuardado).not.toBeNull();
     expect(bienvenida.className).toBe("mensaje-exito");

@@ -6,6 +6,18 @@ import { MemoryRouter } from "react-router-dom";
 
 import App from "../App";
 
+const productosDePrueba = [
+    { id: 1, titulo: "Guitarra Acustica Folk", descripcion: "Yamaha F310", precio: 129990, imagen: "guitarra-acustica.jpg", stock: 11, categoria: "Cuerdas" },
+    { id: 5, titulo: "Saxofon Alto", descripcion: "Yamaha YAS-280", precio: 1149990, imagen: "saxofon-alto.jpg", stock: 2, categoria: "Vientos" }
+];
+
+vi.mock("../servicios/Productos", () => ({
+    listarProductos: () => Promise.resolve(productosDePrueba),
+    buscarProducto: (id: number) => Promise.resolve(productosDePrueba.find((p) => p.id === id)),
+    actualizarStock: () => Promise.resolve({}),
+    urlImagen: (imagen: string) => "http://localhost:6464/api/productos/imagenes/" + imagen
+}));
+
 afterEach(cleanup);
 
 function entrarComoCliente() {
@@ -28,6 +40,16 @@ function entrarComoCliente() {
     fireEvent.click(screen.getByRole("button", { name: "Ingresar" }));
 }
 
+vi.mock("../servicios/Autenticacion", () => ({
+    iniciarSesion: () => Promise.resolve({
+        nombre: "Pedro Diaz",
+        correo: "cliente@sonidovivo.cl",
+        rol: "cliente",
+        token: "token-de-prueba"
+    }),
+    rutaSegunRol: () => "/productos"
+}));
+
 test("Sin sesion se puede ver el carrito", () => {
     render(
         <MemoryRouter initialEntries={["/carrito"]}>
@@ -38,12 +60,14 @@ test("Sin sesion se puede ver el carrito", () => {
     expect(screen.getByText("El carrito está vacío")).toBeDefined();
 });
 
-test("Al confirmar sin sesion pide iniciar sesion", () => {
+test("Al confirmar sin sesion pide iniciar sesion", async () => {
     render(
         <MemoryRouter initialEntries={["/productos"]}>
             <App />
         </MemoryRouter>
     );
+
+    await screen.findByText("Guitarra Acustica Folk");
 
     fireEvent.click(screen.getAllByRole("button", { name: "Agregar al carrito" })[0]);
     fireEvent.click(screen.getByText("Carrito"));
@@ -52,10 +76,12 @@ test("Al confirmar sin sesion pide iniciar sesion", () => {
     expect(screen.getByText("Debes iniciar sesión para confirmar el pedido")).toBeDefined();
 });
 
-test("Al confirmar con sesion se crea el pedido y se vacia el carrito", () => {
+test("Al confirmar con sesion se crea el pedido y se vacia el carrito", async () => {
     entrarComoCliente();
 
     fireEvent.click(screen.getByText("Productos"));
+
+    await screen.findByText("Guitarra Acustica Folk");
     fireEvent.click(screen.getAllByRole("button", { name: "Agregar al carrito" })[0]);
     fireEvent.click(screen.getByText("Carrito"));
     fireEvent.click(screen.getByText("Confirmar pedido"));
@@ -64,10 +90,12 @@ test("Al confirmar con sesion se crea el pedido y se vacia el carrito", () => {
     expect(screen.getByText("El carrito está vacío")).toBeDefined();
 });
 
-test("Se puede elegir retiro en tienda", () => {
+test("Se puede elegir retiro en tienda", async () => {
     entrarComoCliente();
 
     fireEvent.click(screen.getByText("Productos"));
+
+    await screen.findByText("Guitarra Acustica Folk");
     fireEvent.click(screen.getAllByRole("button", { name: "Agregar al carrito" })[0]);
     fireEvent.click(screen.getByText("Carrito"));
 
@@ -85,10 +113,12 @@ test("El carrito vacio muestra un mensaje", () => {
     expect(screen.getByText("El carrito está vacío")).toBeDefined();
 });
 
-test("Se puede agregar, sumar, restar y quitar un producto", () => {
+test("Se puede agregar, sumar, restar y quitar un producto", async () => {
     entrarComoCliente();
 
     fireEvent.click(screen.getByText("Productos"));
+
+    await screen.findByText("Guitarra Acustica Folk");
 
     const botonesAgregar = screen.getAllByRole("button", { name: "Agregar al carrito" });
     fireEvent.click(botonesAgregar[0]);
