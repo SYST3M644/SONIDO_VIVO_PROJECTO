@@ -1,5 +1,6 @@
 import { useState } from "react";
 import CampoFormulario from "../moleculas/CampoFormulario";
+import { enviarMensaje } from "../../servicios/Contacto";
 
 function FormularioContacto() {
     const [nombre, setNombre] = useState("");
@@ -7,8 +8,9 @@ function FormularioContacto() {
     const [mensajeContacto, setMensajeContacto] = useState("");
     const [mensaje, setMensaje] = useState("");
     const [tipoMensaje, setTipoMensaje] = useState("error");
+    const [enviando, setEnviando] = useState(false);
 
-    const validarEnvioMSG = (e: React.SubmitEvent<HTMLFormElement>) => {
+    const validarEnvioMSG = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         setTipoMensaje("error");
@@ -33,8 +35,24 @@ function FormularioContacto() {
             return;
         }
 
-        setTipoMensaje("exito");
-        setMensaje("Formulario enviado correctamente");
+        setEnviando(true);
+
+        try {
+            await enviarMensaje(nombre.trim(), correo.trim(), mensajeContacto.trim());
+
+            setTipoMensaje("exito");
+            setMensaje("Formulario enviado correctamente");
+
+            setNombre("");
+            setCorreo("");
+            setMensajeContacto("");
+        } catch (error) {
+            console.error("Error al enviar el mensaje:", error);
+            setTipoMensaje("error");
+            setMensaje("No se pudo enviar el mensaje, intente nuevamente");
+        } finally {
+            setEnviando(false);
+        }
     };
 
     let estiloMensaje = "mensaje-error";
@@ -55,7 +73,9 @@ function FormularioContacto() {
                 <p className={estiloMensaje}>{mensaje}</p>
             )}
 
-            <button type="submit" className="btn boton-tienda">Enviar Mensaje</button>
+            <button type="submit" className="btn boton-tienda" disabled={enviando}>
+                {enviando ? "Enviando..." : "Enviar Mensaje"}
+            </button>
 
         </form>
 
