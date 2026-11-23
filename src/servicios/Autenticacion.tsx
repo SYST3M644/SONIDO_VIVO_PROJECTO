@@ -5,40 +5,36 @@ export type Usuario = {
     token: string;
 }
 
-const usuarios = [
-    {
-        correo: "admin@sonidovivo.cl",
-        clave: "admin123",
-        nombre: "Carlos Rojas",
-        rol: "administrador"
-    },
-    {
-        correo: "vendedor@sonidovivo.cl",
-        clave: "vende123",
-        nombre: "Ana Soto",
-        rol: "vendedor"
-    },
-    {
-        correo: "cliente@sonidovivo.cl",
-        clave: "cliente123",
-        nombre: "Pedro Diaz",
-        rol: "cliente"
-    }
-];
+const API = "http://localhost:6464/api/auth";
 
-export function iniciarSesion(correo: string, clave: string) {
-    const encontrado = usuarios.find(
-        usuario => usuario.correo === correo && usuario.clave === clave
-    );
+export async function iniciarSesion(correo: string, clave: string): Promise<Usuario> {
+    const respuesta = await fetch(API + "/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ correo: correo, clave: clave }),
+    });
 
-    if (encontrado === undefined) {
-        return null;
+    if (respuesta.status === 401) {
+        throw new Error("Correo o contraseña incorrectos");
     }
 
-    return {
-        correo: encontrado.correo,
-        nombre: encontrado.nombre,
-        rol: encontrado.rol,
-        token: "token-de-prueba"
-    };
+    if (!respuesta.ok) {
+        throw new Error("Error HTTP " + respuesta.status);
+    }
+
+    return await respuesta.json();
+}
+
+export function rutaSegunRol(rol: string) {
+    if (rol === "administrador") {
+        return "/admin";
+    }
+
+    if (rol === "vendedor") {
+        return "/vendedor";
+    }
+
+    return "/productos";
 }

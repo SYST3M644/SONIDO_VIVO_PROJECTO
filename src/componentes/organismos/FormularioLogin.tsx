@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CampoFormulario from "../moleculas/CampoFormulario";
-import { iniciarSesion } from "../../servicios/Autenticacion";
+import { iniciarSesion, rutaSegunRol } from "../../servicios/Autenticacion";
 import type { Usuario } from "../../servicios/Autenticacion";
 
 type FormularioLoginProps = {
@@ -12,8 +13,11 @@ function FormularioLogin({ guardarUsuario }: FormularioLoginProps) {
     const [contrasena, setContrasena] = useState("");
     const [mensaje, setMensaje] = useState("");
     const [tipoMensaje, setTipoMensaje] = useState("error");
+    const [entrando, setEntrando] = useState(false);
 
-    const validarLogin = (e: React.SubmitEvent<HTMLFormElement>) => {
+    const navegar = useNavigate();
+
+    const validarLogin = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         setTipoMensaje("error");
@@ -33,16 +37,27 @@ function FormularioLogin({ guardarUsuario }: FormularioLoginProps) {
             return;
         }
 
-        const usuario = iniciarSesion(correo, contrasena);
+        setEntrando(true);
 
-        if (usuario === null) {
-            setMensaje("Correo o contraseña incorrectos");
-            return;
+        try {
+            const usuario = await iniciarSesion(correo, contrasena);
+
+            guardarUsuario(usuario);
+            setTipoMensaje("exito");
+            setMensaje("Bienvenido " + usuario.nombre);
+
+            navegar(rutaSegunRol(usuario.rol));
+        } catch (error) {
+            setTipoMensaje("error");
+
+            if (error instanceof Error && error.message === "Correo o contraseña incorrectos") {
+                setMensaje("Correo o contraseña incorrectos");
+            } else {
+                setMensaje("No se pudo conectar con el servidor");
+            }
+        } finally {
+            setEntrando(false);
         }
-
-        guardarUsuario(usuario);
-        setTipoMensaje("exito");
-        setMensaje("Bienvenido " + usuario.nombre);
     };
 
     let estiloMensaje = "mensaje-error";
@@ -62,7 +77,9 @@ function FormularioLogin({ guardarUsuario }: FormularioLoginProps) {
                 <p className={estiloMensaje}>{mensaje}</p>
             )}
 
-            <button type="submit" className="btn boton-tienda">Ingresar</button>
+            <button type="submit" className="btn boton-tienda" disabled={entrando}>
+                {entrando ? "Entrando..." : "Ingresar"}
+            </button>
 
         </form>
 
