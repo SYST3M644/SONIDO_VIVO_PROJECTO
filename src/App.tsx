@@ -56,6 +56,10 @@ function App() {
       return
     }
 
+    if (producto.stock === 0) {
+      return
+    }
+
     const yaEstaEnCarrito = carrito.find(item => item.id === id)
 
     if (yaEstaEnCarrito) {
@@ -74,9 +78,21 @@ function App() {
     setCarrito([...carrito, nuevoProducto])
   }
 
+  const stockDe = (id: number) => {
+    const producto = productos.find(producto => producto.id === id)
+
+    if (producto === undefined) {
+      return 0
+    }
+
+    return producto.stock
+  }
+
   const sumarCantidad = (id: number) => {
+    const disponible = stockDe(id)
+
     const nuevoCarrito = carrito.map(item => {
-      if (item.id === id) {
+      if (item.id === id && item.cantidad < disponible) {
         return { ...item, cantidad: item.cantidad + 1 }
       }
       return item
@@ -122,9 +138,11 @@ function App() {
   }
 
   let nombreCliente = ""
+  let correoCliente = ""
 
   if (usuario !== null) {
     nombreCliente = usuario.nombre
+    correoCliente = usuario.correo
   }
 
   let esCliente = false
@@ -193,6 +211,8 @@ function App() {
                   puedeComprar={puedeComprar}
                   vaciarCarrito={vaciarCarrito}
                   nombreCliente={nombreCliente}
+                  correoCliente={correoCliente}
+                  stockDe={stockDe}
                   hayUsuario={hayUsuario}
                 />
               )
@@ -203,7 +223,7 @@ function App() {
             path='/mis-pedidos'
             element={
               esCliente ? (
-                <MisPedidos nombreCliente={nombreCliente} />
+                <MisPedidos nombreCliente={nombreCliente} token={usuario?.token ?? ""} />
               ) : (
                 <p className='mt-5'>
                   Debes iniciar sesión como cliente para ver tus pedidos.
@@ -216,7 +236,7 @@ function App() {
             path='/vendedor'
             element={
               atiendeLaTienda ? (
-                <Vendedor />
+                <Vendedor token={usuario?.token ?? ""} />
               ) : (
                 <p className='mt-5'>
                   Debes iniciar sesión como vendedor para ver los pedidos.
@@ -255,7 +275,7 @@ function App() {
             path='/reportes'
             element={
               esAdministrador ? (
-                <Reportes />
+                <Reportes token={usuario?.token ?? ""} />
               ) : (
                 <p className='mt-5'>
                   Debes iniciar sesión como administrador para ver los reportes.

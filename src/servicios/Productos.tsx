@@ -42,6 +42,22 @@ export async function buscarProducto(id: number): Promise<Producto> {
     return await respuesta.json();
 }
 
+export async function descontarStock(id: number, cantidad: number): Promise<Producto> {
+    const respuesta = await fetch(API + "/" + id + "/descontar", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ stock: cantidad }),
+    });
+
+    if (!respuesta.ok) {
+        throw new Error("Error HTTP " + respuesta.status);
+    }
+
+    return await respuesta.json();
+}
+
 export async function actualizarStock(id: number, stock: number): Promise<Producto> {
     const respuesta = await fetch(API + "/" + id + "/stock", {
         method: "PUT",

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Regresar from "../componentes/atomos/Regresar";
 import CampoFormulario from "../componentes/moleculas/CampoFormulario";
 import type { ProductoCarrito } from "../servicios/Productos";
-import { urlImagen } from "../servicios/Productos";
+import { urlImagen, descontarStock } from "../servicios/Productos";
 import { agregarPedido } from "../servicios/Pedidos";
 
 type CarritoProps = {
@@ -14,15 +14,18 @@ type CarritoProps = {
     puedeComprar: boolean;
     vaciarCarrito: () => void;
     nombreCliente: string;
+    correoCliente: string;
+    stockDe: (id: number) => number;
     hayUsuario: boolean;
 }
 
-function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puedeComprar, vaciarCarrito, nombreCliente, hayUsuario }: CarritoProps) {
+function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puedeComprar, vaciarCarrito, nombreCliente, correoCliente, stockDe, hayUsuario }: CarritoProps) {
     const [mensaje, setMensaje] = useState("");
     const [tipoMensaje, setTipoMensaje] = useState("error");
     const [entrega, setEntrega] = useState("despacho");
     const [nombreInvitado, setNombreInvitado] = useState("");
     const [correoInvitado, setCorreoInvitado] = useState("");
+    const [confirmando, setConfirmando] = useState(false);
 
     let total = 0;
 
@@ -30,7 +33,7 @@ function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puede
         total += producto.precio * producto.cantidad;
     }
 
-    const confirmarPedido = () => {
+    const confirmarPedido = async () => {
         if (!puedeComprar) {
             setTipoMensaje("error");
             setMensaje("Los vendedores no pueden confirmar pedidos");
@@ -38,6 +41,7 @@ function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puede
         }
 
         let cliente = nombreCliente;
+        let correo = correoCliente;
 
         if (!hayUsuario) {
             if (nombreInvitado.trim() === "") {
@@ -53,15 +57,42 @@ function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puede
             }
 
             cliente = nombreInvitado.trim();
+            correo = correoInvitado.trim();
         }
 
-        const pedido = agregarPedido(cliente, total, entrega);
+        setConfirmando(true);
 
-        vaciarCarrito();
-        setNombreInvitado("");
-        setCorreoInvitado("");
-        setTipoMensaje("exito");
-        setMensaje("¡Gracias por tu compra! Tu pedido N° " + pedido.id + " fue confirmado");
+        try {
+            const items = carrito.map((producto) => ({
+                productoId: producto.id,
+                titulo: producto.titulo,
+                precio: producto.precio,
+                cantidad: producto.cantidad,
+            }));
+
+            const pedido = await agregarPedido(cliente, correo, total, entrega, items);
+
+            for (const item of items) {
+                await descontarStock(item.productoId, item.cantidad);
+            }
+
+            vaciarCarrito();
+            setNombreInvitado("");
+            setCorreoInvitado("");
+            setTipoMensaje("exito");
+            setMensaje("¡Gracias por tu compra! Tu pedido N° " + pedido.id + " fue confirmado");
+        } catch (error) {
+            console.error("No se pudo confirmar el pedido:", error);
+            setTipoMensaje("error");
+
+            if (error instanceof Error && error.message.startsWith("Solo quedan")) {
+                setMensaje(error.message);
+            } else {
+                setMensaje("No se pudo confirmar el pedido, intente nuevamente");
+            }
+        } finally {
+            setConfirmando(false);
+        }
     };
 
     let estiloMensaje = "mensaje-error";
@@ -121,10 +152,17 @@ function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puede
 
                             <button
                                 className="btn btn-outline-secondary"
+                                disabled={producto.cantidad >= stockDe(producto.id)}
                                 onClick={() => sumarCantidad(producto.id)}
                             >
                                 +
                             </button>
+
+                            {producto.cantidad >= stockDe(producto.id) && (
+                                <span className="d-block small text-body-secondary mt-1">
+                                    Quedan {stockDe(producto.id)} en bodega
+                                </span>
+                            )}
                         </div>
 
                         <div className="col-12 col-md-3">
@@ -211,8 +249,8 @@ function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puede
                 </div>
             )}
 
-            <button className="btn boton-tienda me-2" onClick={confirmarPedido}>
-                Confirmar pedido
+            <button className="btn boton-tienda me-2" onClick={confirmarPedido} disabled={confirmando}>
+                {confirmando ? "Confirmando..." : "Confirmar pedido"}
             </button>
 
             <Regresar />
