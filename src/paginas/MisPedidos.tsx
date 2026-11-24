@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { pedidosDeCliente } from "../servicios/Pedidos";
+import { pedidosDeCliente, estados } from "../servicios/Pedidos";
 import type { Pedido } from "../servicios/Pedidos";
 
 type MisPedidosProps = {
@@ -7,9 +7,12 @@ type MisPedidosProps = {
     token: string;
 };
 
+const nombresEstado = ["En preparación", "Despachado", "Entregado"];
+
 function MisPedidos({ nombreCliente, token }: MisPedidosProps) {
     const [pedidos, setPedidos] = useState<Pedido[]>([]);
     const [cargando, setCargando] = useState(true);
+    const [abierto, setAbierto] = useState<number | null>(null);
 
     useEffect(() => {
         pedidosDeCliente(nombreCliente, token)
@@ -17,6 +20,14 @@ function MisPedidos({ nombreCliente, token }: MisPedidosProps) {
             .catch(() => setPedidos([]))
             .finally(() => setCargando(false));
     }, [nombreCliente, token]);
+
+    const verDetalle = (id: number) => {
+        if (abierto === id) {
+            setAbierto(null);
+        } else {
+            setAbierto(id);
+        }
+    };
 
     if (cargando) {
         return (
@@ -45,42 +56,69 @@ function MisPedidos({ nombreCliente, token }: MisPedidosProps) {
                 Aquí puedes ver tus compras y en qué estado va cada pedido.
             </p>
 
-            <div className="table-responsive">
-                <table className="table table-striped align-middle">
-                    <thead>
-                        <tr>
-                            <th>Pedido</th>
-                            <th>Fecha</th>
-                            <th>Entrega</th>
-                            <th>Total</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
+            <div className="row justify-content-center">
+                <div className="col-12 col-lg-9">
+                    {pedidos.map((pedido) => {
+                        // Posición del estado actual: 0, 1 o 2
+                        const avance = estados.indexOf(pedido.estado);
 
-                    <tbody>
-                        {pedidos.map((pedido) => (
-                            <tr key={pedido.id}>
-                                <td>{pedido.id}</td>
-                                <td>{pedido.fecha}</td>
-                                <td>{pedido.entrega}</td>
-                                <td>${pedido.total.toLocaleString("es-CL")}</td>
-                                <td>
-                                    {pedido.estado === "en preparacion" && (
-                                        <span className="badge text-bg-warning">En preparación</span>
-                                    )}
+                        return (
+                            <div key={pedido.id} className="card mb-3 p-3 text-start">
+                                <div className="d-flex justify-content-between flex-wrap gap-2">
+                                    <div>
+                                        <h2 className="h5 mb-1">Pedido N° {pedido.id}</h2>
+                                        <p className="text-body-secondary mb-0">
+                                            {pedido.fecha} · {pedido.entrega}
+                                        </p>
+                                    </div>
 
-                                    {pedido.estado === "despachado" && (
-                                        <span className="badge text-bg-primary">Despachado</span>
-                                    )}
+                                    <p className="precio-producto mb-0">
+                                        ${pedido.total.toLocaleString("es-CL")}
+                                    </p>
+                                </div>
 
-                                    {pedido.estado === "entregado" && (
-                                        <span className="badge text-bg-success">Entregado</span>
-                                    )}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                                {/* Seguimiento: se marcan las etapas que ya pasaron */}
+                                <div className="d-flex gap-2 my-3 flex-wrap">
+                                    {nombresEstado.map((nombre, posicion) => (
+                                        <span
+                                            key={nombre}
+                                            className={posicion <= avance ? "badge text-bg-success" : "badge text-bg-light"}
+                                        >
+                                            {posicion <= avance ? "✓ " : ""}{nombre}
+                                        </span>
+                                    ))}
+                                </div>
+
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-secondary btn-sm align-self-start"
+                                    onClick={() => verDetalle(pedido.id)}
+                                >
+                                    {abierto === pedido.id ? "Ocultar detalle" : "Ver detalle"}
+                                </button>
+
+                                {abierto === pedido.id && (
+                                    <div className="mt-3">
+                                        <table className="table table-sm">
+                                            <tbody>
+                                                {pedido.items.map((item) => (
+                                                    <tr key={item.productoId}>
+                                                        <td>{item.cantidad} x {item.titulo}</td>
+                                                        <td className="text-end">${(item.precio * item.cantidad).toLocaleString("es-CL")}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+
+                                        {pedido.pago && (
+                                            <p className="mb-0">Pago: {pedido.pago}</p>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
         </div>
     );
