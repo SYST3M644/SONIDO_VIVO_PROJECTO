@@ -25,3 +25,6 @@ dist-ssr
 
 # Documento del caso entregado por el profesor
 Caso Semestral/
+
+# Resultados de las pruebas
+resultados-tests.json
