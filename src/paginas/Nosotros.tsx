@@ -1,3 +1,5 @@
+import MapaTienda from "../componentes/moleculas/MapaTienda";
+
 function Nosotros(){
     return(
         <div className="container mt-4">
@@ -19,6 +21,8 @@ function Nosotros(){
                 amplificadores, micrófonos, pedales de efectos y accesorios.
                 Además ofrecemos reparación de instrumentos de cuerda.
             </p>
+
+            <MapaTienda />
         </div>
     );
 }
