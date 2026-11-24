@@ -19,6 +19,7 @@ import Pie from './componentes/organismos/Pie'
 import { listarProductos } from './servicios/Productos'
 import type { Producto, ProductoCarrito } from './servicios/Productos'
 import type { Usuario } from './servicios/Autenticacion'
+import { renovarToken } from './servicios/Autenticacion'
 import { leerSesion, guardarSesion, borrarSesion, vencimientoToken } from './servicios/Sesion'
 
 
@@ -52,24 +53,43 @@ function App() {
     borrarSesion()
   }
 
-  // Cuando el token vence, la sesión se cierra sola
+  // 5 minutos antes de que venza el token se pide uno nuevo.
   useEffect(() => {
     if (usuario === null) {
       return
     }
 
-    const faltan = vencimientoToken(usuario.token) - Date.now()
+    const vence = vencimientoToken(usuario.token)
 
-    if (faltan <= 0) {
+    // Un token sin fecha de vencimiento no es un JWT real (por ejemplo en los tests)
+    if (vence === 0) {
       return
     }
 
-    const temporizador = setTimeout(() => {
+    const cincoMinutos = 5 * 60 * 1000
+    const faltan = vence - Date.now() - cincoMinutos
+
+    const renovar = setTimeout(() => {
+      renovarToken(usuario.token)
+        .then((renovado) => {
+          setUsuario(renovado)
+          guardarSesion(renovado)
+        })
+        .catch(() => {
+          console.error("No se pudo renovar el token")
+        })
+    }, Math.max(faltan, 0))
+
+    // Si no se pudo renovar, la sesión se cierra cuando el token vence
+    const cerrar = setTimeout(() => {
       setUsuario(null)
       borrarSesion()
-    }, faltan)
+    }, Math.max(vence - Date.now(), 0))
 
-    return () => clearTimeout(temporizador)
+    return () => {
+      clearTimeout(renovar)
+      clearTimeout(cerrar)
+    }
   }, [usuario])
 
   const agregarProducto = (id: number) => {
