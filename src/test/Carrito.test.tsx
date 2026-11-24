@@ -86,6 +86,10 @@ function pagarConTarjeta(numero: string) {
     fireEvent.click(screen.getByRole("button", { name: /^Pagar \$/ }));
 }
 
+function escribirDireccion() {
+    fireEvent.change(screen.getByPlaceholderText("dirección"), { target: { value: "Av. Libertad 123, Viña del Mar" } });
+}
+
 async function agregarYAbrirCarrito() {
     render(
         <MemoryRouter initialEntries={["/productos"]}>
@@ -115,6 +119,7 @@ test("Un invitado puede comprar sin iniciar sesion", async () => {
         target: { value: "camila@correo.cl" }
     });
 
+    escribirDireccion();
     fireEvent.click(screen.getByText("Continuar al pago"));
     pagarConTarjeta("4111 1111 1111 1111");
 
@@ -127,6 +132,7 @@ test("Una tarjeta incompleta muestra un aviso y no paga", async () => {
 
     fireEvent.change(screen.getByPlaceholderText("nombre"), { target: { value: "Camila Reyes" } });
     fireEvent.change(screen.getByPlaceholderText("correo"), { target: { value: "camila@correo.cl" } });
+    escribirDireccion();
     fireEvent.click(screen.getByText("Continuar al pago"));
 
     pagarConTarjeta("4111 1111");
@@ -140,6 +146,7 @@ test("Si el banco rechaza el pago no se crea el pedido", async () => {
 
     fireEvent.change(screen.getByPlaceholderText("nombre"), { target: { value: "Camila Reyes" } });
     fireEvent.change(screen.getByPlaceholderText("correo"), { target: { value: "camila@correo.cl" } });
+    escribirDireccion();
     fireEvent.click(screen.getByText("Continuar al pago"));
 
     pagarConTarjeta("4000 0000 0000 0002");
@@ -153,6 +160,7 @@ test("Si otro cliente compro el stock antes, se avisa y no se crea el pedido", a
 
     fireEvent.change(screen.getByPlaceholderText("nombre"), { target: { value: "Camila Reyes" } });
     fireEvent.change(screen.getByPlaceholderText("correo"), { target: { value: "camila@correo.cl" } });
+    escribirDireccion();
     fireEvent.click(screen.getByText("Continuar al pago"));
 
     // Mientras se paga, en el backend la guitarra se queda sin stock
@@ -173,11 +181,39 @@ test("Al confirmar con sesion se crea el pedido y se vacia el carrito", async ()
     await screen.findByText("Guitarra Acustica Folk");
     fireEvent.click(screen.getAllByRole("button", { name: "Agregar al carrito" })[0]);
     fireEvent.click(screen.getByText("Carrito"));
+    escribirDireccion();
     fireEvent.click(screen.getByText("Continuar al pago"));
     pagarConTarjeta("4111 1111 1111 1111");
 
     expect(await screen.findByText(/¡Gracias por tu compra! Tu pedido N° \d+ fue confirmado/)).toBeDefined();
     expect(screen.getByText("Ver mis pedidos")).toBeDefined();
+});
+
+test("Si elige despacho debe escribir la direccion", async () => {
+    entrarComoCliente();
+
+    fireEvent.click(screen.getByText("Productos"));
+
+    await screen.findByText("Guitarra Acustica Folk");
+    fireEvent.click(screen.getAllByRole("button", { name: "Agregar al carrito" })[0]);
+    fireEvent.click(screen.getByText("Carrito"));
+    fireEvent.click(screen.getByText("Continuar al pago"));
+
+    expect(screen.getByText("Debe ingresar la dirección de despacho")).toBeDefined();
+    expect(screen.queryByPlaceholderText("número de tarjeta")).toBeNull();
+});
+
+test("Con retiro en tienda no se pide direccion", async () => {
+    entrarComoCliente();
+
+    fireEvent.click(screen.getByText("Productos"));
+
+    await screen.findByText("Guitarra Acustica Folk");
+    fireEvent.click(screen.getAllByRole("button", { name: "Agregar al carrito" })[0]);
+    fireEvent.click(screen.getByText("Carrito"));
+    fireEvent.click(screen.getByLabelText("Retiro en tienda"));
+
+    expect(screen.queryByPlaceholderText("dirección")).toBeNull();
 });
 
 test("Se puede elegir retiro en tienda", async () => {

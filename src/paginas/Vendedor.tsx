@@ -95,7 +95,14 @@ function Vendedor({ token }: VendedorProps) {
                                     ))}
                                 </td>
                                 <td>{pedido.fecha}</td>
-                                <td>{pedido.entrega}</td>
+                                <td>
+                                    {pedido.entrega}
+                                    {pedido.direccion && (
+                                        <span className="d-block small text-body-secondary">
+                                            {pedido.direccion}
+                                        </span>
+                                    )}
+                                </td>
                                 <td>${pedido.total.toLocaleString("es-CL")}</td>
                                 <td>
                                     <select

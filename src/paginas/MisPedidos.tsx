@@ -110,6 +110,10 @@ function MisPedidos({ nombreCliente, token }: MisPedidosProps) {
                                             </tbody>
                                         </table>
 
+                                        {pedido.direccion && (
+                                            <p className="mb-1">Dirección: {pedido.direccion}</p>
+                                        )}
+
                                         {pedido.pago && (
                                             <p className="mb-0">Pago: {pedido.pago}</p>
                                         )}

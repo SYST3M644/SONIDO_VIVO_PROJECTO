@@ -30,6 +30,7 @@ test("Crea el pedido en el microservicio con la forma de pago", async () => {
                 total: 129990,
                 entrega: "retiro en tienda",
                 pago: "Tarjeta terminada en 1111",
+                direccion: "",
                 items: []
             })
         }

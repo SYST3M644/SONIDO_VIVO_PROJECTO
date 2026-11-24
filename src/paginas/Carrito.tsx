@@ -28,6 +28,7 @@ function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puede
 
     const [mensaje, setMensaje] = useState("");
     const [entrega, setEntrega] = useState("despacho");
+    const [direccion, setDireccion] = useState("");
     const [nombreInvitado, setNombreInvitado] = useState("");
     const [correoInvitado, setCorreoInvitado] = useState("");
 
@@ -62,6 +63,11 @@ function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puede
                 setMensaje("Ingrese un correo válido para enviarle el seguimiento");
                 return;
             }
+        }
+
+        if (entrega === "despacho" && direccion.trim() === "") {
+            setMensaje("Debe ingresar la dirección de despacho");
+            return;
         }
 
         setMensaje("");
@@ -110,7 +116,14 @@ function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puede
                 }
             }
 
-            const pedido = await agregarPedido(cliente, correo, total, entrega, items, textoPago(numeroTarjeta));
+            // La dirección solo se envía si el pedido es con despacho
+            let direccionEnvio = "";
+
+            if (entrega === "despacho") {
+                direccionEnvio = direccion.trim();
+            }
+
+            const pedido = await agregarPedido(cliente, correo, total, entrega, items, textoPago(numeroTarjeta), direccionEnvio);
 
             for (const item of items) {
                 await descontarStock(item.productoId, item.cantidad, token);
@@ -160,6 +173,12 @@ function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puede
                                         <th scope="row">Entrega</th>
                                         <td>{pedidoListo.entrega}</td>
                                     </tr>
+                                    {pedidoListo.direccion && (
+                                        <tr>
+                                            <th scope="row">Dirección</th>
+                                            <td>{pedidoListo.direccion}</td>
+                                        </tr>
+                                    )}
                                     <tr>
                                         <th scope="row">Pago</th>
                                         <td>{textoPago(numeroTarjeta)}</td>
@@ -306,6 +325,20 @@ function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puede
                         </div>
                     </div>
 
+                    {entrega === "despacho" && (
+                        <div className="row justify-content-center">
+                            <div className="col-12 col-md-8 col-lg-6 text-start">
+                                <CampoFormulario
+                                    etiqueta="Dirección de despacho"
+                                    tipo="text"
+                                    nombre="dirección"
+                                    valor={direccion}
+                                    alCambiar={setDireccion}
+                                />
+                            </div>
+                        </div>
+                    )}
+
                     {!hayUsuario && (
                         <div className="row justify-content-center my-4">
                             <div className="col-12 col-md-8 col-lg-6">
@@ -367,6 +400,9 @@ function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puede
                             </table>
 
                             <p className="mb-1">Entrega: {entrega}</p>
+                            {entrega === "despacho" && (
+                                <p className="mb-1">Dirección: {direccion}</p>
+                            )}
                             <h3 className="h5">Total: ${total.toLocaleString("es-CL")}</h3>
                         </div>
                     </div>
