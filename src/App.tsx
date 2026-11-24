@@ -19,11 +19,12 @@ import Pie from './componentes/organismos/Pie'
 import { listarProductos } from './servicios/Productos'
 import type { Producto, ProductoCarrito } from './servicios/Productos'
 import type { Usuario } from './servicios/Autenticacion'
+import { leerSesion, guardarSesion, borrarSesion, vencimientoToken } from './servicios/Sesion'
 
 
 function App() {
   const [carrito, setCarrito] = useState<ProductoCarrito[]>([])
-  const [usuario, setUsuario] = useState<Usuario | null>(null)
+  const [usuario, setUsuario] = useState<Usuario | null>(leerSesion)
   const [productos, setProductos] = useState<Producto[]>([])
   const [cargando, setCargando] = useState(true)
   const [errorCatalogo, setErrorCatalogo] = useState("")
@@ -43,11 +44,33 @@ function App() {
 
   const guardarUsuario = (nuevoUsuario: Usuario) => {
     setUsuario(nuevoUsuario)
+    guardarSesion(nuevoUsuario)
   }
 
   const cerrarSesion = () => {
     setUsuario(null)
+    borrarSesion()
   }
+
+  // Cuando el token vence, la sesión se cierra sola
+  useEffect(() => {
+    if (usuario === null) {
+      return
+    }
+
+    const faltan = vencimientoToken(usuario.token) - Date.now()
+
+    if (faltan <= 0) {
+      return
+    }
+
+    const temporizador = setTimeout(() => {
+      setUsuario(null)
+      borrarSesion()
+    }, faltan)
+
+    return () => clearTimeout(temporizador)
+  }, [usuario])
 
   const agregarProducto = (id: number) => {
     const producto = productos.find(producto => producto.id === id)
