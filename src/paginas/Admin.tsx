@@ -1,35 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CampoFormulario from "../componentes/moleculas/CampoFormulario";
 import {
     listarUsuarios,
     crearUsuario,
     editarUsuario,
     cambiarEstado,
-    correoRepetido,
+    eliminarUsuario,
     roles
 } from "../servicios/Usuarios";
 import type { Usuario } from "../servicios/Usuarios";
 
-function Admin() {
-    const [usuarios, setUsuarios] = useState<Usuario[]>(listarUsuarios());
+type AdminProps = {
+    token: string;
+};
+
+function Admin({ token }: AdminProps) {
+    const [usuarios, setUsuarios] = useState<Usuario[]>([]);
     const [nombre, setNombre] = useState("");
     const [correo, setCorreo] = useState("");
+    const [clave, setClave] = useState("");
     const [rol, setRol] = useState("cliente");
     const [editando, setEditando] = useState(0);
+    const [porEliminar, setPorEliminar] = useState(0);
     const [mensaje, setMensaje] = useState("");
 
     const refrescar = () => {
-        setUsuarios([...listarUsuarios()]);
+        listarUsuarios(token)
+            .then((datos) => setUsuarios(datos))
+            .catch(() => setMensaje("No se pudo cargar la lista de usuarios"));
     };
+
+    useEffect(() => {
+        listarUsuarios(token)
+            .then((datos) => setUsuarios(datos))
+            .catch(() => setMensaje("No se pudo cargar la lista de usuarios"));
+    }, [token]);
 
     const limpiar = () => {
         setNombre("");
         setCorreo("");
+        setClave("");
         setRol("cliente");
         setEditando(0);
     };
 
-    const guardar = (e: React.SubmitEvent<HTMLFormElement>) => {
+    const guardar = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         setMensaje("");
@@ -44,31 +59,60 @@ function Admin() {
             return;
         }
 
-        if (correoRepetido(correo, editando)) {
-            setMensaje("Ese correo ya está registrado");
+        if (editando === 0 && clave.length < 8) {
+            setMensaje("La contraseña debe tener al menos 8 caracteres");
             return;
         }
 
-        if (editando === 0) {
-            crearUsuario(nombre, correo, rol);
-        } else {
-            editarUsuario(editando, nombre, correo, rol);
-        }
+        try {
+            if (editando === 0) {
+                await crearUsuario(nombre, correo, clave, rol, token);
+            } else {
+                await editarUsuario(editando, nombre, correo, rol, token);
+            }
 
-        limpiar();
-        refrescar();
+            limpiar();
+            refrescar();
+        } catch (error) {
+            if (error instanceof Error && error.message === "Ese correo ya esta registrado") {
+                setMensaje("Ese correo ya está registrado");
+            } else {
+                setMensaje("No se pudo guardar el usuario");
+            }
+        }
     };
 
     const empezarEdicion = (usuario: Usuario) => {
         setEditando(usuario.id);
         setNombre(usuario.nombre);
         setCorreo(usuario.correo);
+        setClave("");
         setRol(usuario.rol);
     };
 
-    const desactivar = (id: number) => {
-        cambiarEstado(id);
-        refrescar();
+    const activarODesactivar = async (id: number) => {
+        try {
+            await cambiarEstado(id, token);
+            refrescar();
+        } catch {
+            setMensaje("No se pudo cambiar el estado del usuario");
+        }
+    };
+
+    // Primer clic: pide confirmar. Segundo clic: elimina.
+    const eliminar = async (id: number) => {
+        if (porEliminar !== id) {
+            setPorEliminar(id);
+            return;
+        }
+
+        try {
+            await eliminarUsuario(id, token);
+            setPorEliminar(0);
+            refrescar();
+        } catch {
+            setMensaje("No se pudo eliminar el usuario");
+        }
     };
 
     return (
@@ -98,6 +142,16 @@ function Admin() {
                                 valor={correo}
                                 alCambiar={setCorreo}
                             />
+
+                            {editando === 0 && (
+                                <CampoFormulario
+                                    etiqueta="Contraseña"
+                                    tipo="password"
+                                    nombre="contraseña"
+                                    valor={clave}
+                                    alCambiar={setClave}
+                                />
+                            )}
 
                             <div className="mb-3">
                                 <label className="form-label">Rol</label>
@@ -173,10 +227,18 @@ function Admin() {
 
                                     <button
                                         type="button"
-                                        className="btn btn-sm btn-outline-secondary"
-                                        onClick={() => desactivar(usuario.id)}
+                                        className="btn btn-sm btn-outline-secondary me-2"
+                                        onClick={() => activarODesactivar(usuario.id)}
                                     >
                                         {usuario.activo ? "Desactivar" : "Activar"}
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        className="btn btn-sm btn-outline-danger"
+                                        onClick={() => eliminar(usuario.id)}
+                                    >
+                                        {porEliminar === usuario.id ? "¿Seguro? Eliminar" : "Eliminar"}
                                     </button>
                                 </td>
                             </tr>

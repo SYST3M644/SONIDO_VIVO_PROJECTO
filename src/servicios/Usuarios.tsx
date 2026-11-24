@@ -8,84 +8,78 @@ export type Usuario = {
 
 export const roles = ["administrador", "vendedor", "cliente"];
 
-let usuarios: Usuario[] = [
-    {
-        id: 1,
-        nombre: "Carlos Rojas",
-        correo: "admin@sonidovivo.cl",
-        rol: "administrador",
-        activo: true
-    },
-    {
-        id: 2,
-        nombre: "Ana Soto",
-        correo: "vendedor@sonidovivo.cl",
-        rol: "vendedor",
-        activo: true
-    },
-    {
-        id: 3,
-        nombre: "Pedro Diaz",
-        correo: "cliente@sonidovivo.cl",
-        rol: "cliente",
-        activo: true
-    }
-];
+const API = "http://localhost:6464/api/usuarios";
 
-export function listarUsuarios() {
-    return usuarios;
-}
-
-export function buscarUsuario(id: number) {
-    return usuarios.find(usuario => usuario.id === id);
-}
-
-export function crearUsuario(nombre: string, correo: string, rol: string) {
-    let mayorId = 0;
-
-    for (const usuario of usuarios) {
-        if (usuario.id > mayorId) {
-            mayorId = usuario.id;
-        }
-    }
-
-    const nuevo = {
-        id: mayorId + 1,
-        nombre: nombre,
-        correo: correo,
-        rol: rol,
-        activo: true
+function autorizacion(token: string) {
+    return {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token,
     };
-
-    usuarios = [...usuarios, nuevo];
-
-    return nuevo;
 }
 
-export function editarUsuario(id: number, nombre: string, correo: string, rol: string) {
-    usuarios = usuarios.map(usuario => {
-        if (usuario.id === id) {
-            return { ...usuario, nombre: nombre, correo: correo, rol: rol };
+// Si el backend manda un mensaje de error (por ejemplo correo repetido), se usa ese
+async function revisarRespuesta(respuesta: Response) {
+    if (!respuesta.ok) {
+        const detalle = await respuesta.json().catch(() => null);
+
+        if (detalle !== null && detalle.message) {
+            throw new Error(detalle.message);
         }
-        return usuario;
-    });
-}
 
-export function cambiarEstado(id: number) {
-    usuarios = usuarios.map(usuario => {
-        if (usuario.id === id) {
-            return { ...usuario, activo: !usuario.activo };
-        }
-        return usuario;
-    });
-}
-
-export function correoRepetido(correo: string, idActual: number) {
-    const encontrado = usuarios.find(usuario => usuario.correo === correo);
-
-    if (encontrado === undefined) {
-        return false;
+        throw new Error("Error HTTP " + respuesta.status);
     }
+}
 
-    return encontrado.id !== idActual;
+export async function listarUsuarios(token: string): Promise<Usuario[]> {
+    const respuesta = await fetch(API, {
+        headers: autorizacion(token),
+    });
+
+    await revisarRespuesta(respuesta);
+
+    return await respuesta.json();
+}
+
+export async function crearUsuario(nombre: string, correo: string, clave: string, rol: string, token: string): Promise<Usuario> {
+    const respuesta = await fetch(API, {
+        method: "POST",
+        headers: autorizacion(token),
+        body: JSON.stringify({ nombre: nombre, correo: correo, clave: clave, rol: rol }),
+    });
+
+    await revisarRespuesta(respuesta);
+
+    return await respuesta.json();
+}
+
+export async function editarUsuario(id: number, nombre: string, correo: string, rol: string, token: string): Promise<Usuario> {
+    const respuesta = await fetch(API + "/" + id, {
+        method: "PUT",
+        headers: autorizacion(token),
+        body: JSON.stringify({ nombre: nombre, correo: correo, rol: rol }),
+    });
+
+    await revisarRespuesta(respuesta);
+
+    return await respuesta.json();
+}
+
+export async function cambiarEstado(id: number, token: string): Promise<Usuario> {
+    const respuesta = await fetch(API + "/" + id + "/estado", {
+        method: "PUT",
+        headers: autorizacion(token),
+    });
+
+    await revisarRespuesta(respuesta);
+
+    return await respuesta.json();
+}
+
+export async function eliminarUsuario(id: number, token: string) {
+    const respuesta = await fetch(API + "/" + id, {
+        method: "DELETE",
+        headers: autorizacion(token),
+    });
+
+    await revisarRespuesta(respuesta);
 }

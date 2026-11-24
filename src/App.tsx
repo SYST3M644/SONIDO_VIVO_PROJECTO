@@ -334,7 +334,7 @@ function App() {
             path='/admin'
             element={
               esAdministrador ? (
-                <Admin />
+                <Admin token={usuario?.token ?? ""} />
               ) : (
                 <p className='mt-5'>
                   Debes iniciar sesión como administrador para ver esta página.

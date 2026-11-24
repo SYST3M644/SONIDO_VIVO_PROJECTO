@@ -1,56 +1,85 @@
-import { test, expect } from "vitest";
-import {
-    listarUsuarios,
-    buscarUsuario,
-    crearUsuario,
-    editarUsuario,
-    cambiarEstado,
-    correoRepetido
-} from "../servicios/Usuarios";
+import { test, expect, vi, afterEach } from "vitest";
+import { listarUsuarios, crearUsuario, cambiarEstado, eliminarUsuario } from "../servicios/Usuarios";
 
-test("Parte con los tres usuarios de la tienda", () => {
-    const usuarios = listarUsuarios();
-
-    expect(usuarios.length).toBe(3);
-    expect(usuarios[0].rol).toBe("administrador");
+afterEach(() => {
+    vi.restoreAllMocks();
 });
 
-test("Crea un usuario nuevo y queda activo", () => {
-    const cantidadAntes = listarUsuarios().length;
+const cabeceras = { "Content-Type": "application/json", "Authorization": "Bearer token-admin" };
 
-    const nuevo = crearUsuario("Marta Vega", "marta@sonidovivo.cl", "vendedor");
+test("Pide la lista de usuarios con el token del administrador", async () => {
+    const peticion = vi.spyOn(globalThis, "fetch").mockResolvedValue({
+        ok: true,
+        json: async () => [{ id: 1, nombre: "Carlos Rojas", correo: "admin@sonidovivo.cl", rol: "administrador", activo: true }]
+    } as Response);
 
-    expect(listarUsuarios().length).toBe(cantidadAntes + 1);
+    const usuarios = await listarUsuarios("token-admin");
+
+    expect(peticion).toHaveBeenCalledWith("http://localhost:6464/api/usuarios", { headers: cabeceras });
+    expect(usuarios.length).toBe(1);
+});
+
+test("Crea un usuario con el metodo POST", async () => {
+    const peticion = vi.spyOn(globalThis, "fetch").mockResolvedValue({
+        ok: true,
+        json: async () => ({ id: 4, nombre: "Marta Vega", correo: "marta@sonidovivo.cl", rol: "vendedor", activo: true })
+    } as Response);
+
+    const nuevo = await crearUsuario("Marta Vega", "marta@sonidovivo.cl", "clave12345", "vendedor", "token-admin");
+
+    expect(peticion).toHaveBeenCalledWith("http://localhost:6464/api/usuarios", {
+        method: "POST",
+        headers: cabeceras,
+        body: JSON.stringify({ nombre: "Marta Vega", correo: "marta@sonidovivo.cl", clave: "clave12345", rol: "vendedor" })
+    });
     expect(nuevo.activo).toBe(true);
-    expect(nuevo.rol).toBe("vendedor");
 });
 
-test("Edita el nombre y el rol de un usuario", () => {
-    const creado = crearUsuario("Luis Pena", "luis@sonidovivo.cl", "cliente");
+test("Muestra el mensaje del backend cuando el correo esta repetido", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValue({
+        ok: false,
+        status: 400,
+        json: async () => ({ message: "Ese correo ya esta registrado" })
+    } as Response);
 
-    editarUsuario(creado.id, "Luis Pena Soto", "luis@sonidovivo.cl", "administrador");
-
-    const editado = buscarUsuario(creado.id);
-
-    expect(editado?.nombre).toBe("Luis Pena Soto");
-    expect(editado?.rol).toBe("administrador");
+    await expect(crearUsuario("Otro", "admin@sonidovivo.cl", "clave12345", "cliente", "token-admin"))
+        .rejects.toThrow("Ese correo ya esta registrado");
 });
 
-test("Desactiva y vuelve a activar un usuario", () => {
-    const creado = crearUsuario("Rosa Lillo", "rosa@sonidovivo.cl", "cliente");
+test("Activa o desactiva un usuario con PUT", async () => {
+    const peticion = vi.spyOn(globalThis, "fetch").mockResolvedValue({
+        ok: true,
+        json: async () => ({ id: 3, activo: false })
+    } as Response);
 
-    cambiarEstado(creado.id);
-    expect(buscarUsuario(creado.id)?.activo).toBe(false);
+    await cambiarEstado(3, "token-admin");
 
-    cambiarEstado(creado.id);
-    expect(buscarUsuario(creado.id)?.activo).toBe(true);
+    expect(peticion).toHaveBeenCalledWith("http://localhost:6464/api/usuarios/3/estado", {
+        method: "PUT",
+        headers: cabeceras
+    });
 });
 
-test("Detecta cuando un correo ya esta registrado", () => {
-    expect(correoRepetido("admin@sonidovivo.cl", 0)).toBe(true);
-    expect(correoRepetido("nadie@sonidovivo.cl", 0)).toBe(false);
+test("Elimina un usuario con DELETE", async () => {
+    const peticion = vi.spyOn(globalThis, "fetch").mockResolvedValue({
+        ok: true,
+        status: 204
+    } as Response);
+
+    await eliminarUsuario(3, "token-admin");
+
+    expect(peticion).toHaveBeenCalledWith("http://localhost:6464/api/usuarios/3", {
+        method: "DELETE",
+        headers: cabeceras
+    });
 });
 
-test("No marca como repetido el correo del usuario que se esta editando", () => {
-    expect(correoRepetido("admin@sonidovivo.cl", 1)).toBe(false);
+test("Si el token no tiene permiso avisa con el codigo 403", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValue({
+        ok: false,
+        status: 403,
+        json: async () => { throw new Error("sin cuerpo"); }
+    } as unknown as Response);
+
+    await expect(listarUsuarios("token-cliente")).rejects.toThrow("Error HTTP 403");
 });
