@@ -8,10 +8,11 @@ interface CardProps {
     descripcion: string;
     precio: number;
     imagen: string;
+    stock: number;
     agregarProducto: (id: number) => void;
 }
 
-function CardProducto({id, titulo, descripcion, precio, imagen, agregarProducto}: CardProps) {
+function CardProducto({id, titulo, descripcion, precio, imagen, stock, agregarProducto}: CardProps) {
     return(
         <div className="card tarjeta-producto" style={{ width: '20rem', maxWidth: '100%'}}>
 
@@ -33,6 +34,14 @@ function CardProducto({id, titulo, descripcion, precio, imagen, agregarProducto}
                     ${precio.toLocaleString("es-CL")}
                 </p>
 
+                {stock === 0 && (
+                    <p><span className="badge text-bg-secondary">Agotado</span></p>
+                )}
+
+                {stock > 0 && stock <= 3 && (
+                    <p><span className="badge text-bg-warning">¡Quedan {stock}!</span></p>
+                )}
+
                 <div className="mt-auto d-flex gap-2">
                     <Boton id={id}/>
 
@@ -41,6 +50,7 @@ function CardProducto({id, titulo, descripcion, precio, imagen, agregarProducto}
                         type="button"
                         title="Agregar al carrito"
                         aria-label="Agregar al carrito"
+                        disabled={stock === 0}
                         onClick={() => agregarProducto(id)}
                     >
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

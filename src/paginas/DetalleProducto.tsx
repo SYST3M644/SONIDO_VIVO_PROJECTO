@@ -63,6 +63,12 @@ function DetalleProducto({ agregarProducto }: DetalleProductoProps) {
                         ${producto.precio.toLocaleString("es-CL")}
                     </p>
 
+                    {producto.stock === 0 ? (
+                        <p><span className="badge text-bg-secondary">Agotado</span></p>
+                    ) : (
+                        <p className="text-body-secondary">Disponibles: {producto.stock} unidades</p>
+                    )}
+
                     <h3 className="h5 mt-4">Características</h3>
 
                     <div className="table-responsive">
@@ -82,6 +88,7 @@ function DetalleProducto({ agregarProducto }: DetalleProductoProps) {
                         <button
                             type="button"
                             className="btn boton-tienda"
+                            disabled={producto.stock === 0}
                             onClick={() => agregarProducto(producto.id)}
                         >
                             Agregar al carrito

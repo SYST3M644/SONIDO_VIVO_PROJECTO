@@ -103,3 +103,24 @@ test("Si no hay resultados muestra un mensaje", () => {
 
   expect(screen.getByText("No se encontraron productos")).toBeDefined();
 });
+test("Avisa cuando quedan pocas unidades de un producto", () => {
+  mostrarCatalogo();
+
+  expect(screen.getByText("¡Quedan 2!")).toBeDefined();
+  expect(screen.getByText("¡Quedan 1!")).toBeDefined();
+});
+
+test("Un producto agotado no se puede agregar al carrito", () => {
+  const agotado = [{ ...productosDePrueba[0], stock: 0 }];
+
+  render(
+    <MemoryRouter>
+      <Productos productos={agotado} cargando={false} agregarProducto={() => {}} />
+    </MemoryRouter>
+  );
+
+  expect(screen.getByText("Agotado")).toBeDefined();
+
+  const boton = screen.getByRole("button", { name: "Agregar al carrito" }) as HTMLButtonElement;
+  expect(boton.disabled).toBe(true);
+});
