@@ -227,7 +227,7 @@ function App() {
         <Routes>
           <Route
             path='/'
-            element={<Inicio />}
+            element={<Inicio productos={productos} agregarProducto={agregarProducto} />}
           />
 
           <Route

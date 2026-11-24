@@ -1,6 +1,15 @@
 import { Link } from "react-router-dom"
+import CardProducto from "../componentes/moleculas/CardProductos";
+import type { Producto } from "../servicios/Productos";
 
-function Inicio() {
+type InicioProps = {
+    productos: Producto[];
+    agregarProducto: (id: number) => void;
+};
+
+function Inicio({ productos, agregarProducto }: InicioProps) {
+    // Se muestran los 3 primeros productos que tienen stock
+    const destacados = productos.filter((producto) => producto.stock > 0).slice(0, 3);
     return(
         <div className="container mt-4">
             <div className="portada">
@@ -82,18 +91,30 @@ function Inicio() {
                 </button>
             </div>
 
-            <h2 className="mt-4">
-                Bienvenido a Sonido Vivo, tu tienda de instrumentos musicales en Viña del Mar.
-            </h2>
+            {destacados.length > 0 && (
+                <div className="mt-5">
+                    <h2 className="titulo-seccion">Productos destacados</h2>
 
-            <h5 className="mt-3">
-                Encuentra guitarras, bajos, baterías, teclados, amplificadores,
-                micrófonos, pedales de efectos y accesorios para músicos.
-            </h5>
+                    <div className="d-flex flex-wrap justify-content-center gap-4 mt-3">
+                        {destacados.map((producto) => (
+                            <CardProducto
+                                key={producto.id}
+                                id={producto.id}
+                                titulo={producto.titulo}
+                                descripcion={producto.descripcion}
+                                precio={producto.precio}
+                                imagen={producto.imagen}
+                                stock={producto.stock}
+                                agregarProducto={agregarProducto}
+                            />
+                        ))}
+                    </div>
 
-            <p className="mt-3">
-                También realizamos reparación de instrumentos de cuerda.
-            </p>
+                    <Link to="/productos" className="btn boton-tienda mt-4">
+                        Ver todo el catálogo
+                    </Link>
+                </div>
+            )}
         </div>
     );
 }
