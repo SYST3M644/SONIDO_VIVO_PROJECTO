@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Regresar from "../componentes/atomos/Regresar";
 import CampoFormulario from "../componentes/moleculas/CampoFormulario";
 import type { ProductoCarrito } from "../servicios/Productos";
-import { urlImagen, descontarStock } from "../servicios/Productos";
+import { urlImagen, descontarStock, buscarProducto } from "../servicios/Productos";
 import { agregarPedido } from "../servicios/Pedidos";
 import type { Pedido } from "../servicios/Pedidos";
 import { validarTarjeta, pagoAprobado, textoPago } from "../servicios/Pago";
@@ -99,6 +99,16 @@ function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puede
                 precio: producto.precio,
                 cantidad: producto.cantidad,
             }));
+
+            // Antes de crear el pedido se revisa el stock real en el backend,
+            // por si otro cliente compró lo mismo mientras tanto
+            for (const item of items) {
+                const producto = await buscarProducto(item.productoId);
+
+                if (producto.stock < item.cantidad) {
+                    throw new Error("Solo quedan " + producto.stock + " unidades de " + producto.titulo);
+                }
+            }
 
             const pedido = await agregarPedido(cliente, correo, total, entrega, items, textoPago(numeroTarjeta));
 

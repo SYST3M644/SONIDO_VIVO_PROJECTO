@@ -60,7 +60,14 @@ export async function descontarStock(id: number, cantidad: number, token: string
         body: JSON.stringify({ stock: cantidad }),
     });
 
+    // Si no alcanza el stock, el backend manda el mensaje "Solo quedan..."
     if (!respuesta.ok) {
+        const detalle = await respuesta.json().catch(() => null);
+
+        if (detalle !== null && detalle.message) {
+            throw new Error(detalle.message);
+        }
+
         throw new Error("Error HTTP " + respuesta.status);
     }
 

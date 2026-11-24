@@ -148,6 +148,23 @@ test("Si el banco rechaza el pago no se crea el pedido", async () => {
     expect(screen.queryByText(/fue confirmado/)).toBeNull();
 });
 
+test("Si otro cliente compro el stock antes, se avisa y no se crea el pedido", async () => {
+    await agregarYAbrirCarrito();
+
+    fireEvent.change(screen.getByPlaceholderText("nombre"), { target: { value: "Camila Reyes" } });
+    fireEvent.change(screen.getByPlaceholderText("correo"), { target: { value: "camila@correo.cl" } });
+    fireEvent.click(screen.getByText("Continuar al pago"));
+
+    // Mientras se paga, en el backend la guitarra se queda sin stock
+    productosDePrueba[0].stock = 0;
+    pagarConTarjeta("4111 1111 1111 1111");
+
+    expect(await screen.findByText("Solo quedan 0 unidades de Guitarra Acustica Folk")).toBeDefined();
+    expect(screen.queryByText(/fue confirmado/)).toBeNull();
+
+    productosDePrueba[0].stock = 11;
+});
+
 test("Al confirmar con sesion se crea el pedido y se vacia el carrito", async () => {
     entrarComoCliente();
 
