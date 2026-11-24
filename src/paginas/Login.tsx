@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import FormularioLogin from "../componentes/organismos/FormularioLogin";
 import type { Usuario } from "../servicios/Autenticacion";
 
@@ -14,6 +15,10 @@ function Login({ guardarUsuario }: LoginProps){
                         <h2 className="mt-4">Formulario de Login</h2>
 
                         <FormularioLogin guardarUsuario={guardarUsuario} />
+
+                        <p className="mt-3 mb-0">
+                            ¿No tienes cuenta? <Link to="/registro">Crear cuenta</Link>
+                        </p>
                     </div>
                 </div>
             </div>

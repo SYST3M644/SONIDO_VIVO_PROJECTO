@@ -125,9 +125,9 @@ function Navbar({ cantidadCarrito, usuario, cerrarSesion }: NavbarProps) {
                             </Link>
                         ) : (
                             <>
-                                <span className="nav-link">
+                                <Link className="nav-link" to="/mi-cuenta">
                                     {usuario.nombre} ({usuario.rol})
-                                </span>
+                                </Link>
 
                                 <button
                                     type="button"

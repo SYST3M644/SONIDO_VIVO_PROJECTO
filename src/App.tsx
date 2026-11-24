@@ -15,6 +15,8 @@ import Stock from './paginas/Stock'
 import Reportes from './paginas/Reportes'
 import MisPedidos from './paginas/MisPedidos'
 import Mensajes from './paginas/Mensajes'
+import Registro from './paginas/Registro'
+import MiCuenta from './paginas/MiCuenta'
 import Pie from './componentes/organismos/Pie'
 import { listarProductos } from './servicios/Productos'
 import type { Producto, ProductoCarrito } from './servicios/Productos'
@@ -354,6 +356,24 @@ function App() {
           <Route
             path='/login'
             element={<Login guardarUsuario={guardarUsuario} />}
+          />
+
+          <Route
+            path='/registro'
+            element={<Registro guardarUsuario={guardarUsuario} />}
+          />
+
+          <Route
+            path='/mi-cuenta'
+            element={
+              usuario !== null ? (
+                <MiCuenta usuario={usuario} cerrarSesion={cerrarSesion} />
+              ) : (
+                <p className='mt-5'>
+                  Debes iniciar sesión para ver tu cuenta.
+                </p>
+              )
+            }
           />
 
         </Routes>
