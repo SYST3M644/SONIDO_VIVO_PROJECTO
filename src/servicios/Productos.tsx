@@ -18,6 +18,17 @@ export type ProductoCarrito = {
 
 const API = "http://localhost:6464/api/productos";
 
+function cabeceras(token: string): Record<string, string> {
+    if (token === "") {
+        return { "Content-Type": "application/json" };
+    }
+
+    return {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token,
+    };
+}
+
 export function urlImagen(imagen: string) {
     return API + "/imagenes/" + imagen;
 }
@@ -42,12 +53,10 @@ export async function buscarProducto(id: number): Promise<Producto> {
     return await respuesta.json();
 }
 
-export async function descontarStock(id: number, cantidad: number): Promise<Producto> {
+export async function descontarStock(id: number, cantidad: number, token: string = ""): Promise<Producto> {
     const respuesta = await fetch(API + "/" + id + "/descontar", {
         method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-        },
+        headers: cabeceras(token),
         body: JSON.stringify({ stock: cantidad }),
     });
 
@@ -58,12 +67,10 @@ export async function descontarStock(id: number, cantidad: number): Promise<Prod
     return await respuesta.json();
 }
 
-export async function actualizarStock(id: number, stock: number): Promise<Producto> {
+export async function actualizarStock(id: number, stock: number, token: string): Promise<Producto> {
     const respuesta = await fetch(API + "/" + id + "/stock", {
         method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-        },
+        headers: cabeceras(token),
         body: JSON.stringify({ stock: stock }),
     });
 

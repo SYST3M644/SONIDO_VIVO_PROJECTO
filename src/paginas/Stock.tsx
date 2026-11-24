@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { actualizarStock, listarProductos } from "../servicios/Productos";
 import type { Producto } from "../servicios/Productos";
 
-function Stock() {
+type StockProps = {
+    token: string;
+};
+
+function Stock({ token }: StockProps) {
     const [existencias, setExistencias] = useState<Producto[]>([]);
     const [cargando, setCargando] = useState(true);
 
@@ -28,7 +32,7 @@ function Stock() {
         }));
 
         try {
-            await actualizarStock(id, cantidad);
+            await actualizarStock(id, cantidad, token);
         } catch (error) {
             console.error("No se pudo actualizar el stock:", error);
         }

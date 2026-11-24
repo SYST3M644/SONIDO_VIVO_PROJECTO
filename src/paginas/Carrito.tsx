@@ -17,9 +17,10 @@ type CarritoProps = {
     correoCliente: string;
     stockDe: (id: number) => number;
     hayUsuario: boolean;
+    token: string;
 }
 
-function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puedeComprar, vaciarCarrito, nombreCliente, correoCliente, stockDe, hayUsuario }: CarritoProps) {
+function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puedeComprar, vaciarCarrito, nombreCliente, correoCliente, stockDe, hayUsuario, token }: CarritoProps) {
     const [mensaje, setMensaje] = useState("");
     const [tipoMensaje, setTipoMensaje] = useState("error");
     const [entrega, setEntrega] = useState("despacho");
@@ -73,7 +74,7 @@ function Carrito({ carrito, sumarCantidad, restarCantidad, quitarProducto, puede
             const pedido = await agregarPedido(cliente, correo, total, entrega, items);
 
             for (const item of items) {
-                await descontarStock(item.productoId, item.cantidad);
+                await descontarStock(item.productoId, item.cantidad, token);
             }
 
             vaciarCarrito();

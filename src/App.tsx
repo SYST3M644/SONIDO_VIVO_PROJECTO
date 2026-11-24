@@ -237,6 +237,7 @@ function App() {
                   correoCliente={correoCliente}
                   stockDe={stockDe}
                   hayUsuario={hayUsuario}
+                  token={usuario?.token ?? ""}
                 />
               )
             }
@@ -272,7 +273,7 @@ function App() {
             path='/vendedor/stock'
             element={
               atiendeLaTienda ? (
-                <Stock />
+                <Stock token={usuario?.token ?? ""} />
               ) : (
                 <p className='mt-5'>
                   Debes iniciar sesión como vendedor para ver el stock.

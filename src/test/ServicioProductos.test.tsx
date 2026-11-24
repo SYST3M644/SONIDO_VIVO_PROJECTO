@@ -54,19 +54,19 @@ test("Busca un producto por su id", async () => {
     expect(producto.stock).toBe(11);
 });
 
-test("Actualiza el stock con el metodo PUT", async () => {
+test("Actualiza el stock con el metodo PUT y el token del vendedor", async () => {
     const peticion = vi.spyOn(globalThis, "fetch").mockResolvedValue({
         ok: true,
         json: async () => ({ ...productoFalso, stock: 25 })
     } as Response);
 
-    const producto = await actualizarStock(1, 25);
+    const producto = await actualizarStock(1, 25, "token-de-prueba");
 
     expect(peticion).toHaveBeenCalledWith(
         "http://localhost:6464/api/productos/1/stock",
         {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer token-de-prueba" },
             body: JSON.stringify({ stock: 25 })
         }
     );

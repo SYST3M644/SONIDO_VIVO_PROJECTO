@@ -28,7 +28,7 @@ afterEach(() => {
 });
 
 async function mostrarStock() {
-    render(<Stock />);
+    render(<Stock token="token-de-prueba" />);
     await screen.findByText("Guitarra Acustica Folk");
 }
 
