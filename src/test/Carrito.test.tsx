@@ -77,6 +77,15 @@ test("Sin sesion se puede ver el carrito", () => {
     expect(screen.getByText("El carrito está vacío")).toBeDefined();
 });
 
+function pagarConTarjeta(numero: string) {
+    fireEvent.change(screen.getByPlaceholderText("número de tarjeta"), { target: { value: numero } });
+    fireEvent.change(screen.getByPlaceholderText("nombre en la tarjeta"), { target: { value: "Pedro Diaz" } });
+    fireEvent.change(screen.getByPlaceholderText("MM/AA"), { target: { value: "12/30" } });
+    fireEvent.change(screen.getByPlaceholderText("CVV"), { target: { value: "123" } });
+
+    fireEvent.click(screen.getByRole("button", { name: /^Pagar \$/ }));
+}
+
 async function agregarYAbrirCarrito() {
     render(
         <MemoryRouter initialEntries={["/productos"]}>
@@ -95,7 +104,7 @@ test("Un invitado puede comprar sin iniciar sesion", async () => {
 
     expect(screen.getByText("Comprar como invitado")).toBeDefined();
 
-    fireEvent.click(screen.getByText("Confirmar pedido"));
+    fireEvent.click(screen.getByText("Continuar al pago"));
     expect(screen.getByText("Debe ingresar su nombre para continuar")).toBeDefined();
 
     fireEvent.change(screen.getByPlaceholderText("nombre"), {
@@ -106,10 +115,37 @@ test("Un invitado puede comprar sin iniciar sesion", async () => {
         target: { value: "camila@correo.cl" }
     });
 
-    fireEvent.click(screen.getByText("Confirmar pedido"));
+    fireEvent.click(screen.getByText("Continuar al pago"));
+    pagarConTarjeta("4111 1111 1111 1111");
 
     expect(await screen.findByText(/fue confirmado/)).toBeDefined();
-    expect(screen.getByText("El carrito está vacío")).toBeDefined();
+    expect(screen.getByText("Seguir comprando")).toBeDefined();
+});
+
+test("Una tarjeta incompleta muestra un aviso y no paga", async () => {
+    await agregarYAbrirCarrito();
+
+    fireEvent.change(screen.getByPlaceholderText("nombre"), { target: { value: "Camila Reyes" } });
+    fireEvent.change(screen.getByPlaceholderText("correo"), { target: { value: "camila@correo.cl" } });
+    fireEvent.click(screen.getByText("Continuar al pago"));
+
+    pagarConTarjeta("4111 1111");
+
+    expect(screen.getByText("El número de tarjeta debe tener 16 dígitos")).toBeDefined();
+    expect(screen.queryByText(/fue confirmado/)).toBeNull();
+});
+
+test("Si el banco rechaza el pago no se crea el pedido", async () => {
+    await agregarYAbrirCarrito();
+
+    fireEvent.change(screen.getByPlaceholderText("nombre"), { target: { value: "Camila Reyes" } });
+    fireEvent.change(screen.getByPlaceholderText("correo"), { target: { value: "camila@correo.cl" } });
+    fireEvent.click(screen.getByText("Continuar al pago"));
+
+    pagarConTarjeta("4000 0000 0000 0002");
+
+    expect(screen.getByText("El pago fue rechazado. Pruebe con otra tarjeta")).toBeDefined();
+    expect(screen.queryByText(/fue confirmado/)).toBeNull();
 });
 
 test("Al confirmar con sesion se crea el pedido y se vacia el carrito", async () => {
@@ -120,10 +156,11 @@ test("Al confirmar con sesion se crea el pedido y se vacia el carrito", async ()
     await screen.findByText("Guitarra Acustica Folk");
     fireEvent.click(screen.getAllByRole("button", { name: "Agregar al carrito" })[0]);
     fireEvent.click(screen.getByText("Carrito"));
-    fireEvent.click(screen.getByText("Confirmar pedido"));
+    fireEvent.click(screen.getByText("Continuar al pago"));
+    pagarConTarjeta("4111 1111 1111 1111");
 
     expect(await screen.findByText(/¡Gracias por tu compra! Tu pedido N° \d+ fue confirmado/)).toBeDefined();
-    expect(screen.getByText("El carrito está vacío")).toBeDefined();
+    expect(screen.getByText("Ver mis pedidos")).toBeDefined();
 });
 
 test("Se puede elegir retiro en tienda", async () => {

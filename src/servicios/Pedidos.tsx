@@ -13,6 +13,7 @@ export type Pedido = {
     total: number;
     entrega: string;
     estado: string;
+    pago?: string;
     items: PedidoItem[];
 }
 
@@ -51,7 +52,7 @@ export async function pedidosDeCliente(cliente: string, token: string): Promise<
     return await respuesta.json();
 }
 
-export async function agregarPedido(cliente: string, correo: string, total: number, entrega: string, items: PedidoItem[]): Promise<Pedido> {
+export async function agregarPedido(cliente: string, correo: string, total: number, entrega: string, items: PedidoItem[], pago: string = ""): Promise<Pedido> {
     const respuesta = await fetch(API, {
         method: "POST",
         headers: {
@@ -62,6 +63,7 @@ export async function agregarPedido(cliente: string, correo: string, total: numb
             correo: correo,
             total: total,
             entrega: entrega,
+            pago: pago,
             items: items,
         }),
     });

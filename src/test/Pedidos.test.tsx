@@ -11,13 +11,13 @@ const pedidosDePrueba: Pedido[] = [
     { id: 1002, cliente: "Camila Reyes", correo: "camila@correo.cl", fecha: "2026-09-03", total: 379990, entrega: "despacho", estado: "en preparacion", items: [] }
 ];
 
-test("Crea el pedido en el microservicio", async () => {
+test("Crea el pedido en el microservicio con la forma de pago", async () => {
     const peticion = vi.spyOn(globalThis, "fetch").mockResolvedValue({
         ok: true,
         json: async () => pedidosDePrueba[0]
     } as Response);
 
-    const pedido = await agregarPedido("Pedro Diaz", "pedro@correo.cl", 129990, "retiro en tienda", []);
+    const pedido = await agregarPedido("Pedro Diaz", "pedro@correo.cl", 129990, "retiro en tienda", [], "Tarjeta terminada en 1111");
 
     expect(peticion).toHaveBeenCalledWith(
         "http://localhost:6464/api/pedidos",
@@ -29,6 +29,7 @@ test("Crea el pedido en el microservicio", async () => {
                 correo: "pedro@correo.cl",
                 total: 129990,
                 entrega: "retiro en tienda",
+                pago: "Tarjeta terminada en 1111",
                 items: []
             })
         }
